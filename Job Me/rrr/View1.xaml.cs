@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace JobMe.Prueba
+namespace JobMe.rrr
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class View1 : ContentView

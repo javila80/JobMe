@@ -118,7 +118,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Prueba\View1.xaml">
+    <EmbeddedResource Update="rrr\View1.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="ViewModels\Employee\View1.xaml">
