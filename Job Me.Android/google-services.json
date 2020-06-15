@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1052722578774",
+    "firebase_url": "https://jobme-909fd.firebaseio.com",
+    "project_id": "jobme-909fd",
+    "storage_bucket": "jobme-909fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052722578774:android:ecf8849ec5bdc9487842f7",
+        "android_client_info": {
+          "package_name": "com.companyname.jobme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052722578774-lv4q3d9ccolvnhcgthq3jbhluhjbks60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAokQw6EAvO3hiO31mmnJWAOk-qZLKFZ7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052722578774-lv4q3d9ccolvnhcgthq3jbhluhjbks60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

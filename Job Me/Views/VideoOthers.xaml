@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:o="clr-namespace:Octane.Xamarin.Forms.VideoPlayer;assembly=Octane.Xamarin.Forms.VideoPlayer"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.VideoOthers">
+    <ContentPage.Content>
+        <!--<AbsoluteLayout>
+            <video:VideoPlayer  x:Name="videoPlayer"                        
+                                              AutoPlay="True"  AreTransportControlsEnabled="False"                                               
+                                VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                                            
+                                                />
+
+            --><!--<o:VideoPlayer  x:Name="videoPlayer" AutoPlay="True"   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"   />--><!--
+        </AbsoluteLayout>-->
+        <Grid>
+            <o:VideoPlayer VerticalOptions="FillAndExpand" x:Name="videoplayer"  IsVisible="True" AutoPlay="True" PlayerStateChanged="videoplayer_PlayerStateChanged" DisplayControls="True" />
+            <!--<mm:VideoView VerticalOptions="FillAndExpand" ShowControls="True" x:Name="videoplayer" AutoPlay="True" IsVisible="False" />-->
+            <ActivityIndicator Color="{StaticResource JobMeOrange}" x:Name="act"
+                                 HorizontalOptions="CenterAndExpand"  
+                               VerticalOptions="CenterAndExpand"
+                               ></ActivityIndicator>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

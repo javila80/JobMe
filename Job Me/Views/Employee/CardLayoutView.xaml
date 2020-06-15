@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employee.CardLayoutView">
+    <ContentView.Content>
+        <StackLayout>
+
+            <Image Aspect="AspectFit" Source="kpmglogo.jpg" HorizontalOptions="Center" />
+            <Label Text="{Binding Puesto}" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="{StaticResource JobMeGray}"/>
+            <Editor Placeholder="Descripción de la oferta laboral por parte de la empresa"   Text="{Binding Descripcion}"
+                                            WidthRequest="200"
+                                            TextColor="{StaticResource JobMeGray}" />
+
+            <Grid HorizontalOptions="End">
+                <Grid VerticalOptions="End">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="tache.jpg" Grid.Column="0"></Image>
+                    <Image Source="paloma.jpg" Grid.Column="1"></Image>
+                </Grid>
+            </Grid>
+
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

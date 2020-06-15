@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:converter="clr-namespace:JobMe.Converters"
+             xmlns:local="clr-namespace:JobMe.Views.Chat" 
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" 
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:controls="clr-namespace:JobMe" 
+             xmlns:behavior="clr-namespace:JobMe.Behaviors.Chat" xmlns:viewModel="clr-namespace:JobMe.ViewModels.Chat"
+             mc:Ignorable="d"
+             NavigationPage.HasNavigationBar="True"
+             x:Class="JobMe.Views.Chat.ChatNew">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+            <local:MessageDataTemplateSelector x:Key="MessageDataTemplateSelector" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModel:ChatVM />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".0*"/>
+                <RowDefinition Height=".95*"/>
+                <RowDefinition Height=".09*"/>
+            </Grid.RowDefinitions>
+            <listView:SfListView Grid.Row="1"
+                    x:Name="listView"
+                    AutoFitMode="Height"                
+                    FocusBorderThickness="0"
+                    IsStickyFooter="True"                
+                    ItemTemplate="{StaticResource MessageDataTemplateSelector}"
+                    ItemsSource="{Binding ChatMessageInfo}"
+                    RowSpacing="12"
+                    SelectionMode="None"
+                    IsVisible="{Binding IsVisible}"
+                    VerticalOptions="Fill">
+
+                <listView:SfListView.Behaviors>
+                    <behavior:ChatMessageListViewBehavior />
+                </listView:SfListView.Behaviors>
+
+                <listView:SfListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Label
+                                Margin="0,16,0,0"
+                         
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                LineHeight="1.5"
+                                   Text="{Binding Key, Converter={StaticResource DateTimeToStringConverter}}"
+                                TextColor="{DynamicResource Gray-700}" />
+                    </DataTemplate>
+                </listView:SfListView.GroupHeaderTemplate>
+                <!--New text entry in the chat conversation-->
+                <!--<listView:SfListView.FooterTemplate>
+
+                        <DataTemplate>
+
+                            <Grid  Margin="8,0,10,5">
+                                
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <border:SfBorder  Style="{DynamicResource SfBorderStyle}" Grid.Column="0">
+
+                                        -->
+                <!--GRID DE ADENTRO-->
+                <!--
+                                        <Grid ColumnSpacing="0" RowSpacing="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <controls1:ChatEntry 
+                                                                    Text="{Binding NewMessage}"
+                                                                      Keyboard="Chat" 
+                                                                     Grid.Column="0"                                               
+                                                                     AutomationId="ChatMessageEntry"
+                                                                      Style="{StaticResource ChatMessageEditorStyle}"
+                                                                     Placeholder="Type here"></controls1:ChatEntry>
+
+                                            -->
+                <!--<Editor Placeholder="Type here"   Grid.Column="0"
+                                                           AutoSize="TextChanges"
+                                                           Keyboard="Chat"                
+                                                           x:Name="chateditor"
+                                                           Style="{StaticResource ChatMessageEditorStyle}"
+                                                           Text="{Binding NewMessage}"  />-->
+                <!--
+
+
+
+                                            <buttons:SfButton  
+                                                    Grid.Column="1"
+                                                    Command="{Binding SendFile}"
+                                                   Style="{StaticResource NavigationBarButtonStyle}"
+                                                     FontFamily="{StaticResource fontawesome}"                                   
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf0c6;"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    VerticalOptions="Center" />
+                                            -->
+                <!--Camera Button-->
+                <!--
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                    Grid.Column="2"
+                                                    Command="{Binding ShowVideo}"  
+                                                    FontFamily="{StaticResource fontawesome}"   
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf03d;"
+                                                    VerticalOptions="Center" />
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}" 
+                                                    Grid.Column="3"
+                                                    Command="{Binding ShowCamera}"  
+                                                    FontFamily="{StaticResource fontawesome}"   
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf030;"
+                                                    VerticalOptions="Center" />
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                            Grid.Column="4"
+                                                            Command="{Binding SendAttachment}"
+                                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                                             FontFamily="{StaticResource fontawesome}"                                   
+                                                            FontAttributes="{StaticResource FontAttrib}"
+                                                            Text="&#xf07c;"
+                                                            TextColor="{StaticResource JobMeOrange}"
+                                                            VerticalOptions="Center" />
+
+                                        </Grid>
+
+                                    </border:SfBorder>
+
+                                    <Frame Grid.Column="1"
+                                        CornerRadius="20"
+                                        Padding="0"
+                                         BackgroundColor="Red"
+                                          WidthRequest="40" 
+                                           HeightRequest="40"
+                                     HorizontalOptions="End"
+                                                VerticalOptions="End" 
+                                        HasShadow="False"
+                                            >
+                                        <Label   TextColor="White"
+                                                 Text="&#xf1d8;"   FontFamily="{StaticResource fontawesome}"                                   
+                                                 FontAttributes="{StaticResource FontAttrib}" 
+                                                 FontSize="Large"
+                                                 HorizontalTextAlignment="Center"
+                                                 VerticalTextAlignment="Center"
+                                                
+                                           BackgroundColor="Transparent">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SendCommand}" ></TapGestureRecognizer>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Frame>
+                                    -->
+                <!--<buttons:SfButton 
+                                                Grid.Column="1"
+                                              BackgroundColor="{StaticResource JobMeOrange}"
+                                                Command="{Binding SendCommand}"
+                                                CornerRadius="20"
+                                                HeightRequest="40"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="End"
+                                                TextColor="White"
+                                                Text="&#xf1d8;"                                               
+                                                FontFamily="{StaticResource fontawesome}"                                   
+                                                FontAttributes="{StaticResource FontAttrib}"
+                                                WidthRequest="40">
+                                    </buttons:SfButton>-->
+                <!--
+                               
+                            </Grid>
+                           
+                        </DataTemplate>
+                    </listView:SfListView.FooterTemplate>-->
+            </listView:SfListView>
+            <!--<CollectionView Grid.Row="1" x:Name="coleccion"
+                        ItemTemplate="{StaticResource MessageDataTemplateSelector}"
+                        ItemsSource="{Binding ChatMessageInfo}"
+                        Margin="0"
+                            IsGrouped="False"
+                        ItemsUpdatingScrollMode="KeepLastItemInView">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="15"/>
+                </CollectionView.ItemsLayout>
+               
+
+                <CollectionView.Resources>
+                    <ResourceDictionary>
+                        -->
+            <!--Outgoing text template-->
+            <!--
+                        <DataTemplate x:Key="LocalSimpleText">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".3*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                 
+                                </Grid.ColumnDefinitions>
+
+                                <pancakeView:PancakeView
+                                               BackgroundColor="{DynamicResource PrimaryLight}"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="1"
+                                                CornerRadius="20,20,20,0"
+                                                IsClippedToBounds="True"                                                
+                                    HorizontalOptions="FillAndExpand"
+                                                 Margin="30,5,15,0">
+                               
+                                    <StackLayout Margin="8" VerticalOptions="FillAndExpand">
+
+                                        -->
+            <!--  Message Text  -->
+            <!--
+                                        <Label
+                                            FontFamily="{StaticResource Montserrat-Medium}"
+                                            FontSize="12"
+                                            HorizontalOptions="End"
+                                            LineHeight="1.25"
+                                            Text="{Binding Message}"
+                                            TextColor="{DynamicResource Gray-900}"
+                                            VerticalOptions="Center" />
+
+                                             -->
+            <!--  Time  -->
+            <!--
+                                            <Label
+                                            FontFamily="{StaticResource Montserrat-Medium}"
+                                            FontSize="12"
+                                            HorizontalOptions="End"
+                                            LineHeight="1.25"
+                                            Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                                            TextColor="{DynamicResource Gray-700}"
+                                            VerticalOptions="Center" />         
+
+                                    </StackLayout>
+                               
+                                </pancakeView:PancakeView>
+                            </Grid>
+                        </DataTemplate>
+                        -->
+            <!--Incoming text template-->
+            <!--
+                        <DataTemplate x:Key="IncomingTextTemplate">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width=".2"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <pancakeView:PancakeView
+                                        BackgroundColor="#E6E9EF"
+                                        Grid.Column="1"
+                                        CornerRadius="20,20,0,20"
+                                        IsClippedToBounds="True"
+                                    Margin="5,0,30,0"
+                                        HorizontalOptions="FillAndExpand">
+                                    
+                                    <StackLayout Margin="8" VerticalOptions="FillAndExpand">
+
+                                        -->
+            <!--  Message Text  -->
+            <!--
+                                        <Label
+                                        FontFamily="{StaticResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="Start"
+                                        LineHeight="1.25"
+                                        Text="{Binding Message}"
+                                        TextColor="{DynamicResource Gray-900}"
+                                        VerticalOptions="Fill" />
+
+                                        -->
+            <!--  Time  -->
+            <!--
+                                        <Label
+                                        FontFamily="{StaticResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="End"
+                                        LineHeight="1.25"
+                                        Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                                        TextColor="{DynamicResource Gray-700}"
+                                        VerticalOptions="Fill" />
+
+                                    </StackLayout>
+
+                                </pancakeView:PancakeView>
+                            </Grid>
+                        </DataTemplate>
+                        -->
+            <!--Incoming image template-->
+            <!--
+                        <DataTemplate x:Key="IncomingImageTemplate">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width=".2"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <pancakeView:PancakeView
+                                        BackgroundColor="#E6E9EF"
+                                        Grid.Column="1"
+                                        CornerRadius="20,20,0,20"
+                                        IsClippedToBounds="True"
+                                    Margin="5,0,30,0"
+                                        HorizontalOptions="FillAndExpand">
+
+                                    <Grid Padding="2" VerticalOptions="FillAndExpand">
+
+                                        <border:SfBorder BorderWidth="0" CornerRadius="5">
+                                            -->
+            <!--  Image  -->
+            <!--
+                                            <Image
+                                                HeightRequest="100"
+                                                HorizontalOptions="Start"
+							                    BackgroundColor="{DynamicResource Gray-200}" 
+                                                Source="{Binding ImagePath}"
+                                                VerticalOptions="Fill"
+                                                WidthRequest="100" />
+                                                            </border:SfBorder>
+
+                                                            -->
+            <!--  Time  -->
+            <!--
+                                                            <Label
+                                            Margin="5,0"
+                                            FontFamily="{StaticResource Montserrat-Medium}"
+                                            FontSize="12"
+                                            HorizontalOptions="End"
+                                            Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                                            TextColor="{DynamicResource Gray-White}"
+                                            VerticalOptions="End" />
+
+                                                        </Grid>
+
+                                </pancakeView:PancakeView>
+                            </Grid>
+                        </DataTemplate>
+                    </ResourceDictionary>
+                </CollectionView.Resources>
+
+            </CollectionView>-->
+
+            <!--<Grid Grid.Row="2"
+              BackgroundColor="#EFEFF0"
+              VerticalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".1*"/>
+                    <ColumnDefinition Width=".8*"/>
+                    <ColumnDefinition Width=".1*"/>
+                </Grid.ColumnDefinitions>
+                <ImageButton Source="photo.png"
+                         Command="{Binding PhotoCommand}"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center"/>
+                <Editor Text="{Binding NewMessage}"
+                    Grid.Column="1"
+                    AutoSize="TextChanges"/>
+                <Button Grid.Column="2"
+                         Text="send"
+                         Command="{Binding SendCommand}"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center"/>
+            </Grid>-->
+
+            <Grid  Grid.Row="2" 
+                Padding="16,5,16,20" ColumnSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+                <!--Rounded Border-->
+
+                <border:SfBorder Padding="5,0" Style="{DynamicResource SfBorderStyle}">
+
+                    <Grid ColumnSpacing="0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+
+                        <!--Extendable editor-->
+                        <!--<controls:BorderlessEditor
+                                            Placeholder="Type here"
+                                            Style="{StaticResource ChatMessageEditorStyle}"
+                                            Text="{Binding NewMessage}" />-->
+
+
+                        <controls:ChatEntry 
+                                                                    Text="{Binding NewMessage}"
+                                                                      Keyboard="Chat" 
+                                                                     Grid.Column="0"                                               
+                                                                     AutomationId="ChatMessageEntry"
+                                                                      Style="{StaticResource ChatMessageEditorStyle}"
+                                                                     Placeholder="Type here"></controls:ChatEntry>
+
+
+                        <!--Camera Button-->
+
+                        <buttons:SfButton
+                                            Grid.Column="1"
+                                            Command="{Binding ShowCamera}"
+                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                            Text="{StaticResource Camera}"
+                                            VerticalOptions="End" />
+
+
+                        <!--Attachment Button-->
+
+                        <buttons:SfButton
+                                            Grid.Column="2"
+                                            Command="{Binding SendAttachment}"
+                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                            Text="{StaticResource Attachment}"
+                                            VerticalOptions="End" />
+
+                    </Grid>
+                </border:SfBorder>
+
+
+                <!--Send Button-->
+
+                <buttons:SfButton
+                                    Grid.Column="1"
+                                    BackgroundColor="{StaticResource JobMeOrange}"
+                                    Command="{Binding SendCommand}"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource NavigationBarButtonStyle}"
+                                    VerticalOptions="End"
+                                    WidthRequest="40">
+                    <buttons:SfButton.Content>
+
+                        <Label
+                                            Margin="0,2,2,0"
+                                            Text="&#xf1d8;"   
+                                            FontFamily="{StaticResource fontawesome}"
+                                            FontSize="18"
+                                            HorizontalOptions="Center"
+                                            FontAttributes="{StaticResource FontAttrib}"
+                                            TextColor="{DynamicResource Gray-White}"
+                                            VerticalOptions="Center"
+                                            VerticalTextAlignment="Center" />
+
+                    </buttons:SfButton.Content>
+                </buttons:SfButton>
+
+                
+               
+
+            </Grid>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

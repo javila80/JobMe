@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sync="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:local1="clr-namespace:JobMe"       
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.ActivityEmpresaView">
+    <ContentView.Content>
+        
+        <!--<ScrollView>-->
+            <StackLayout BackgroundColor="WhiteSmoke">
+                <SearchBar x:Name="filterText"
+                           BackgroundColor="WhiteSmoke"
+                           
+                              Grid.Row="0"
+                              Grid.Column="0"
+                           TextChanged="filterText_TextChanged"
+                              IsVisible="true"
+                                   HeightRequest="{OnPlatform Default=50, UWP={OnIdiom Phone=40, Desktop=40, Tablet=40}}"
+                              Placeholder="Search here to filter" >
+                </SearchBar>
+
+               
+                    <sync:SfListView x:Name="listView"
+                                 VerticalOptions="FillAndExpand"
+                                 Margin="0"
+                                 Padding="0,5,0,5"
+                                 SelectionMode="None"
+                                 BackgroundColor="#F0F0F0"
+                                  
+                                 ItemSpacing="10,5,10,5"
+                                     TapCommand="{Binding TappedCommand}"
+                                     ItemsSource="{Binding ListPositions}"
+                                     ItemSize="{OnPlatform Android={OnIdiom Phone=90, Tablet=80}, iOS={OnIdiom Phone=90, Tablet= 80}}">
+
+                        <sync:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White" Padding="1" HasShadow="{OnPlatform Android=true, iOS=false, UWP=true}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{OnPlatform Android={OnIdiom Phone=0.15*, Tablet=0.25*}, iOS={OnIdiom Phone=0.15*}}" />
+                                            <ColumnDefinition Width="{OnPlatform Android={OnIdiom Phone=0.85*, Tablet=0.75*}, iOS={OnIdiom Phone=0.85*}}" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--<Image Source="config.png" WidthRequest="20" HeightRequest="20" Grid.Column="0" />-->
+                                        <Label Text="&#xf013;" FontFamily="{StaticResource fontawesome}" FontSize="30" 
+                                                   FontAttributes="{StaticResource FontAttrib}" TextColor="DarkGray"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"></Label>
+
+                                        <StackLayout Grid.Column="1" Padding="10,10,0,0">
+
+                                            <Label Text="{Binding Name}" LineBreakMode="WordWrap" FontAttributes="Bold"
+                                                   FontSize="{OnPlatform Android={OnIdiom Phone=16, Tablet=22}, iOS={OnIdiom Phone=16, Tablet=22}}" />
+                                            <!--<Label Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding Description}"
+                                                   FontSize="{OnPlatform Android={OnIdiom Phone=14, Tablet=13}, iOS={OnIdiom Phone=14, Tablet=13}}" />-->
+                                            <Label Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding PostedBy}"
+                                                   FontSize="{OnPlatform Android={OnIdiom Phone=12, Tablet=13}, iOS={OnIdiom Phone=14, Tablet=13}}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </sync:SfListView.ItemTemplate>
+                    </sync:SfListView>
+          
+        </StackLayout>
+        <!--</ScrollView>-->
+    </ContentView.Content>
+</ContentView>

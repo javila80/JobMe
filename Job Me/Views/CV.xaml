@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfPdfViewer.XForms;assembly=Syncfusion.SfPdfViewer.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.CV">
+    <ContentPage.Content>
+
+        <Grid x:Name="mainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+               
+            </Grid.RowDefinitions>
+            <Grid x:Name="pdfViewerGrid" Grid.Row="0" >
+                <!--<syncfusion:SfPdfViewer x:Name="pdfViewerControl" InputFileStream="{Binding PdfDocumentStream}" PreserveSignaturePadOrientation="True"/>-->
+               
+            </Grid>
+            <!--<Grid x:Name="cvviewer" Grid.Row="0" >
+                <Image x:Name="cvimage" ></Image>
+            </Grid>-->
+        </Grid>
+        
+        
+       
+    </ContentPage.Content>
+</ContentPage>

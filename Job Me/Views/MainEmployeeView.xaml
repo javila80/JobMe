@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+             xmlns:views="clr-namespace:JobMe.Views"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.MainEmployeeView">
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+
+            <!--<Label Text="&#xf013;"
+                   HorizontalOptions="Start"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="Red"
+                 FontAttributes="Bold"
+                   Margin="0,0,20,0"
+                   FontSize="25">
+
+                  <Label.FontFamily>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <On Platform="iOS" Value="Font Awesome 5 Free Solid" />
+                                    <On Platform="Android" Value="FontSolid-900.otf#Font Awesome 5 Free Solid" />
+                                </OnPlatform>
+                            </Label.FontFamily>
+
+                 <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                    Tapped ="TapGestureRecognizer_Tapped"
+                    NumberOfTapsRequired="1" />
+                </Label.GestureRecognizers>
+            </Label>-->
+
+            <Label Text="Job Me"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="White"
+                   Margin="30,0,0,0"
+                  FontAttributes="Bold"
+                   FontSize="20" />
+
+            <!--boton de engrane-->
+            <buttons:SfButton
+                HorizontalOptions="End"
+                VerticalOptions="CenterAndExpand"
+                Margin="0,0,20,0"
+                FontFamily="{StaticResource fontawesome}"
+                FontAttributes="{StaticResource FontAttrib}"
+                Clicked="TapGestureRecognizer_Premium"
+                Text="&#xf013;"
+                BackgroundColor="Transparent"
+                FontSize="25"
+                TextColor="White" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="fonts"
+                        iOS="NestedTab"
+                       Android="NestedTab.ttf#NestedTab" />
+
+            <OnPlatform x:TypeArguments="x:String"  x:Key="fontawesome">
+                <On Platform="iOS" Value="Font Awesome 5 Free" />
+                <On Platform="Android" Value="FontSolid-900.otf#Font Awesome 5 Free" />
+            </OnPlatform>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <tabView:SfTabView BackgroundColor="{StaticResource JobMeOrange}" x:Name="tabview"
+                           TabHeaderPosition="Bottom"
+                           TabHeight="60"
+                           EnableSwiping="False"
+                           VisibleHeaderCount="3"
+                           DisplayMode="Image"
+                           TabItemTapped="tabview_TabItemTapped"
+                           SelectedIndex="{Binding SelectedIndex}"
+                           SelectionChanged="tabview_SelectionChanged"
+                           HeightRequest="600">
+            <tabView:SfTabView.SelectionIndicatorSettings>
+                <tabView:SelectionIndicatorSettings Color="White" Position="Fill" />
+            </tabView:SfTabView.SelectionIndicatorSettings>
+            <!--<tabView:SfTabView.SelectionIndicatorSettings>
+                <tabView:SelectionIndicatorSettings
+                    Color="White"
+                    Position="Top"
+                    StrokeThickness="10" />
+            </tabView:SfTabView.SelectionIndicatorSettings>-->
+            <!--HOME-->
+            <tabView:SfTabItem  Title="Home"
+                                       TitleFontSize="20"
+                                       IconFont="M"
+                                       FontIconFontFamily="{StaticResource fonts}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+                <!--<tabView:SfTabItem.ImageSource>
+
+                        <FileImageSource File="homeon.png">
+                        </FileImageSource>
+                    </tabView:SfTabItem.ImageSource>-->
+
+                <tabView:SfTabItem.Content>
+
+                    <!--Aqui va la vista de la hoja 1-->
+                    <views:HomeView />
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Title="Activity" TitleFontSize="30"
+                                       IconFont="&#xf004;"
+                                       FontIconFontFamily="{StaticResource fontawesome}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+                <tabView:SfTabItem.Content>
+                    <!--Aqui va la vista de la hoja 2-->
+                    <views:ActivityView />
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+            <tabView:SfTabItem Title="ChatMe"  TitleFontSize="20"
+                                       IconFont="t"
+                                       FontIconFontFamily="{StaticResource fonts}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+                <tabView:SfTabItem.Content>
+                    <!--Aqui va la vista de la hoja 3-->
+                    <views:ChatMe />
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+    </ContentPage.Content>
+</ContentPage>

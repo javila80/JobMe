@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:JobMe.Views"
+             xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+             xmlns:swipeCardView="clr-namespace:MLToolkit.Forms.SwipeCardView;assembly=MLToolkit.Forms.SwipeCardView"
+             xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfPdfViewer.XForms;assembly=Syncfusion.SfPdfViewer.XForms"
+             xmlns:video="clr-namespace:FormsVideoLibrary"
+             xmlns:local="clr-namespace:JobMe.Converter"
+             xmlns:sfPopup="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:ffTrans="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             mc:Ignorable="d"
+             x:Name="PositionSelected"
+             x:Class="JobMe.Views.Employer.PositionSelectedView">
+
+   
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <OnPlatform x:TypeArguments="x:String" 
+                        x:Key="fonts"
+                        iOS="NestedTab" 
+                       Android="NestedTab.ttf#NestedTab" />
+            <local:ByteArrayToImageSourceConverter x:Key="bic" />
+
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
+
+    <sfPopup:SfPopupLayout x:Name="popupLayout" IsOpen="{Binding DisplayPopup}"  >
+        <sfPopup:SfPopupLayout.PopupView>
+            <sfPopup:PopupView ShowHeader="True" ShowFooter="False" ShowCloseButton="False" HeaderTitle="" HeightRequest="400" >             
+                <sfPopup:PopupView.HeaderTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Congrats}" TextColor="{StaticResource JobMeOrange}" FontSize="Medium" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+                    </DataTemplate>
+                </sfPopup:PopupView.HeaderTemplate>
+                <sfPopup:PopupView.ContentTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="20,5,20,5">
+                         
+                            <Label Text="{Binding JobMatchPosition}" TextColor="{StaticResource JobMeOrange}" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Frame   BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20"  Margin="30,0,30,0"                                   
+                                          Rotation="0" Opacity="1">
+                                <Label x:Name="LikeText" Text="Job Match" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center" 
+                                                   VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold">
+                                </Label>
+                            </Frame>
+                            <Image Source="congratulations.png"
+                               WidthRequest="100"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,10">                                
+                            </Image>
+                           
+                            <Label Text="{Binding JobMatchName}" TextColor="{StaticResource JobMeOrange}" FontSize="Large" HorizontalTextAlignment="Center"></Label>
+
+                            <Button Text="{Binding GotoChat}" BackgroundColor="{StaticResource JobMeOrange}" Margin="30,15,30,10" TextColor="White" CornerRadius="20"  Command="{Binding BtnChatCommand}"></Button>
+
+                        </StackLayout>
+
+                    </DataTemplate>
+                </sfPopup:PopupView.ContentTemplate>
+            </sfPopup:PopupView>
+        </sfPopup:SfPopupLayout.PopupView>
+        <sfPopup:SfPopupLayout.Content >
+            <StackLayout x:Name="stly" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+
+                <Grid x:Name="gridMain" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" >
+
+                    <swipeCardView:SwipeCardView
+                    
+                x:Name="SwipeCardView"
+                ItemsSource="{Binding ListCandidates}"
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand"
+                Padding="10"
+                      Threshold="{Binding Threshold}"
+                      SwipedCommand="{Binding SwipedCommand}"
+                   HeightRequest="400"
+                SupportedSwipeDirections="Left, Right"
+                SupportedDraggingDirections="Left, Right "
+                                        Dragging="OnDragging"             
+            >
+
+
+                        <swipeCardView:SwipeCardView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                    <Label IsVisible="False" Text="{Binding Phone}" x:Name="lbphone"></Label>
+                                    <Label IsVisible="False" Text="{Binding Mail}" x:Name="lbmail"></Label>
+                                    <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent" HasShadow="False" >
+                                        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                                            <StackLayout Orientation="Horizontal" Spacing="25" 
+                                                      AbsoluteLayout.LayoutBounds=".5,0.01,.5,.1" AbsoluteLayout.LayoutFlags="All"
+                                                    HorizontalOptions="Center"
+                                                     VerticalOptions="FillAndExpand">
+                                                <buttons:SfButton Text="&#xf095;" TextColor="{StaticResource JobMeOrange}"   x:Name="btnPhone"
+                                                   FontSize="30" FontAttributes="{StaticResource FontAttrib}"
+                                                    WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                                                                  BackgroundColor="Transparent"                                                   
+                                                            Clicked="btnPhone_Clicked"
+                                                   FontFamily="{StaticResource fontawesome}"></buttons:SfButton>
+
+                                                <buttons:SfButton Text="&#xf0e0;" TextColor="{StaticResource JobMeOrange}"  x:Name="btnMail"
+                                                                   BackgroundColor="Transparent"
+                                                   WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                                                   FontSize="30" FontAttributes="{StaticResource FontAttrib}"
+                                                         Clicked="btnMail_Clicked"
+                                                   FontFamily="{StaticResource fontawesome}"></buttons:SfButton>
+                                            </StackLayout>
+
+
+                                            <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"
+                                                  AbsoluteLayout.LayoutBounds=".5,0.09,300,150" AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                    HorizontalOptions="Center">
+
+
+                                                <!--<sfavatar:SfAvatarView ContentType="Custom"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="90"
+                                                   HeightRequest="90"
+                                                   CornerRadius="45"          
+                                                  ImageSource="{Binding FotoURL}"
+                                                   BorderColor="{StaticResource JobMeOrange}">
+                                                    <sfavatar:SfAvatarView.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_4">
+                                                        </TapGestureRecognizer>
+                                                    </sfavatar:SfAvatarView.GestureRecognizers>
+                                                </sfavatar:SfAvatarView>-->
+
+                                                <ff:CachedImage x:Name= "Logo" Source="{Binding FotoURL}" CacheDuration="1"    HorizontalOptions="Center"
+                                                   VerticalOptions="Center" HeightRequest="90" WidthRequest="90"  DownsampleToViewSize = "true" >
+                                                    <ff:CachedImage.Transformations>
+                                                        <ffTrans:CircleTransformation    />
+                                                    </ff:CachedImage.Transformations>
+                                                    <ff:CachedImage.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_4">
+                                                        </TapGestureRecognizer>                                                 
+                                                    </ff:CachedImage.GestureRecognizers>
+                                                </ff:CachedImage>
+                                                <!--<Image Source="{Binding Photo, Converter={StaticResource bic}}"
+                                                       HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="100"
+                                                   HeightRequest="100"
+                                              ImageSource="{Binding Photo, Converter={StaticResource bic}}"
+                                                        ></Image>-->
+                                                <!--ImageSource="{Binding PhotoSrc}"-->
+                                                <ff:CachedImage x:Name= "logojobme" Source="jobme.png" Margin="-40,80,0,0" HorizontalOptions="Center" WidthRequest="50"
+                                                             HeightRequest="50" 
+                                                                VerticalOptions="Start">
+                                                    
+                                                </ff:CachedImage>
+                                                <!--<Image Source="jobme.png"  Margin="-40,80,0,0" VerticalOptions="Start"
+                                                             HorizontalOptions="Center" WidthRequest="50"
+                                                             HeightRequest="50"/>-->
+
+
+
+                                            </StackLayout>
+
+
+                                            <!--<Image Aspect="AspectFit" Source="kpmglogo.jpg" HorizontalOptions="Center"  AbsoluteLayout.LayoutBounds=".5,0.05,300,150" AbsoluteLayout.LayoutFlags="PositionProportional" />-->
+
+                                            <Frame x:Name="LikeFrame"  BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.1,.1, 150, 50"
+                                         AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="-20" Opacity="0" HasShadow="False">
+                                                <Label x:Name="LikeText" Text="JobMe" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                            </Frame>
+                                            <Frame x:Name="NopeFrame" BorderColor="#FF6A4F" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.9,.1, 150, 50"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="20" Opacity="0" HasShadow="False">
+                                                <Label Text="NO" TextColor="Red" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                            </Frame>
+
+
+                                            <StackLayout Orientation="Vertical" AbsoluteLayout.LayoutBounds="0.5,0.6, 300, 200" AbsoluteLayout.LayoutFlags="PositionProportional" >
+
+
+
+                                                <Label Text="{Binding Name}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold" ></Label>
+                                                <Label Text="{Binding Age}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+                                                <Label Text="{Binding MyDegree}" TextColor="{StaticResource JobMeGray}" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+
+
+                                                <Label Text="&#xf15c;" TextColor="DarkGray" FontSize="40" Margin="0,30,0,0"
+                                                          FontFamily="{StaticResource fontawesome}"  FontAttributes="Bold"
+                                                       VerticalOptions="Center" HorizontalOptions="Center"
+                                                       HorizontalTextAlignment="Center">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer                                                                  
+                                                       Tapped="TapGestureRecognizer_Tapped_3"       
+                 
+                                                     />
+                                                    </Label.GestureRecognizers>
+
+                                                </Label>
+
+                                                <Label Text="CV" TextColor="{StaticResource JobMeGray}" 
+                                                
+                                                  VerticalOptions="Center" HorizontalOptions="Center"
+                                                   HorizontalTextAlignment="Center"></Label>
+                                                <!--Imagen de CV-->
+
+
+
+
+
+                                            </StackLayout>
+
+                                            <Grid     ColumnSpacing="10" AbsoluteLayout.LayoutBounds="0.5,1, .8, .16" AbsoluteLayout.LayoutFlags="All" >
+
+                                                <Grid.ColumnDefinitions>
+
+                                                    <ColumnDefinition Width=".33*" />
+                                                    <ColumnDefinition Width=".33*" />
+                                                    <ColumnDefinition Width=".33*" />
+
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Image Source="video.png" HorizontalOptions="Center" ClassId="academics" 
+                                                               Grid.Column="0"  Grid.Row="0" HeightRequest="50" 
+                                                               WidthRequest="80">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer   Tapped="TapGestureRecognizer_Tapped" 
+                                                                                            NumberOfTapsRequired="1" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+
+
+                                                <Label  TextColor="{StaticResource JobMeGray}" Text="{Binding Path=BindingContext.Academicslbl, Source={x:Reference PositionSelected}}"
+                                                           FontSize="Small" Grid.Column="0" Grid.Row="1"
+                                                           HorizontalTextAlignment="Center"></Label>
+
+
+                                                <Image Source="video.png" HorizontalOptions="Center" 
+                                                               Grid.Column="1" Grid.Row="0"
+                                                               WidthRequest="50">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer   Tapped="TapGestureRecognizer_Tapped_1"
+              
+                                                                    NumberOfTapsRequired="1" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+
+                                                <!--<ImageButton Source="video.png" HorizontalOptions="Center"  x:Name="btnvideo" WidthRequest="100"
+                                                             Clicked="btnvideo_Clicked" BackgroundColor="Red"
+                                                              Grid.Column="1" Grid.Row="0"></ImageButton>-->
+
+                                                <Label TextColor="{StaticResource JobMeGray}" Text="{Binding Path=BindingContext.Jobslbl, Source={x:Reference PositionSelected}}"
+                                                               FontSize="Small" Grid.Column="1" Grid.Row="1"
+                                                               HorizontalTextAlignment="Center"></Label>
+
+                                                <Image Source="video.png" HorizontalOptions="Center" ClassId="others" 
+                                                               Grid.Column="2"
+                                                               Grid.Row="0" WidthRequest="50">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer                                                                  
+                                                                   Tapped="TapGestureRecognizer_Tapped_2"        />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                                <Label  TextColor="{StaticResource JobMeGray}"  Text="{Binding Path=BindingContext.Otherslbl, Source={x:Reference PositionSelected}}"
+                                                               FontSize="Small" Grid.Column="2" Grid.Row="1"
+                                                               HorizontalTextAlignment="Center"></Label>
+                                            </Grid>
+
+                                        </AbsoluteLayout>
+
+                                    </Frame>
+                                </StackLayout>
+                            </DataTemplate>
+                        </swipeCardView:SwipeCardView.ItemTemplate>
+                    </swipeCardView:SwipeCardView>
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                                       VerticalOptions="CenterAndExpand" 
+                                       HorizontalOptions="CenterAndExpand" 
+                                       WidthRequest="40" HeightRequest="40" ></ActivityIndicator>
+
+                    <Label Text="{Binding LastItemText}" FontSize="Medium"
+                           VerticalOptions="Center" HorizontalOptions="Center" 
+                           IsVisible="{Binding IsLastItem}" TextColor="Red"></Label>
+
+                </Grid >
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10, 10, 10, 20" Spacing="30">
+                    <StackLayout>
+                        <Button x:Name="nopeButton" Text="&#xf00d;" TextColor="{StaticResource JobMeOrange }"  
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                            Clicked="OnDislikeClicked" 
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Button x:Name="likeButton" Text="&#xf00c;" TextColor="{StaticResource JobMeOrange }"  
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            Clicked="OnLikeClicked" 
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30" 
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </sfPopup:SfPopupLayout.Content>
+
+
+    </sfPopup:SfPopupLayout>
+
+    <!--<ContentPage.Content>
+
+        <StackLayout x:Name="stly" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+
+            <Grid x:Name="gridMain" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" >
+
+                <swipeCardView:SwipeCardView
+                    
+                x:Name="SwipeCardView"
+                ItemsSource="{Binding ListCandidates}"
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand"
+                Padding="10"
+                      Threshold="{Binding Threshold}"
+                      SwipedCommand="{Binding SwipedCommand}"
+                   HeightRequest="400"
+                SupportedSwipeDirections="Left, Right"
+                SupportedDraggingDirections="Left, Right "
+                                        Dragging="OnDragging"             
+            >
+                    
+                    
+                    <swipeCardView:SwipeCardView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                <Label IsVisible="False" Text="{Binding Phone}" x:Name="lbphone"></Label>
+                                <Label IsVisible="False" Text="{Binding Mail}" x:Name="lbmail"></Label>
+                                <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent" HasShadow="False" >
+                                    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                                        <StackLayout Orientation="Horizontal" Spacing="25" 
+                                                      AbsoluteLayout.LayoutBounds=".5,0.01,.5,.1" AbsoluteLayout.LayoutFlags="All"
+                                                    HorizontalOptions="Center"
+                                                     VerticalOptions="FillAndExpand">
+                                            <buttons:SfButton Text="&#xf095;" TextColor="{StaticResource JobMeOrange}"   x:Name="btnPhone"
+                                                   FontSize="30" FontAttributes="{StaticResource FontAttrib}"
+                                                    WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                                                                  BackgroundColor="Transparent"                                                   
+                                                            Clicked="btnPhone_Clicked"
+                                                   FontFamily="{StaticResource fontawesome}"></buttons:SfButton>
+                                            
+                                            <buttons:SfButton Text="&#xf0e0;" TextColor="{StaticResource JobMeOrange}"  x:Name="btnMail"
+                                                                   BackgroundColor="Transparent"
+                                                   WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                                                   FontSize="30" FontAttributes="{StaticResource FontAttrib}"
+                                                         Clicked="btnMail_Clicked"
+                                                   FontFamily="{StaticResource fontawesome}"></buttons:SfButton>
+                                        </StackLayout>
+                                        
+                                        
+                                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"
+                                                  AbsoluteLayout.LayoutBounds=".5,0.09,300,150" AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                    HorizontalOptions="Center">                                           
+                                          
+
+                                            <sfavatar:SfAvatarView ContentType="Custom"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="90"
+                                                   HeightRequest="90"
+                                                   CornerRadius="45"          
+                                                  ImageSource="{Binding FotoURL}"
+                                                   BorderColor="{StaticResource JobMeOrange}">
+                                                <sfavatar:SfAvatarView.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_4">
+                                                    </TapGestureRecognizer>
+                                                </sfavatar:SfAvatarView.GestureRecognizers>
+                                            </sfavatar:SfAvatarView>
+                                            -->
+    <!--<Image Source="{Binding Photo, Converter={StaticResource bic}}"
+                                                       HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="100"
+                                                   HeightRequest="100"
+                                              ImageSource="{Binding Photo, Converter={StaticResource bic}}"
+                                                        ></Image>-->
+    <!--ImageSource="{Binding PhotoSrc}"-->
+    <!--
+                                            <Image Source="jobme.png"  Margin="-40,80,0,0" VerticalOptions="Start"
+                                                             HorizontalOptions="Center" WidthRequest="50"
+                                                             HeightRequest="50"/>
+
+
+
+                                        </StackLayout>
+                                       
+
+                                        -->
+    <!--<Image Aspect="AspectFit" Source="kpmglogo.jpg" HorizontalOptions="Center"  AbsoluteLayout.LayoutBounds=".5,0.05,300,150" AbsoluteLayout.LayoutFlags="PositionProportional" />-->
+    <!--
+
+                                        <Frame x:Name="LikeFrame"  BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.1,.1, 150, 50"
+                                         AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="-20" Opacity="0">
+                                            <Label x:Name="LikeText" Text="JobMe" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                        </Frame>
+                                        <Frame x:Name="NopeFrame" BorderColor="#FF6A4F" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.9,.1, 150, 50"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="20" Opacity="0">
+                                            <Label Text="NO" TextColor="Red" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                        </Frame>
+
+                                   
+                                        <StackLayout Orientation="Vertical" AbsoluteLayout.LayoutBounds="0.5,0.6, 300, 200" AbsoluteLayout.LayoutFlags="PositionProportional" >
+
+
+
+                                            <Label Text="{Binding Name}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold" ></Label>
+                                            <Label Text="{Binding Age}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding MyDegree}" TextColor="{StaticResource JobMeGray}" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+
+
+                                            <Label Text="&#xf15c;" TextColor="DarkGray" FontSize="40" Margin="0,30,0,0"
+                                                          FontFamily="{StaticResource fontawesome}"  FontAttributes="Bold"
+                                                       VerticalOptions="Center" HorizontalOptions="Center"
+                                                       HorizontalTextAlignment="Center">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer                                                                  
+                                                       Tapped="TapGestureRecognizer_Tapped_3"       
+                 
+                                                     />
+                                                </Label.GestureRecognizers>
+
+                                            </Label>
+
+                                            <Label Text="CV" TextColor="{StaticResource JobMeGray}" 
+                                                
+                                                  VerticalOptions="Center" HorizontalOptions="Center"
+                                                   HorizontalTextAlignment="Center"></Label>
+                                            -->
+    <!--Imagen de CV-->
+    <!--
+
+                                           
+
+                                          
+
+                                        </StackLayout>
+
+                                        <Grid     ColumnSpacing="10" AbsoluteLayout.LayoutBounds="0.5,1, .8, .16" AbsoluteLayout.LayoutFlags="All" >
+
+                                            <Grid.ColumnDefinitions>
+
+                                                <ColumnDefinition Width=".33*" />
+                                                <ColumnDefinition Width=".33*" />
+                                                <ColumnDefinition Width=".33*" />
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Image Source="video.png" HorizontalOptions="Center" ClassId="academics" 
+                                                               Grid.Column="0"  Grid.Row="0" HeightRequest="50" 
+                                                               WidthRequest="80">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer   Tapped="TapGestureRecognizer_Tapped" 
+                                                                                            NumberOfTapsRequired="1" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+
+                                            <Label Text="Academics" TextColor="{StaticResource JobMeGray}" 
+                                                           FontSize="Small" Grid.Column="0" Grid.Row="1"
+                                                           HorizontalTextAlignment="Center"></Label>
+
+
+                                            <Image Source="video.png" HorizontalOptions="Center" 
+                                                               Grid.Column="1" Grid.Row="0"
+                                                               WidthRequest="50">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer   Tapped="TapGestureRecognizer_Tapped_1"
+              
+                                                                    NumberOfTapsRequired="1" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+                                            -->
+    <!--<ImageButton Source="video.png" HorizontalOptions="Center"  x:Name="btnvideo" WidthRequest="100"
+                                                             Clicked="btnvideo_Clicked" BackgroundColor="Red"
+                                                              Grid.Column="1" Grid.Row="0"></ImageButton>-->
+    <!--
+
+                                            <Label Text="Jobs" TextColor="{StaticResource JobMeGray}" 
+                                                               FontSize="Small" Grid.Column="1" Grid.Row="1"
+                                                               HorizontalTextAlignment="Center"></Label>
+
+                                            <Image Source="video.png" HorizontalOptions="Center" ClassId="others" 
+                                                               Grid.Column="2"
+                                                               Grid.Row="0" WidthRequest="50">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer                                                                  
+                                                                   Tapped="TapGestureRecognizer_Tapped_2"        />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                            <Label Text="Others" TextColor="{StaticResource JobMeGray}" 
+                                                               FontSize="Small" Grid.Column="2" Grid.Row="1"
+                                                               HorizontalTextAlignment="Center"></Label>
+                                        </Grid>
+
+                                    </AbsoluteLayout>
+                                    
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </swipeCardView:SwipeCardView.ItemTemplate>
+                </swipeCardView:SwipeCardView>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                                       VerticalOptions="CenterAndExpand" 
+                                       HorizontalOptions="CenterAndExpand" 
+                                       WidthRequest="40" HeightRequest="40" ></ActivityIndicator>
+
+                <Label Text="No more candidates available right now" FontSize="Medium"
+                           VerticalOptions="Center" HorizontalOptions="Center" 
+                           IsVisible="{Binding IsLastItem}" TextColor="Red"></Label>
+
+            </Grid >
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10, 10, 10, 20" Spacing="30">
+                <StackLayout>
+                    <Button x:Name="nopeButton" Text="&#xf00d;" TextColor="{StaticResource JobMeOrange }"  
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                            Clicked="OnDislikeClicked" 
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                </StackLayout>
+
+                <StackLayout>
+                    <Button x:Name="likeButton" Text="&#xf00c;" TextColor="{StaticResource JobMeOrange }"  
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            Clicked="OnLikeClicked" 
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30" 
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+     
+    </ContentPage.Content>-->
+</ContentPage>

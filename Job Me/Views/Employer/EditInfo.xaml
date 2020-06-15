@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:Behavior="clr-namespace:JobMe.Behaviors"
+             xmlns:local="clr-namespace:JobMe.Converter"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.EditInfo">
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+            <local:NegateBooleanConverter x:Key="inverter"/>
+            <local:ByteArrayToImageSourceConverter x:Key="bic" />
+
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+
+            <Grid>
+                <StackLayout Padding="10,10,15,10" BackgroundColor="White"  >
+
+
+                    <StackLayout>
+
+                                     <!--Logo-->
+
+                        <Image Source="{Binding Logo, Converter={StaticResource bic}}"  Margin="0,10,0,0" VerticalOptions="Start" IsVisible="{Binding IsLogoVisible , Converter={StaticResource inverter}}"
+                                                             HorizontalOptions="Center" WidthRequest="100" Aspect="AspectFit"
+                                                             HeightRequest="100">
+                            <Image.GestureRecognizers >
+
+                                <TapGestureRecognizer Command="{Binding UpdateCommand}" >
+
+                                </TapGestureRecognizer>
+
+                            </Image.GestureRecognizers>
+
+                        </Image>
+                        <Image Source="notfound.jpg" HorizontalOptions="Center" Aspect="AspectFit" IsVisible="{Binding IsLogoVisible}" HeightRequest="100">
+                            <Image.GestureRecognizers>
+
+                                <TapGestureRecognizer Command="{Binding UpdateCommand}">
+
+                                </TapGestureRecognizer>
+
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="{Binding EditLogo}" FontSize="Small"  HorizontalOptions="Center"  IsVisible="{Binding IsMainContact}" >
+                           
+                        </Label>
+
+                        <!--Company-->
+
+                        <inputLayout:SfTextInputLayout Hint="{Binding Companylbl}" Margin="0,10,0,0"
+                                                   InputViewPadding="5"
+                                                   LeadingViewPosition="Outside" 
+                                                      IsVisible="{Binding IsMainContact}"
+                                                   ErrorText="Enter company name"
+                                                   HasError="{Binding IsCompanyNameEmpty}"
+                                                   ContainerType="Filled" CharMaxLength="50" >
+                            <Entry Text="{Binding CompanyName}" TextColor="{StaticResource JobMeGray}">
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="50" MinLength="1"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0c0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"                                    
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                  
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Description-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Descriptionlbl}" 
+                                                   ErrorText="Enter company description"
+                                                   HasError="{Binding IsDescriptionEmpty}"
+                                                           IsVisible="{Binding IsMainContact}"
+                                                   InputViewPadding="5" LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Editor Text="{Binding CompanyDescription}" AutoSize="TextChanges" > </Editor>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0c0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Name-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Namelbl}" InputViewPadding="5" 
+                                                   ErrorText="Enter your name"
+                                                   HasError="{Binding IsNameEmpty}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Name}"  >
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="50" MinLength="3"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0e0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Mail-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Maillbl}" InputViewPadding="5"
+                                                   ErrorText="Please enter a valida email"
+                                                   HasError="{Binding IsMailEmpty}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Mail}" Keyboard="Email">
+                                <Entry.Behaviors>
+                                    <Behavior:EmailValidatorBehavior />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0e0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Phone-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Phonelbl}" InputViewPadding="5" 
+                                                     HasError="{Binding IsPhoneNumberEmpty}"
+                                                     ErrorText="Please enter a 10 digit valid phone"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Telephone}" Keyboard="Telephone" >
+                                <Entry.Behaviors>
+                                    <Behavior:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                                    <Behavior:EntryLengthValidator MaxLength="12" MinLength="12"/>
+                                </Entry.Behaviors>
+
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf095;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--UserName-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Usernamelbl}" InputViewPadding="5" 
+                                                     HasError="{Binding IsUserNameEmpty}"
+                                                   ErrorText="Minimun 6 characters"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding UserName}" >
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="10" MinLength="6"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf406;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Password-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding Passwordlbl}" InputViewPadding="5"
+                                                    ErrorText="Minimun 6 characters"
+                                                     HasError="{Binding IsPasswordEmpty}"
+                                                       EnablePasswordVisibilityToggle="True"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Password}" IsPassword="True" >
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="10" MinLength="6"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf023;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Save-->
+                        <buttons:SfButton Text="&#xf00c;" TextColor="{StaticResource JobMeOrange}"
+                            FontAttributes="{StaticResource FontAttrib}"
+                            FontSize="30" HorizontalOptions="Center" 
+                            CornerRadius="30"
+                            WidthRequest="60" HeightRequest="60"
+                            BackgroundColor="White"
+                            IsEnabled="{Binding IsEnabled}"
+                            Command="{Binding SaveCommand}"                           
+                            VerticalOptions="Center"  FontFamily="{StaticResource fontawesome}">
+
+                        </buttons:SfButton>
+
+                     
+                       <!--Add more-->
+                        <!--<buttons:SfButton Text = "       Add / Remove contacts      "
+                           HorizontalOptions="Center" FontSize="18"
+                           VerticalOptions="Center" TextColor="{StaticResource JobMeOrange}"
+                                          FontAttributes="Bold"
+                           BackgroundColor="Transparent"
+                           Command="{Binding AddRemoveCommand}"
+                           CornerRadius="30"
+                           Margin="0,0,0,15" >
+    
+                        </buttons:SfButton>-->
+
+
+
+                    </StackLayout>
+
+
+
+                </StackLayout>
+                <!--<ActivityIndicator HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"  IsRunning="{Binding IsBusy}"></ActivityIndicator>-->
+                
+            </Grid>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

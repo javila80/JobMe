@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:JobMe.Converter"
+             xmlns:sync="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:local1="clr-namespace:JobMe"
+             xmlns:local2="clr-namespace:JobMe.Behaviors"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.EditJobView">
+    <!--<ContentPage.Behaviors>
+        <local1:SfListViewSortingFilteringBehavior/>
+    </ContentPage.Behaviors>-->
+    <ContentPage.Resources>
+        <!--<ResourceDictionary>
+            <local:ListViewBoolToSortImageConverter  x:Key="BoolToSortIconConverter"/>
+        </ResourceDictionary>-->
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Margin="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="headerGrid" ColumnSpacing="0" RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="60" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="seachbar_Grid" >
+                    <SearchBar x:Name="filterText" 
+                          Grid.Row="0"
+                          Grid.Column="0"
+                          IsVisible="true"
+                               
+                               TextChanged="OnFilterTextChanged"
+                          Placeholder="Search here to filter" >
+
+                    </SearchBar>
+                </Grid>
+
+            </Grid>
+
+            <ActivityIndicator Color="{StaticResource JobMeOrange}" 
+                               IsRunning="{Binding IsBusy}" 
+                                Grid.Row="1"
+                               WidthRequest="100" HeightRequest="100"></ActivityIndicator>
+            <sync:SfListView x:Name="listView" 
+                       Grid.Row="1"
+                       SelectionMode="None"
+                       ItemSpacing="0,5,0,5"
+                       BackgroundColor="#F0F0F0"
+                       AllowSwiping="True"                             
+                       ItemsSource="{Binding ListPositions}"       
+                       TapCommand="{Binding TappedCommand}"
+                       ItemSize="{OnIdiom Default=120, Desktop=110}"
+                       SwipeOffset="{OnIdiom Default=200, Phone=100}"
+                       
+                             SwipeStarted="listView_SwipeStarted"
+                             SwipeEnded="listView_SwipeEnded"
+                       SwipeThreshold="{OnIdiom Default=100, Phone=50}">
+              
+
+                <sync:SfListView.ItemTemplate>
+                    <DataTemplate x:Name="ItemTemplate" >
+                        <Frame OutlineColor="Transparent" Padding="2" Margin="10,0,10,0" HasShadow="False">
+
+                            <Grid BackgroundColor="White" Padding="6">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Label x:Name="TitleLabel" LineBreakMode="NoWrap" Text="{Binding Name}"
+                       FontAttributes="Bold" TextColor="{StaticResource JobMeGray}">
+
+                                </Label>
+
+                                <Label Grid.Row="1" x:Name="DescriptionLabel" Text="{Binding Description}" TextColor="{StaticResource JobMeGray}">
+
+                                </Label>
+                                <Label Grid.Row="2" x:Name="PostedByLabel" Text="{Binding PostedBy}" TextColor="{StaticResource JobMeGray}" FontSize="Small">
+
+                                </Label>
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </sync:SfListView.ItemTemplate>
+                <sync:SfListView.LeftSwipeTemplate>
+                    <DataTemplate x:Name="LeftSwipeTemplate">
+                        <Grid BackgroundColor="#DC595F" HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                            </Grid.GestureRecognizers>
+                            <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                                <Label Grid.Column="0"
+                                            Grid.Row="0"
+                                            BackgroundColor="Transparent"                                            
+                                            FontAttributes="{StaticResource FontAttrib}"
+                                            Text="&#xf2ed;"   
+                                            TextColor="White"
+                                            FontFamily="{StaticResource fontawesome}"  
+                                            FontSize="25"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </sync:SfListView.LeftSwipeTemplate>
+            </sync:SfListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+
+

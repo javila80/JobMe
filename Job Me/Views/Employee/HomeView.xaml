@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:video="clr-namespace:FormsVideoLibrary"
+             xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfPdfViewer.XForms;assembly=Syncfusion.SfPdfViewer.XForms"
+             xmlns:local2="clr-namespace:JobMe.Converter"
+             xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+             xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.HomeView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <local2:ByteArrayToImageSourceConverter x:Key="bic" />
+            <local2:StringToUriConverter x:Key="StringToUriConverter" />
+            <local2:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <ScrollView>
+            <Grid>
+                <StackLayout BackgroundColor="White">
+
+                    <Image Source="premium.png" IsVisible="True"
+                   Margin="10,10,0,0"
+                   HorizontalOptions="Start" WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+                  Tapped="TapGestureRecognizer_Tapped"
+                    NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <StackLayout Orientation="Vertical" Margin="0,20,0,0">
+                        <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center">
+
+                            <!--<sfavatar:SfAvatarView ContentType="Custom"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="100"
+                               HeightRequest="100"
+                               CornerRadius="60"
+
+                               BorderColor="{StaticResource JobMeOrange}">
+                    </sfavatar:SfAvatarView>-->
+                            <!--<Image Source="{Binding Photo, Converter={StaticResource bic}}"
+                            HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="100"
+                               HeightRequest="100"
+                                    ></Image>-->
+
+                            <!--Imagen desde URL-->
+                            <Grid>
+
+                                <sfavatar:SfAvatarView ContentType="Custom"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Center"
+                                                   BorderColor="{StaticResource JobMeGray}"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False"
+                                                   HeightRequest="100"
+                                                   CornerRadius="50"
+                                                   BorderWidth="0"
+                                                   ImageSource="{Binding MiFotostr}"
+                                                   IsVisible="true"
+                                                   WidthRequest="100">
+                                    <sfavatar:SfAvatarView.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2">
+                                        </TapGestureRecognizer>
+                                    </sfavatar:SfAvatarView.GestureRecognizers>
+                                </sfavatar:SfAvatarView>
+                                <!--IsVisible="{Binding IsUriVisible}"-->
+                                <!--<sfavatar:SfAvatarView ContentType="Custom"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Center"
+                                                   BorderColor="{StaticResource JobMeGray}"
+                                                   BackgroundColor="WhiteSmoke"
+                                                   HeightRequest="100"
+                                                   CornerRadius="50"
+                                                   ImageSource="{Binding PhotoURL}"
+                                                   IsVisible="false"
+                                                   WidthRequest="100">
+                                    <sfavatar:SfAvatarView.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2">
+                                        </TapGestureRecognizer>
+                                    </sfavatar:SfAvatarView.GestureRecognizers>
+                                    -->
+                                <!--<sfavatar:SfAvatarView.ImageSource>
+
+                                    <UriImageSource Uri="{Binding PhotoURL, Converter={StaticResource StringToUriConverter}}"  CachingEnabled="False" />
+                                </sfavatar:SfAvatarView.ImageSource>-->
+                                <!--
+                                </sfavatar:SfAvatarView>-->
+                                <!--<sfavatar:SfAvatarView.ImageSource>
+
+                                    <UriImageSource Uri="{Binding PhotoURL, Converter={StaticResource StringToUriConverter}}"  CachingEnabled="False" />
+                        </sfavatar:SfAvatarView.ImageSource>-->
+                                <!--<sfavatar:SfAvatarView.ImageSource Glyph="&#xf007;"
+                         ImageSource="{Binding Photo, Converter={StaticResource bic}}"
+                         FontFamily="{StaticResource fontawesome}"
+                         Size="15" />-->
+
+                                <!--<sfavatar:SfAvatarView.ImageSource>
+                            <UriImageSource Uri="{Binding PhotoURL, Converter={StaticResource StringToUriConverter}}"  CachingEnabled="False" />
+                        </sfavatar:SfAvatarView.ImageSource>-->
+                            </Grid>
+
+                            <!--<Grid>
+                            <Image HeightRequest="100" WidthRequest="100" Aspect="AspectFit"
+                               VerticalOptions="FillAndExpand"
+                               Source="{Binding PhotoURL}"
+                                  IsVisible="{Binding IsFileVisible}"
+                               HorizontalOptions="FillAndExpand">
+                            </Image>
+                            <Image HeightRequest="100" WidthRequest="100" Aspect="AspectFit"
+                               VerticalOptions="FillAndExpand"
+
+                                    IsVisible="{Binding IsUriVisible}"
+                                 HorizontalOptions="FillAndExpand">
+                                <Image.Source>
+                                    <UriImageSource Uri="{Binding PhotoFromURI, Converter={StaticResource StringToUriConverter}}" CachingEnabled="False" />
+                                </Image.Source>
+                            </Image>
+                        </Grid>-->
+                            <!--<Image.Source>
+                    <UriImageSource Uri="{Binding PhotoURL, Converter={StaticResource StringToUriConverter}}" CachingEnabled="False" />
+                    </Image.Source>-->
+
+                            <!--ImageSource="{Binding PhotoSrc}"-->
+                            <Image Source="jobme.png"  Margin="-40,60,0,0" VerticalOptions="Start"
+                                                             HorizontalOptions="Center" WidthRequest="50"
+                                                             HeightRequest="50" />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <Label Text="{Binding Name}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold" ></Label>
+
+                    <Label Text="{Binding Age}" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+
+                    <Label Text="{Binding MyDegree}" TextColor="{StaticResource JobMeGray}" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+
+                    <!--<Image Source="jobs.png" HorizontalOptions="Center" Margin="0,40,0,0" WidthRequest="50"></Image>-->
+                    <!--Imagen de CV-->
+                    <Button Text="&#xf15c;"
+                    HorizontalOptions="Center"
+                    Margin="0,40,0,0"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource JobMeGray}"
+                     FontSize="50"
+                        IsVisible="{Binding PdfVisible}"
+
+                        Clicked="TapGestureRecognizer_Tapped_1">
+                        <Button.FontFamily>
+                            <OnPlatform x:TypeArguments="x:String">
+                                <On Platform="iOS" Value="Font Awesome 5 Free" />
+                                <On Platform="Android" Value="FontSolid-900.otf#Font Awesome 5 Free" />
+                            </OnPlatform>
+                        </Button.FontFamily>
+                    </Button>
+                    <Label Text="CV" TextColor="{StaticResource JobMeGray}"
+                        HorizontalOptions="Center"
+                       FontSize="Small"
+                       IsVisible="{Binding PdfVisible}"
+                       HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped_1"
+                    NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Grid VerticalOptions="End" Margin="5,30,5,0">
+
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--<Image Source="video.png" HorizontalOptions="Center"
+                       Grid.Column="0"  Grid.Row="0"
+                       WidthRequest="50">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_VideoAcademics"
+                    NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>-->
+
+                        <button:SfButton ImageSource="video.png"  x:Name="btnAcademics"
+                                     HorizontalOptions="Center" Text="{Binding Academicslbl}"
+                                     ImageAlignment="Top" TextColor="DarkGray"
+                                                                 ShowIcon="True"
+                                     CornerRadius="20"
+                                    ImageWidth="50"
+                                       Grid.Column="0" Grid.Row="0"
+                                     BackgroundColor="Transparent"
+                                      Clicked="btnAcademics_Clicked">
+                        </button:SfButton>
+
+                        <!--<Label Text="Academics" TextColor="{StaticResource JobMeGray}"
+                       FontSize="Small" Grid.Column="0" Grid.Row="1"
+                       HorizontalTextAlignment="Center"></Label>-->
+                        <!--<Image Source="video.png" HorizontalOptions="Center"
+                       Grid.Column="1" Grid.Row="0"
+                       WidthRequest="50">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_VideoJobs"
+                    NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>-->
+
+                        <button:SfButton ImageSource="video.png"  x:Name="btnJobs"
+                                     HorizontalOptions="Center" Text="{Binding Jobslbl}"
+                                     ImageAlignment="Top" TextColor="DarkGray"
+                                                                 ShowIcon="True"
+                                    ImageWidth="50"  CornerRadius="20"
+                                       Grid.Column="1" Grid.Row="0"
+                                     BackgroundColor="Transparent"
+                                     Clicked="btnJobs_Clicked">
+                        </button:SfButton>
+
+                        <button:SfButton ImageSource="video.png"  x:Name="btnOthers"
+                                     HorizontalOptions="Center" Text="{Binding Otherslbl}"
+                                     ImageAlignment="Top" TextColor="DarkGray"
+                                                                 ShowIcon="True"
+                                    ImageWidth="50"  CornerRadius="20"
+                                       Grid.Column="2" Grid.Row="0"
+                                     BackgroundColor="Transparent"
+                                   Clicked="btnOthers_Clicked">
+                        </button:SfButton>
+                        <!--<Label Text="Jobs" TextColor="{StaticResource JobMeGray}"
+                       FontSize="Small" Grid.Column="1" Grid.Row="1"
+                       HorizontalTextAlignment="Center"></Label>
+                    <Image Source="video.png" HorizontalOptions="Center"
+                       Grid.Column="2"
+                       Grid.Row="0" WidthRequest="50">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_VideoOthers"
+                    NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Text="Others" TextColor="{StaticResource JobMeGray}"
+                       FontSize="Small" Grid.Column="2" Grid.Row="1"
+                       HorizontalTextAlignment="Center"></Label>-->
+                    </Grid>
+                </StackLayout>
+                <ActivityIndicator IsRunning="{Binding IsBusy}"  WidthRequest="50" HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"    ></ActivityIndicator>
+            </Grid>
+        </ScrollView>
+    </ContentView.Content>
+</ContentView>

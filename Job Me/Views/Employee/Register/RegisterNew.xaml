@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:JobMe.Views.Employee.Register"
+             xmlns:local1="clr-namespace:JobMe.ViewModels.Employee"
+             mc:Ignorable="d"
+             x:Name="MainPage"
+             x:Class="JobMe.Views.Employee.Register.RegisterNew">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Red" />
+            </Style>
+            <Style x:Key="InactiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="OutlineColor" Value="Red" />
+            </Style>
+            <!--<local:EmployeeTemplateSelector x:Key="EmployeeTemplateSelector" />-->
+        </ResourceDictionary>
+        <DataTemplate x:Key="EssentialTemplate">
+            <Label Text="Hola"></Label>
+        </DataTemplate>
+        <DataTemplate x:Key="InterestTemplate">
+
+            <local1:View1 x:Name="template" BindingContext="{Binding Source={x:Reference MainPage}}" >
+                
+            </local1:View1>
+        </DataTemplate>
+        <local:EmployeeTemplateSelector x:Key="MonkeySelector"
+                                             InterestTemplate="{StaticResource InterestTemplate}"
+                                             EssentialTemplate="{StaticResource EssentialTemplate}" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+       
+
+        <StackLayout VerticalOptions="FillAndExpand" Margin="5,5,5,1." BackgroundColor="White">
+            <CarouselView x:Name="carouselView" 
+                              ItemsSource="{Binding CarouselColllection}"
+                              BackgroundColor="White"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"                            
+                              IsScrollAnimated="False"                         
+                              ItemTemplate="{StaticResource MonkeySelector}" 
+                              >
+            </CarouselView>
+            <IndicatorView IndicatorsShape="Circle"
+                      
+                       IndicatorColor="{StaticResource JobMeOrange}"
+                       SelectedIndicatorColor="DarkGray"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,10" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

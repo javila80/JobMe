@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:video="clr-namespace:Xam.Forms.VideoPlayer;assembly=Xam.Forms.VideoPlayer"
+             
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Video1">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <video:VideoPlayer Grid.Row="0" x:Name="videoPlayer"
+                BackgroundColor="Black"
+             
+                VerticalOptions="FillAndExpand"
+                PlayCompletion="VideoPlayer_PlayCompletion" 
+                PlayError="VideoPlayer_PlayError"/>
+            <!--AreTransportControlsEnabled="False"-->
+            <ActivityIndicator Grid.Row="0" 
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Color="White"
+                BackgroundColor="Transparent"
+                IsVisible="False">
+                <ActivityIndicator.Triggers>
+                    <DataTrigger TargetType="ActivityIndicator"
+                                 Binding="{Binding Source={x:Reference videoPlayer}, 
+                                                   Path=Status}"
+                                 Value="{x:Static video:VideoStatus.NotReady}">
+                        <Setter Property="IsVisible" Value="True" />
+                        <Setter Property="IsRunning" Value="True" />
+                    </DataTrigger>
+                </ActivityIndicator.Triggers>
+            </ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

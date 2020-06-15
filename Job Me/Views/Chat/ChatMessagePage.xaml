@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="JobMe.Views.Chat.ChatMessagePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:JobMe.Behaviors.Chat"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:converter="clr-namespace:JobMe.Converters"
+    BackgroundColor="WhiteSmoke"
+    xmlns:viewModel="clr-namespace:JobMe.ViewModels.Chat"
+    xmlns:controls="clr-namespace:JobMe.Controls"
+    xmlns:local="clr-namespace:JobMe.Views.Chat"
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+    xmlns:local1="clr-namespace:JobMe.Converter"
+    xmlns:controls1="clr-namespace:JobMe"
+    xmlns:syncEffectsView="clr-namespace:Syncfusion.XForms.PlatformConfiguration.UWPSpecific;assembly=Syncfusion.Core.XForms"
+    BackgroundImage="ChatMessageBackground.png"
+    NavigationPage.HasNavigationBar="True">
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+
+            <border:SfBorder IsVisible="{Binding IsImageVisible}"
+                                    Margin="0,0"
+                                    BackgroundColor="{DynamicResource Gray-200}"
+                                    Style="{StaticResource ProfileBorderStyle}">
+                <Image
+                                        HeightRequest="35"
+                                        WidthRequest="35">
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding ProfileImage}"
+			                                 CacheValidity="14"
+			                                 CachingEnabled="true" />
+                    </Image.Source>
+                </Image>
+            </border:SfBorder>
+            <border:SfBorder IsVisible="{Binding IsLogoVisible}"
+                                    Margin="0,0"
+                                    BackgroundColor="{DynamicResource Gray-200}"
+                                    Style="{StaticResource ProfileBorderStyle}">
+                <Image Source="{Binding Logo, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                        HeightRequest="35"
+                                        WidthRequest="35">
+                </Image>
+            </border:SfBorder>
+
+            <Label Text="{Binding ProfileName}"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="White"
+                  FontAttributes="None"
+                   FontSize="18" />
+
+            <!--Label de bote de basura-->
+            <buttons:SfButton
+                HorizontalOptions="End"
+                VerticalOptions="CenterAndExpand"
+                Margin="0,0,20,0"
+                Style="{StaticResource NavigationBarButtonStyle}"
+                FontFamily="{StaticResource fontawesome}"
+                FontAttributes="{StaticResource FontAttrib}"
+                Command="{Binding DeleteChatCommand}"
+                Text="&#xf2ed;"
+                FontSize="20"
+                TextColor="White" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local1:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+            <local:MessageDataTemplateSelector x:Key="MessageDataTemplateSelector"  />
+            <local1:Base64ToImageConverter x:Key="ToImage" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--<ContentPage.BindingContext>
+        <viewModel:ChatMessageViewModel />
+    </ContentPage.BindingContext>-->
+
+    <ContentPage.Content>
+
+        <StackLayout x:Name="CenteredStackLayout">
+            <!--<Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".0*" />
+                <RowDefinition Height=".95*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>-->
+
+            <!--<ScrollView>-->
+
+            <!--List view to show the recent chat history-->
+
+            <listView:SfListView
+                    x:Name="listView"
+                    AutoFitMode="Height"
+                    FocusBorderThickness="0"
+                    IsStickyFooter="True"
+               
+                    ItemTemplate="{StaticResource MessageDataTemplateSelector}"
+                    ItemsSource="{Binding ChatMessageInfo}"
+                    RowSpacing="12"
+                    SelectionMode="None"
+                    IsVisible="{Binding IsVisible}"
+                    VerticalOptions="Fill">
+
+                <listView:SfListView.Behaviors>
+                    <behavior:ChatMessageListViewBehavior />
+                </listView:SfListView.Behaviors>
+
+                <listView:SfListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Label
+                                Margin="0,16,0,0"
+
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                LineHeight="1.5"
+                                   Text="{Binding Key, Converter={StaticResource DateTimeToStringConverter}}"
+                                TextColor="{DynamicResource Gray-700}" />
+                    </DataTemplate>
+                </listView:SfListView.GroupHeaderTemplate>
+                <!--New text entry in the chat conversation-->
+                <!--<listView:SfListView.FooterTemplate>
+
+                        <DataTemplate>
+
+                            <Grid  Margin="8,0,10,5">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <border:SfBorder  Style="{DynamicResource SfBorderStyle}" Grid.Column="0">
+
+                                        -->
+                <!--GRID DE ADENTRO-->
+                <!--
+                                        <Grid ColumnSpacing="0" RowSpacing="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <controls1:ChatEntry
+                                                                    Text="{Binding NewMessage}"
+                                                                      Keyboard="Chat"
+                                                                     Grid.Column="0"
+                                                                     AutomationId="ChatMessageEntry"
+                                                                      Style="{StaticResource ChatMessageEditorStyle}"
+                                                                     Placeholder="Type here"></controls1:ChatEntry>
+
+                                            -->
+                <!--<Editor Placeholder="Type here"   Grid.Column="0"
+                                                           AutoSize="TextChanges"
+                                                           Keyboard="Chat"
+                                                           x:Name="chateditor"
+                                                           Style="{StaticResource ChatMessageEditorStyle}"
+                                                           Text="{Binding NewMessage}"  />-->
+                <!--
+
+                                            <buttons:SfButton
+                                                    Grid.Column="1"
+                                                    Command="{Binding SendFile}"
+                                                   Style="{StaticResource NavigationBarButtonStyle}"
+                                                     FontFamily="{StaticResource fontawesome}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf0c6;"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    VerticalOptions="Center" />
+                                            -->
+                <!--Camera Button-->
+                <!--
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                    Grid.Column="2"
+                                                    Command="{Binding ShowVideo}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf03d;"
+                                                    VerticalOptions="Center" />
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                    Grid.Column="3"
+                                                    Command="{Binding ShowCamera}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf030;"
+                                                    VerticalOptions="Center" />
+
+                                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                            Grid.Column="4"
+                                                            Command="{Binding SendAttachment}"
+                                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                                             FontFamily="{StaticResource fontawesome}"
+                                                            FontAttributes="{StaticResource FontAttrib}"
+                                                            Text="&#xf07c;"
+                                                            TextColor="{StaticResource JobMeOrange}"
+                                                            VerticalOptions="Center" />
+                                        </Grid>
+                                    </border:SfBorder>
+
+                                    <Frame Grid.Column="1"
+                                        CornerRadius="20"
+                                        Padding="0"
+                                         BackgroundColor="Red"
+                                          WidthRequest="40"
+                                           HeightRequest="40"
+                                     HorizontalOptions="End"
+                                                VerticalOptions="End"
+                                        HasShadow="False">
+                                        <Label   TextColor="White"
+                                                 Text="&#xf1d8;"   FontFamily="{StaticResource fontawesome}"
+                                                 FontAttributes="{StaticResource FontAttrib}"
+                                                 FontSize="Large"
+                                                 HorizontalTextAlignment="Center"
+                                                 VerticalTextAlignment="Center"
+
+                                           BackgroundColor="Transparent">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SendCommand}" ></TapGestureRecognizer>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Frame>
+                                    -->
+                <!--<buttons:SfButton
+                                                Grid.Column="1"
+                                              BackgroundColor="{StaticResource JobMeOrange}"
+                                                Command="{Binding SendCommand}"
+                                                CornerRadius="20"
+                                                HeightRequest="40"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="End"
+                                                TextColor="White"
+                                                Text="&#xf1d8;"
+                                                FontFamily="{StaticResource fontawesome}"
+                                                FontAttributes="{StaticResource FontAttrib}"
+                                                WidthRequest="40">
+                                    </buttons:SfButton>-->
+                <!--
+                            </Grid>
+                        </DataTemplate>
+                    </listView:SfListView.FooterTemplate>-->
+            </listView:SfListView>
+
+            <Grid
+                Padding="16,5,16,10" ColumnSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--Rounded Border-->
+
+                <border:SfBorder Padding="5,0,0,0" Style="{DynamicResource SfBorderStyle}" VerticalOptions="Center">
+
+                    <Grid ColumnSpacing="0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--Extendable editor-->
+                        <!--<controls:BorderlessEditor
+                                            Placeholder="Type here"
+                                            Style="{StaticResource ChatMessageEditorStyle}"
+                                            Text="{Binding NewMessage}" />-->
+
+                        <!--<Editor Text="{Binding NewMessage}"
+                                                Keyboard="Chat"
+                                                FontSize="Small"
+                                                Grid.Column="0"
+                                                AutoSize="TextChanges"
+                                                AutomationId="ChatMessageEntry"
+                                                Style="{StaticResource ChatMessageEditorStyle}"
+                                                Placeholder="Type here"></Editor>-->
+                        <controls1:ChatEntry
+                                            Text="{Binding NewMessage}"
+                                                Keyboard="Chat"
+                                                Grid.Column="0"
+                                                AutoSize="TextChanges"
+                                                AutomationId="ChatMessageEntry"
+                                                VerticalOptions="Center"
+
+                                                Style="{StaticResource ChatMessageEditorStyle}"
+                                                Placeholder="Type here"></controls1:ChatEntry>
+
+                        <!--Galeria-->
+                        <buttons:SfButton
+                                                    Grid.Column="1"
+                                                    Command="{Binding SendFile}"
+                                                   Style="{StaticResource NavigationBarButtonStyle}"
+                                                     FontFamily="{StaticResource fontawesome}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf0c6;"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    VerticalOptions="Center" />
+                        <!--Video-->
+                        <buttons:SfButton           IsVisible="{Binding IsVisible}" IsEnabled="{Binding IsVisible}"
+                                                    Grid.Column="2"
+                                                    Command="{Binding ShowVideo}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf03d;"
+                                                    VerticalOptions="Center" />
+                        <!--Fotos-->
+                        <buttons:SfButton IsVisible="{Binding IsVisible}" IsEnabled="{Binding IsVisible}"
+                                                    Grid.Column="3"
+                                                    Command="{Binding ShowCamera}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf030;"
+                                                    VerticalOptions="Center" />
+                        <!--Archivos-->
+                        <buttons:SfButton IsVisible="{Binding IsVisible}" IsEnabled="{Binding IsVisible}"
+                                                            Grid.Column="4"
+                                                            Command="{Binding SendAttachment}"
+                                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                                             FontFamily="{StaticResource fontawesome}"
+                                                            FontAttributes="{StaticResource FontAttrib}"
+                                                            Text="&#xf07c;"
+                                                            TextColor="{StaticResource JobMeOrange}"
+                                                            VerticalOptions="Center" />
+
+                        <!--Camera Button-->
+                        <!--
+
+                        <buttons:SfButton
+                                            Grid.Column="1"
+                                            Command="{Binding ShowCamera}"
+                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                            Text="{StaticResource Camera}"
+                                            VerticalOptions="End" />
+
+                        -->
+                        <!--Attachment Button-->
+                        <!--
+
+                        <buttons:SfButton
+                                            Grid.Column="2"
+                                            Command="{Binding SendAttachment}"
+                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                            Text="{StaticResource Attachment}"
+                                            VerticalOptions="End" />-->
+                    </Grid>
+                </border:SfBorder>
+
+                <!--Send Button-->
+
+                <buttons:SfButton
+                                    Grid.Column="1"
+                                    BackgroundColor="{StaticResource JobMeOrange}"
+                                    Command="{Binding SendCommand}"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource NavigationBarButtonStyle}"
+                                    VerticalOptions="End"
+                                    WidthRequest="40">
+                    <buttons:SfButton.Content>
+
+                        <Label
+                                            Margin="0,2,2,0"
+                                            FontFamily="{StaticResource fontawesome}"
+                                            FontSize="18"
+                                            HorizontalOptions="Center"
+                                            Text="&#xf1d8;"
+                                            TextColor="{DynamicResource Gray-White}"
+                                            VerticalOptions="Center"
+                                            VerticalTextAlignment="Center" />
+                    </buttons:SfButton.Content>
+                </buttons:SfButton>
+            </Grid>
+
+            <!--<Grid Grid.Row="2"
+                  Margin="8,0,10,5">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <border:SfBorder  Style="{DynamicResource SfBorderStyle}" Grid.Column="0">
+
+                        -->
+            <!--GRID DE ADENTRO-->
+            <!--
+                        <Grid ColumnSpacing="0" RowSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <controls1:ChatEntry
+                                                                    Text="{Binding NewMessage}"
+                                                                      Keyboard="Chat"
+                                                                     Grid.Column="0"
+                                                                     AutomationId="ChatMessageEntry"
+                                                                      Style="{StaticResource ChatMessageEditorStyle}"
+                                                                     Placeholder="Type here"></controls1:ChatEntry>
+
+                            -->
+            <!--<Editor Placeholder="Type here"   Grid.Column="0"
+                                                           AutoSize="TextChanges"
+                                                           Keyboard="Chat"
+                                                           x:Name="chateditor"
+                                                           Style="{StaticResource ChatMessageEditorStyle}"
+                                                           Text="{Binding NewMessage}"  />-->
+            <!--
+
+                            <buttons:SfButton
+                                                    Grid.Column="1"
+                                                    Command="{Binding SendFile}"
+                                                   Style="{StaticResource NavigationBarButtonStyle}"
+                                                     FontFamily="{StaticResource fontawesome}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf0c6;"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    VerticalOptions="Center" />
+                            -->
+            <!--Camera Button-->
+            <!--
+
+                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                    Grid.Column="2"
+                                                    Command="{Binding ShowVideo}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf03d;"
+                                                    VerticalOptions="Center" />
+
+                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                    Grid.Column="3"
+                                                    Command="{Binding ShowCamera}"
+                                                    FontFamily="{StaticResource fontawesome}"
+                                                     Style="{StaticResource NavigationBarButtonStyle}"
+                                                    TextColor="{StaticResource JobMeOrange}"
+                                                    FontAttributes="{StaticResource FontAttrib}"
+                                                    Text="&#xf030;"
+                                                    VerticalOptions="Center" />
+
+                            <buttons:SfButton IsVisible="{Binding IsVisible}"
+                                                            Grid.Column="4"
+                                                            Command="{Binding SendAttachment}"
+                                                            Style="{StaticResource NavigationBarButtonStyle}"
+                                                             FontFamily="{StaticResource fontawesome}"
+                                                            FontAttributes="{StaticResource FontAttrib}"
+                                                            Text="&#xf07c;"
+                                                            TextColor="{StaticResource JobMeOrange}"
+                                                            VerticalOptions="Center" />
+                        </Grid>
+                    </border:SfBorder>
+
+                    <Frame Grid.Column="1"
+                                        CornerRadius="20"
+                                        Padding="0"
+                                         BackgroundColor="Red"
+                                          WidthRequest="40"
+                                           HeightRequest="40"
+                                     HorizontalOptions="End"
+                                                VerticalOptions="End"
+                                        HasShadow="False">
+                        <Label   TextColor="White"
+                                                 Text="&#xf1d8;"   FontFamily="{StaticResource fontawesome}"
+                                                 FontAttributes="{StaticResource FontAttrib}"
+                                                 FontSize="Large"
+                                                 HorizontalTextAlignment="Center"
+                                                 VerticalTextAlignment="Center"
+
+                                           BackgroundColor="Transparent">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SendCommand}" ></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                </Grid>-->
+
+            <!--</ScrollView>-->
+            <!--</Grid>-->
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

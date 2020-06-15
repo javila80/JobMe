@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfPdfViewer.XForms;assembly=Syncfusion.SfPdfViewer.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             mc:Ignorable="d"
+             Title="Terms and conditions"
+             NavigationPage.HasNavigationBar="True"
+             NavigationPage.HasBackButton="True"
+             x:Class="JobMe.Views.TermsView">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <syncfusion:Toolbar x:Key="ToolbarSettings">
+                <syncfusion:Toolbar.Enabled>false
+                </syncfusion:Toolbar.Enabled>
+            </syncfusion:Toolbar>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <StackLayout  BackgroundColor="White">
+            <!--<StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource JobMeOrange}">
+                <buttons:SfButton  Text="&#xf060;" TextColor="White" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    Margin="10,0,0,0"
+                                    Clicked=""
+                                    BackgroundColor="{StaticResource JobMeOrange}"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                </buttons:SfButton>
+                <Label Text="Terms and conditions" TextColor="White" BackgroundColor="{StaticResource JobMeOrange}" 
+                       FontSize="Large" Padding="0,10,0,10"
+                       HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+            </StackLayout>-->
+            
+            <Grid x:Name="mainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="pdfViewerGrid" Grid.Row="0" >
+                    <syncfusion:SfPdfViewer x:Name="pdfViewerControl"  PreserveSignaturePadOrientation="True" Toolbar = "{StaticResource ToolbarSettings}" >
+                        
+                    </syncfusion:SfPdfViewer>
+                </Grid>
+
+            </Grid>
+
+            <Grid BackgroundColor="White" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".10*" />
+                    <ColumnDefinition Width=".90*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" HorizontalOptions="Center" Color="{StaticResource JobMeOrange}" x:Name="chkterms"
+                          CheckedChanged="CheckBox_CheckedChanged" VerticalOptions="Center" ></CheckBox>
+                <Label x:Name="lbaceptar" Grid.Column="1"  HorizontalOptions="Start" VerticalOptions="Center"></Label>
+            </Grid>
+
+         
+                <buttons:SfButton  x:Name="btnaccept"
+                                  Grid.Column="0"
+                             Margin="0,10,0,10"
+                             FontSize="Medium"
+                              HorizontalOptions="Center" 
+                                 CornerRadius="20"
+                              WidthRequest="100"
+                                   BackgroundColor="{StaticResource JobMeOrange}"
+                           Clicked="btnaccept_Clicked"
+                              TextColor="White"/>
+       
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

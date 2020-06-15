@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customcontrols:BindableViewCell  xmlns:customcontrols="clr-namespace:JobMe.Views.Chat.Selectors"
+                                  xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+          xmlns:helper="clr-namespace:JobMe.Helpers"
+          x:Name="Cell"
+          mc:Ignorable="d"
+             x:Class="JobMe.Views.Chat.Templates.IncomingFileTemplate">
+    <ViewCell.View>
+        <cards:SfCardView
+            helper:RTLHelper.CornerRadius="0, 10, 10, 10"
+            helper:RTLHelper.Margin="22, 12, 38, 0"
+            BackgroundColor="{DynamicResource Gray-White}"
+            BorderWidth="0"
+            HasShadow="False"
+            HorizontalOptions="Start">
+
+            <cards:SfCardView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </cards:SfCardView.Resources>
+
+            <cards:SfCardView.Content>
+                <StackLayout Margin="8" VerticalOptions="FillAndExpand" Padding="10">
+
+                    <!--  Message Text  -->
+                    <Grid  >
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="85*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label     FontFamily="{StaticResource fontawesome}" Grid.RowSpan="2" Grid.Column="0" 
+                                 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                                    FontAttributes="{StaticResource FontAttrib}"               FontSize="30"
+                                    Text="&#xf15c;"
+                               
+                               ></Label>
+
+
+                        <Label HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" Margin="0,5,0,0"
+                            VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span  Text="{Binding Message}"
+                                    
+                                    >
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer   Command="{Binding Path=ParentBindingContext.FileTappedCommand, Source={x:Reference Cell}}"
+                              CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+
+
+
+                        <!--  Time  -->
+                        <Label
+                     Grid.Row="1" Grid.Column="1"
+                        FontSize="12"
+                        HorizontalOptions="End"
+                        LineHeight="1.25"
+                        Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                        TextColor="{DynamicResource Gray-700}"
+                        VerticalOptions="Center" />
+
+                    </Grid>
+                </StackLayout>
+            </cards:SfCardView.Content>
+
+        </cards:SfCardView>
+    </ViewCell.View>
+</customcontrols:BindableViewCell >

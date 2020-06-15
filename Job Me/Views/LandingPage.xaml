@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             NavigationPage.HasNavigationBar="False"
+             
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.LandingPage">
+    <ContentPage.Content  >
+        <StackLayout BackgroundColor="White" VerticalOptions="FillAndExpand" >
+
+            <Image Source="jobme.png" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,100,0,0"
+                  
+                    ></Image>
+            <Label Text="JobMe" TextColor="{StaticResource JobMeOrange}" FontSize="Title" HorizontalOptions="Center" FontAttributes="Bold" Margin="0,0,0,20"  />
+            <Label Text="{Binding Registro}" TextColor="{StaticResource JobMeGray}" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,20" ></Label>
+
+            <combobox:SfComboBox x:Name="comboBox" Margin="50,0,50,0"
+                               BorderColor="Transparent"
+                              
+                                     IsEditableMode="false" 
+                                DropDownTextColor="{StaticResource JobMeGray}"
+                                     TextColor="{StaticResource JobMeGray}" 
+                                 SelectedItem="{Binding SelectedItems}"
+                                 DataSource="{Binding Opciones}"
+                                  DisplayMemberPath="Opcion"
+                
+                                     BackgroundColor="WhiteSmoke" >
+                <!--<combobox:SfComboBox.ComboBoxSource>
+                    <ListCollection:List x:TypeArguments="x:String"  >
+                        <x:String >Employees</x:String>
+                        <x:String>Employers</x:String>
+
+                    </ListCollection:List>
+                </combobox:SfComboBox.ComboBoxSource>-->
+
+            </combobox:SfComboBox>
+
+            <buttons:SfButton Text="{Binding SignIn}" x:Name="btnsign"
+                               Margin="0,20,0,20"
+                             FontSize="Medium"
+                              BackgroundColor="{StaticResource JobMeOrange}"
+                                 CornerRadius="20"
+                              WidthRequest="150"
+                              VerticalOptions="Center"
+                             Clicked="SfButton_Clicked"
+                              HorizontalOptions="Center" 
+                              TextColor="white" />
+            
+     
+            <buttons:SfButton Text="{Binding Login}" x:Name="btnlogin"
+                               Margin="0,0,0,40"
+                             FontSize="Medium"
+                              HorizontalOptions="Center" 
+                                 CornerRadius="20"
+                              WidthRequest="150"
+                              VerticalOptions="Center"
+                                   BackgroundColor="{StaticResource JobMeOrange}"
+                           Clicked="btnlogin_Clicked"
+                              TextColor="White" />
+
+            <Label Text="{Binding Version ,StringFormat='Version {0}'}" TextColor="{StaticResource JobMeGray}" 
+                       VerticalOptions="EndAndExpand" HorizontalOptions="Center" Margin="0,0,0,15"></Label>
+            
+
+            <StackLayout Orientation="Horizontal" BackgroundColor="Transparent"  VerticalOptions="End" HorizontalOptions="CenterAndExpand" Margin="0,0,0,10" >
+                <Label Text="{Binding Privacy}" TextColor="Gray" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PrivacyCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{Binding Terms}" TextColor="Gray" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TermsCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

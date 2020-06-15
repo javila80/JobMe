@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             NavigationPage.HasNavigationBar="true" NavigationPage.HasBackButton="{Binding NavPage}"           
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employee.RegisterEmployeeView">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Red" />
+            </Style>
+            <Style x:Key="InactiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="OutlineColor" Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <NavigationPage.TitleView>
+
+
+        <Label Text="{Binding NewMember}" TextColor="White" 
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       Margin="0,0,80,0"
+                       FontAttributes="Bold"
+                       FontSize="Large"></Label>
+
+
+    </NavigationPage.TitleView>
+
+    <ContentPage.Content >
+
+        <StackLayout VerticalOptions="FillAndExpand" Margin="5,5,5,1" BackgroundColor="White">
+
+            <!--<Grid Padding="0,0,15,0" VerticalOptions="FillAndExpand" Margin="5,5,0,0">-->
+            <!--<StackLayout>-->
+
+            <!--<cards:CarouselView 
+                                ItemsSource="{Binding CarouselColllection}"
+                               AreAnimationsEnabled="False"
+                 IsClippedToBounds="True"
+                 
+                 
+                           BackgroundColor="White"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand" 
+                        ItemTemplate="{Binding TemplateSelector}"
+                               >
+                <controls1:IndicatorsControl ToFadeDuration="1500"
+              SelectedIndicatorStyle="{StaticResource ActiveIndicator}"
+              UnselectedIndicatorStyle="{StaticResource InactiveIndicator}"/>
+            </cards:CarouselView>-->
+
+            <!--Este es el ultimo que se uso-->
+            <!--<CarouselView x:Name="carouselView" ItemsSource="{Binding CarouselColllection}"
+                              BackgroundColor="White"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"   
+                          CurrentItem="{Binding CurrentItem}"
+                          CurrentItemChangedCommand="{Binding CurrentItemCommand}"
+                         CurrentItemChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=CurrentItem}"
+                          IsScrollAnimated="False"
+                          IsSwipeEnabled="{Binding IsSwipeEnable}"
+                                ItemTemplate="{Binding TemplateSelector}"
+                              >
+                                       </CarouselView>
+                    <IndicatorView IndicatorsShape="Circle"
+                       ItemsSourceBy="carouselView"
+                       IndicatorColor="{StaticResource JobMeOrange}"
+                       SelectedIndicatorColor="DarkGray"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,10" />-->
+
+            <syncfusion:SfRotator x:Name="rotator"  
+                              ItemsSource="{Binding CarouselColllection}"
+                              ItemTemplate="{Binding TemplateSelector}"
+                              NavigationDirection="Horizontal"
+                              NavigationStripMode="Dots"
+                                  SelectedDotColor="White"
+                                  DotsBorderColor="{StaticResource JobMeOrange}" 
+                                  VerticalOptions="FillAndExpand"
+                                  UnselectedDotColor="{StaticResource JobMeOrange}"
+                                   EnableSwiping="{Binding IsSwipeEnable}" 
+                                  EnableLooping="False" 
+                              BackgroundColor="White"
+                               SelectedIndexChanged="rotator_SelectedIndexChanged"   
+                                   SelectedIndex="{Binding Rotadorpos}"
+                                  DotPlacement="OutSide"
+                              NavigationStripPosition="Bottom"                                       
+                                HorizontalOptions="FillAndExpand"                                 
+                              
+                                  Margin="0,0,0,0"       >
+                   
+                </syncfusion:SfRotator>
+            <!--</StackLayout>-->
+
+
+            <!--<controls:CarouselViewControl Position="0" x:Name="carouselView"
+                                            ShowIndicators="True"
+                                            ShowArrows="False"        
+                                            AnimateTransition="True" 
+                                            IndicatorsTintColor="{StaticResource JobMeGray}"
+                                            ItemsSource="{Binding CarouselColllection}"
+                                            ItemTemplate="{Binding TemplateSelector}"
+                                            FlowDirection="LeftToRight"
+                                            IndicatorsShape="Circle"
+                                            InterPageSpacing="15"  
+                                            PositionSelectedCommand="{Binding SwipeCommand}"
+                                            CurrentPageIndicatorTintColor ="{StaticResource JobMeOrange}"
+                                            VerticalOptions="FillAndExpand" 
+                                            HorizontalOptions="FillAndExpand"/>-->
+
+
+            <!--<ActivityIndicator  x:Name="acitbe"  WidthRequest="50" HeightRequest="50"   
+                                HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                                IsRunning="{Binding IsRun}" IsVisible="{Binding IsRun}"  ></ActivityIndicator>-->
+            <!--</Grid>-->
+
+                <Label Text="{Binding Privacylbl}" TextColor="Gray" VerticalOptions="End" HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PrivacyCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <!--<Label Text="Terms and conditions" TextColor="Gray" VerticalOptions="EndAndExpand" HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TermsCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>-->
+           
+        </StackLayout>
+    </ContentPage.Content>
+
+
+</ContentPage>

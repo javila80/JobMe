@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<customcontrols:BindableViewCell
+    xmlns:customcontrols="clr-namespace:JobMe.Views.Chat.Selectors"
+    x:Class="JobMe.Views.Chat.IncomingImageTemplate"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+    xmlns:helper="clr-namespace:JobMe.Helpers"
+    x:Name="Cell"
+    xmlns:local1="clr-namespace:JobMe.Converter" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+
+   
+        <!--  Incoming image template  -->
+        <cards:SfCardView
+            helper:RTLHelper.CornerRadius="0, 5, 5, 5"
+            helper:RTLHelper.Margin="22, 12, 38, 0"
+            BackgroundColor="{DynamicResource Gray-White}"
+            BorderWidth="0"
+            HasShadow="False"
+            HorizontalOptions="Start">
+
+            <cards:SfCardView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <local1:Base64ToImageConverter x:Key="ToImage"/>
+                </ResourceDictionary>
+            </cards:SfCardView.Resources>
+
+            <cards:SfCardView.Content>
+                <Grid Padding="2" VerticalOptions="FillAndExpand">
+
+                    <border:SfBorder BorderWidth="0" CornerRadius="5">
+                        <!--  Image  -->
+                        <ffimageloading:CachedImage                                                     
+                                                    HorizontalOptions="Start"                                                    
+			                                        WidthRequest="100" 
+                                                    HeightRequest="100" 
+                                                    BackgroundColor="{DynamicResource Gray-200}"
+                                                    VerticalOptions="Fill"
+			                                        DownsampleToViewSize="true"
+			                                        Source="{Binding ImageUrl}">
+                            <ffimageloading:CachedImage.GestureRecognizers>
+                                <!--<TapGestureRecognizer Command="{Binding Path=BindingContext.ImageTappedCommand, Source={x:Reference Cell}}"
+                              CommandParameter="{Binding .}"  NumberOfTapsRequired="1" />-->
+
+                                <TapGestureRecognizer  Command="{Binding Path=ParentBindingContext.ImageTappedCommand, Source={x:Reference Cell}}"
+                               CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
+                            </ffimageloading:CachedImage.GestureRecognizers>
+                        </ffimageloading:CachedImage>
+                        
+                        <!--<Image
+                            HeightRequest="100"
+                            HorizontalOptions="Start"
+							BackgroundColor="{DynamicResource Gray-200}" 
+                            Source="{Binding ImageUrl}"                            
+                            VerticalOptions="Fill"
+                            WidthRequest="100" >
+
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ImageTappedCommand, Source={x:Reference Cell}}"
+                              CommandParameter="{Binding .}" />
+                            </Image.GestureRecognizers>
+                        </Image>-->
+
+
+                    </border:SfBorder>
+
+                    <!--  Time  -->
+                    <Label  x:Name="time"
+                        Margin="5,0"
+                       
+                        FontSize="12"
+                        HorizontalOptions="End"
+                        Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                        TextColor="{DynamicResource Gray-White}"
+                        VerticalOptions="End" />
+
+                </Grid>
+            </cards:SfCardView.Content>
+
+        </cards:SfCardView>
+
+</customcontrols:BindableViewCell>

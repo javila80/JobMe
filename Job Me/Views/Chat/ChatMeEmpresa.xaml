@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:JobMe"
+             xmlns:sync="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+                xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:controls="clr-namespace:JobMe.Controls"
+             xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+             xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+             xmlns:converter="clr-namespace:JobMe.Converters"
+             xmlns:viewModel="clr-namespace:JobMe.ViewModels.Chat"
+             xmlns:local1="clr-namespace:JobMe.Converter" xmlns:pullToRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Name="chatme"
+             x:Class="JobMe.Views.ChatMeEmpresa">
+    <ContentView.Resources>
+
+        <ResourceDictionary>
+            <local1:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <converter:StringToBadgeIconConverter x:Key="BadgeConverter" />
+            <converter:StringToGlyphConverter x:Key="GlyphConverter" />
+            <converter:StringToMessageTypeConverter x:Key="TextConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+
+        <pullToRefresh:SfPullToRefresh x:Name="pullToRefresh"
+                                    IsRefreshing="{Binding IsRefreshing}"
+                                    PullingThreshold="100"
+                                       BackgroundColor="WhiteSmoke"
+                                       ProgressStrokeColor="{StaticResource JobMeOrange}"
+                                    RefreshContentHeight="30"
+                                    RefreshCommand="{Binding RefreshCommand}"
+                                    RefreshContentThreshold="30"
+                                    RefreshContentWidth="30">
+            <pullToRefresh:SfPullToRefresh.PullableContent>
+                <Grid>
+                    <Label x:Name="label" VerticalOptions="Center"    HorizontalOptions="Center"
+                       Text = "Aún no tienes contactos :(" IsVisible="{Binding IsVisible}" />
+                    <StackLayout Spacing="0" BackgroundColor="Transparent">
+
+                        <StackLayout
+                    x:Name="TitleBar"
+                    Padding="16,8"
+
+                    HeightRequest="48"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="White"
+                    Orientation="Horizontal"
+                    Spacing="0">
+
+                            <StackLayout BackgroundColor="White"
+                        x:Name="ProfileView"
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="True"
+                        Orientation="Horizontal"
+                        Spacing="0"
+
+                        VerticalOptions="FillAndExpand">
+
+                                <!--  Rounded Profile Image  -->
+                                <Image Source="jobme.png" HeightRequest="40"
+                                WidthRequest="40"></Image>
+                                <!--<border:SfBorder BackgroundColor="{DynamicResource Gray-200}" Style="{StaticResource ProfileBorderStyle}">
+                            <Image
+                                HeightRequest="32"
+                                WidthRequest="32">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ProfileImageCommand}" CommandParameter="{Binding .}" />
+                                </Image.GestureRecognizers>
+                                <Image.Source>
+                                    <UriImageSource Uri="{Binding ProfileImage}"
+			                                     CacheValidity="14"
+			                                     CachingEnabled="true" />
+                                </Image.Source>
+                            </Image>
+                        </border:SfBorder>-->
+
+                                <!--  Recent Chat page Title  -->
+                                <Label
+                            Margin="16,0"
+                            FontSize="20"
+                            HorizontalOptions="Center"
+                            LineHeight="1.25"
+                            Text="Chat Me "
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource JobMeOrange}"
+                            VerticalOptions="Center"
+                            VerticalTextAlignment="Center" />
+                            </StackLayout>
+
+                            <StackLayout
+                        x:Name="SearchBox"
+                        HorizontalOptions="EndAndExpand"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Spacing="0">
+
+                                <buttons:SfButton
+                            x:Name="BackButton"
+                            Clicked="BackButton_Clicked"
+                            FontFamily="{StaticResource fontawesome}"
+                           FontAttributes="{StaticResource FontAttrib }"
+                           Text="&#xf053;"
+                            Style="{StaticResource NavigationBarButtonStyle}" />
+
+                                <!--Rounded Search Entry-->
+                                <border:SfBorder Style="{DynamicResource SfBorderStyle}">
+
+                                    <controls:BorderlessEntry
+                                x:Name="SearchEntry"
+
+                                HorizontalOptions="FillAndExpand"
+                                Placeholder="Search here"
+                                Style="{StaticResource ChatSearchEntryStyle}"
+                                Text="{Binding SearchText, Mode=TwoWay}" />
+                                </border:SfBorder>
+                            </StackLayout>
+
+                            <!--  Search Button  -->
+                            <buttons:SfButton
+                        x:Name="SearchButton"
+                        BindingContext="{x:Reference ProfileView}"
+                        Clicked="SearchButton_Clicked"
+                        IsVisible="{Binding Path=IsVisible}"
+                        Style="{StaticResource NavigationBarButtonStyle}"
+                        FontFamily="{StaticResource fontawesome}"
+                        FontAttributes="{StaticResource FontAttrib }"
+                        Text="&#xf002;" />
+
+                            <!--  Menu Button  -->
+                            <!--<buttons:SfButton
+                        x:Name="MenuButton"
+                        Command="{Binding MenuCommand}"
+                        Style="{StaticResource NavigationBarButtonStyle}"
+                        Text="{StaticResource Menu}" />-->
+                        </StackLayout>
+
+                        <BoxView BackgroundColor="{DynamicResource Gray-200}" HeightRequest="1" />
+                        <!---->
+
+                        <controls:SearchableListView
+                x:Name="ListView"
+                AllowSwiping="True"
+                AutoFitMode="Height"
+                FocusBorderThickness="0"
+                ItemsSource="{Binding ChatItems}"
+                SearchText="{Binding SearchText}"
+                TapCommand="{Binding ItemSelectedCommand}"
+                SelectionGesture="Tap"
+                SelectionMode="Single"
+                SwipeOffset="156"
+                SelectionBackgroundColor="#ff5817"
+                             SwipeStarted="listView_SwipeStarted"
+                             SwipeEnded="listView_SwipeEnded"
+                       SwipeThreshold="{OnIdiom Default=100, Phone=50}"
+                VerticalOptions="FillAndExpand">
+
+                            <controls:SearchableListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.View>
+                                            <Grid
+                                    x:Name="Grid"
+                                    Padding="16,12"
+                                    ColumnSpacing="16"
+                                    RowSpacing="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+
+                                                <border:SfBorder Grid.RowSpan="2"  IsVisible="true"
+                                                BackgroundColor="{DynamicResource Gray-200}"
+                                                BorderColor="{DynamicResource Gray-White}"
+                                                Style="{StaticResource ProfileBorderStyle}">
+                                                    <ffimageloading:CachedImage IsVisible="{Binding IsImageVisible}"
+			                                                                WidthRequest="40" HeightRequest="40"
+			                                                                DownsampleToViewSize="true"
+			                                                                Source = "{Binding ImagePath}">
+                                                    </ffimageloading:CachedImage>
+                                                    <!--<Image IsVisible="{Binding IsImageVisible}"
+                                                    HeightRequest="40"
+                                                    WidthRequest="40">
+                                                    <Image.Source>
+                                                        <UriImageSource Uri="{Binding ImagePath}"
+			                                 CacheValidity="14"
+			                                 CachingEnabled="true" />
+                                                    </Image.Source>
+                                                </Image>-->
+                                                </border:SfBorder>
+
+                                                <!--Recent Sender Profile image-->
+                                                <!--<badge:SfBadgeView x:Name="BadgeView" Grid.RowSpan="2">
+                                                <badge:SfBadgeView.Content>
+                                                    <border:SfBorder
+                                                BackgroundColor="{DynamicResource Gray-200}"
+                                                BorderColor="{DynamicResource Gray-White}"
+                                                Style="{StaticResource ProfileBorderStyle}">
+                                                        <Image
+                                                    HeightRequest="40"
+                                                    WidthRequest="40">
+                                                            <Image.Source>
+                                                                <UriImageSource Uri="{Binding ImagePath}"
+			                                 CacheValidity="14"
+			                                 CachingEnabled="true" />
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </border:SfBorder>
+                                                </badge:SfBadgeView.Content>
+
+                                                <badge:SfBadgeView.BadgeSettings>
+                                                    <badge:BadgeSetting
+                                                BackgroundColor="{DynamicResource Green}"
+                                                BadgeAlignment="End"
+                                                BadgeIcon="{Binding AvailableStatus, Converter={StaticResource BadgeConverter}}"
+                                                BadgePosition="BottomRight"
+                                                BadgeType="None"
+                                                Stroke="{DynamicResource Gray-White}"
+                                                StrokeWidth="1" />
+                                                </badge:SfBadgeView.BadgeSettings>
+                                            </badge:SfBadgeView>-->
+
+                                                <!--Recent Sender Profile Name-->
+                                                <Label
+                                        Grid.Column="1"
+                                        FontSize="16"
+
+                                        HorizontalOptions="Start"
+                                        LineBreakMode="NoWrap"
+                                        LineHeight="{OnPlatform Default=1.5,
+                                                                iOS=-1}"
+                                        Text="{Binding SenderName}"
+                                        TextColor="{DynamicResource Gray-900}" />
+
+                                                <StackLayout
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Orientation="Horizontal">
+
+                                                    <!--Recent Message Type-->
+                                                    <!--
+                                                <Label
+                                            x:Name="MessageIcon"
+                                            Style="{StaticResource MessageIconStyle}"
+                                            Text="{Binding MessageType, Converter={StaticResource GlyphConverter}, ConverterParameter={x:Reference MessageIcon}}">
+
+                                                    <Label.Resources>
+                                                        <ResourceDictionary>
+                                                            <ResourceDictionary.MergedDictionaries>
+                                                                <ResourceDictionary Source="Chat\Styles.xaml" />
+                                                            </ResourceDictionary.MergedDictionaries>
+                                                        </ResourceDictionary>
+                                                    </Label.Resources>
+                                                </Label>-->
+
+                                                    <!--Recent Message-->
+                                                    <Label
+                                            x:Name="MessageLabel"
+                                            Style="{StaticResource MessageTextStyle}"
+                                            Text="{Binding PositionName}" />
+                                                </StackLayout>
+
+                                                <!--Recent Message Time-->
+                                                <Label
+                                        Grid.Column="2"
+                                        Style="{StaticResource TimeTextStyle}"
+                                        Text="{Binding Time}" />
+
+                                                <!--Recent Message Notification-->
+
+                                                <!--<Label  BackgroundColor="Transparent"
+                                        x:Name="NotificationLabel"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Style="{StaticResource NotificationIconStyle}"
+                                         Text="&#xf2ed;"
+                                            TextColor="White"
+                                            FontFamily="{StaticResource fontawesome}">
+                                                </Label>-->
+                                            </Grid>
+                                        </ViewCell.View>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </controls:SearchableListView.ItemTemplate>
+
+                            <controls:SearchableListView.RightSwipeTemplate>
+                                <DataTemplate x:Name="LeftSwipeTemplate">
+                                    <Grid BackgroundColor="#DC595F" HorizontalOptions="Fill" VerticalOptions="Fill">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference ListView}}" CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                        <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                                            <Label Grid.Column="0"
+                                            Grid.Row="0"
+                                            BackgroundColor="Transparent"
+                                            FontAttributes="{StaticResource FontAttrib}"
+                                            Text="&#xf2ed;"
+                                            TextColor="White"
+                                            FontFamily="{StaticResource fontawesome}"
+                                            FontSize="25" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </controls:SearchableListView.RightSwipeTemplate>
+                        </controls:SearchableListView>
+                    </StackLayout>
+                    <ActivityIndicator IsRunning="{Binding Source={x:Reference chatme}, Path=BindingContext.IsRunning}"
+                                       WidthRequest="50"
+                                       HeightRequest="50"
+                                       Color="{StaticResource JobMeOrange}"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"></ActivityIndicator>
+                </Grid>
+            </pullToRefresh:SfPullToRefresh.PullableContent>
+        </pullToRefresh:SfPullToRefresh>
+    </ContentView.Content>
+</ContentView>

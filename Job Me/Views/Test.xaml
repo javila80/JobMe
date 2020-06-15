@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:sf="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             xmlns:views="clr-namespace:JobMe.Views"
+           
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Test">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+           
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+        <AbsoluteLayout BackgroundColor="Yellow" VerticalOptions="Fill">
+            <StackLayout BackgroundColor="Blue" VerticalOptions="FillAndExpand">
+
+
+                
+            </StackLayout>
+
+        </AbsoluteLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

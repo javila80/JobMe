@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:local11="clr-namespace:JobMe.ViewModels.Employer"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.EditJobDetail">
+         <ContentPage.Resources>
+        <ResourceDictionary>
+            <local11:EditJobDetailViewModel x:Key="templateSelector" ></local11:EditJobDetailViewModel>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Margin="10 , 10 , 10 ,0 ">
+          
+            
+             <controls:CarouselViewControl Position="0" x:Name="carouselView"  IsVisible="True"
+                                        ShowIndicators="True"
+                                          ShowArrows="False"     
+                                            AnimateTransition="True"
+                                            FlowDirection="LeftToRight"
+                                           IndicatorsTintColor="{StaticResource JobMeOrange}"
+                                      ItemTemplate="{StaticResource templateSelector}" 
+                                      VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

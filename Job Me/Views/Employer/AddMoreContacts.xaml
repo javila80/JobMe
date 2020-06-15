@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:Behavior="clr-namespace:JobMe.Behaviors"
+             xmlns:sfPopup="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             mc:Ignorable="d"
+              NavigationPage.HasNavigationBar="True"
+             Title="Add more contacts"
+             x:Class="JobMe.Views.Employer.AddMoreContacts">
+    <ContentPage.Content>
+
+        <sfPopup:SfPopupLayout x:Name="popupLayout" IsOpen="{Binding PopVisible}">
+            <sfPopup:SfPopupLayout.PopupView >
+                <sfPopup:PopupView ShowFooter="False" HeaderTitle="JobMe"  >
+                    <sfPopup:PopupView.ContentTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Text="{Binding txt1}" 
+                                       FontSize="14"
+                                       TextColor="{StaticResource JobMeGray}"
+                                       HorizontalTextAlignment="Center"/>
+
+                                <Label Text="{Binding txt2}" 
+                                        FontSize="14"
+                                       TextColor="{StaticResource JobMeGray}"
+                                       HorizontalTextAlignment="Center"/>
+
+                                <Grid Margin="0,10,0,0" HorizontalOptions="Center" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <buttons:SfButton Text="No" Grid.Column="0" 
+                                                      TextColor="White"
+                                                      WidthRequest="100"
+                                                      CornerRadius="30"
+                                                      Command="{Binding NoButtonCommand}"
+                                                      BackgroundColor="{StaticResource JobMeOrange}"></buttons:SfButton>
+                                    
+                                    <buttons:SfButton Text="{Binding Si}" Grid.Column="1"
+                                                      TextColor="White"
+                                                       WidthRequest="100"
+                                                      CornerRadius="30"
+                                                         Command="{Binding YesButtonCommand}"
+                                                      BackgroundColor="{StaticResource JobMeOrange}"></buttons:SfButton>
+                                </Grid>
+                            </StackLayout>
+
+                        </DataTemplate>
+                    </sfPopup:PopupView.ContentTemplate>
+                </sfPopup:PopupView>
+            </sfPopup:SfPopupLayout.PopupView>
+            <sfPopup:SfPopupLayout.Content>
+                <Grid>
+
+
+                    <StackLayout Padding="10,20,15,10" BackgroundColor="White"  >
+                        
+                        <!--Name-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding NameHint}" InputViewPadding="5" 
+                                                   ErrorText="{Binding NameError}"
+                                                   HasError="{Binding IsNameEmpty}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Name}"  >
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="50" MinLength="3"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0e0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Mail-->
+                        <inputLayout:SfTextInputLayout Hint="Mail" InputViewPadding="5"
+                                                   ErrorText="{Binding MailError}"
+                                                   HasError="{Binding IsMailEmpty}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Mail}" Keyboard="Email">
+                                <Entry.Behaviors>
+                                    <Behavior:EventToCommandBehavior EventName="Unfocused" Command= "{Binding UnFocusedCommand}"  />
+                                    <Behavior:EmailValidatorBehavior />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf0e0;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Phone-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding PhoneHint}" InputViewPadding="5" 
+                                                     HasError="{Binding IsPhoneNumberEmpty}"
+                                                     ErrorText="{Binding PhoneError}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Telephone}" Keyboard="Telephone" >
+                                <Entry.Behaviors>
+                                    <Behavior:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                                    <Behavior:EntryLengthValidator MaxLength="12" MinLength="12"/>
+                                </Entry.Behaviors>
+
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf095;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--UserName-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding UserNameHint}" InputViewPadding="5" 
+                                                     HasError="{Binding IsUserNameEmpty}"
+                                                   ErrorText="{Binding UserNameError}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding UserName}" >
+                                <Entry.Behaviors>
+                                    <Behavior:EventToCommandBehavior EventName="Unfocused" Command= "{Binding UnFocusedCommand }"  />
+                                    <Behavior:EntryLengthValidator  MaxLength="10" MinLength="6"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf406;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Password-->
+                        <inputLayout:SfTextInputLayout Hint="{Binding PasswordHint}" InputViewPadding="5"
+                                                    ErrorText="{Binding PasswordError}"
+                                                     HasError="{Binding IsPasswordEmpty}"
+                                                   LeadingViewPosition="Outside" ContainerType="Filled">
+                            <Entry Text="{Binding Password}" IsPassword="True" >
+                                <Entry.Behaviors>
+                                    <Behavior:EntryLengthValidator  MaxLength="10" MinLength="6"/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <inputLayout:SfTextInputLayout.LeadingView>
+                                <Label  Text="&#xf023;" TextColor="{StaticResource JobMeGray}" 
+                                    FontFamily="{StaticResource fontawesome}"
+                                    FontSize="24"
+                                    FontAttributes="{StaticResource FontAttrib}"
+                                    VerticalOptions="Center">
+                                </Label>
+                            </inputLayout:SfTextInputLayout.LeadingView>
+
+                        </inputLayout:SfTextInputLayout>
+
+                        <!--Save-->
+                        <buttons:SfButton Text="&#xf00c;" TextColor="{StaticResource JobMeOrange}"
+                            FontSize="30" HorizontalOptions="Center" 
+                            CornerRadius="30"
+                            WidthRequest="60" HeightRequest="60"
+                            BackgroundColor="White"
+                            IsEnabled="{Binding IsEnabled}"
+                            FontAttributes="{StaticResource FontAttrib}"
+                            Command="{Binding SaveCommand}"                           
+                            VerticalOptions="Center"  FontFamily="{StaticResource fontawesome}"/>
+
+
+                    </StackLayout>
+                    <ActivityIndicator Color="{StaticResource JobMeOrange}" IsRunning="{Binding IsBusy}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></ActivityIndicator>
+                </Grid>
+            </sfPopup:SfPopupLayout.Content>
+        </sfPopup:SfPopupLayout>
+
+
+    </ContentPage.Content>
+</ContentPage>

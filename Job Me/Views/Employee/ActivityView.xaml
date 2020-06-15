@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:JobMe"
+             xmlns:local1="clr-namespace:JobMe.Views.Employee"
+             xmlns:local2="clr-namespace:JobMe.Models"
+             xmlns:swipeCardView="clr-namespace:MLToolkit.Forms.SwipeCardView;assembly=MLToolkit.Forms.SwipeCardView"
+             xmlns:local3="clr-namespace:JobMe.Converter"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:sfPopup="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.ActivityView">
+
+    <ContentView.Resources>
+
+        <ResourceDictionary>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="fonts"
+                        iOS="NestedTab"
+                       Android="NestedTab.ttf#NestedTab" />
+
+            <OnPlatform x:TypeArguments="x:String"  x:Key="fontawesome">
+                <On Platform="iOS" Value="Font Awesome 5 Free" />
+                <On Platform="Android" Value="FontSolid-900.otf#Font Awesome 5 Free" />
+            </OnPlatform>
+
+            <local3:ByteArrayToImageSourceConverter x:Key="bic" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <sfPopup:SfPopupLayout x:Name="popupLayout" IsOpen="{Binding DisplayPopup}">
+        <sfPopup:SfPopupLayout.PopupView>
+            <sfPopup:PopupView ShowHeader="True" ShowFooter="False" ShowCloseButton="False" HeightRequest="450"  IsFullScreen="False">
+                <sfPopup:PopupView.HeaderTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Congrats}" TextColor="{StaticResource JobMeOrange}" FontSize="Medium" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+                    </DataTemplate>
+                </sfPopup:PopupView.HeaderTemplate>
+                <sfPopup:PopupView.ContentTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="20,0,20,0">
+
+                            <Label Text="{Binding JobMatchName}" TextColor="{StaticResource JobMeOrange}" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Frame x:Name="LikeFrame"  BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20"  Margin="30,0,30,0"
+
+                                          Rotation="0" Opacity="1">
+                                <Label x:Name="LikeText" Text="Job Match" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="30" FontAttributes="Bold"></Label>
+                            </Frame>
+                            <Image Source="congratulations.png"
+                               WidthRequest="80"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,10">
+                            </Image>
+                            <ffimageloading:CachedImage VerticalOptions="FillAndExpand" AbsoluteLayout.LayoutBounds=".5,0,230,130"
+			                                                                    HorizontalOptions="FillAndExpand" AbsoluteLayout.LayoutFlags="PositionProportional"
+			                                                                    DownsampleToViewSize="true" CacheDuration="2" WidthRequest="100" HeightRequest="50"
+			                                                                    Source = "{Binding JobMatchLogo, Converter={StaticResource bic}}">
+                            </ffimageloading:CachedImage>
+                            <!--<Image Source="{Binding JobMatchLogo, Converter={StaticResource bic}}"
+                                                    WidthRequest="100"
+                                                        ></Image>-->
+                            <Label Text="{Binding JobMatchPosition}" TextColor="{StaticResource JobMeOrange}" FontSize="Large" HorizontalTextAlignment="Center"></Label>
+                            <Button Text="{Binding GotoChat}" BackgroundColor="{StaticResource JobMeOrange}" Margin="30,15,15,10" TextColor="White" CornerRadius="20"  Command="{Binding BtnChatCommand}"></Button>
+                        </StackLayout>
+                    </DataTemplate>
+                </sfPopup:PopupView.ContentTemplate>
+            </sfPopup:PopupView>
+        </sfPopup:SfPopupLayout.PopupView>
+        <sfPopup:SfPopupLayout.Content>
+            <syncfusion:SfPullToRefresh x:Name="pullToRefresh"
+                                    IsRefreshing="{Binding IsRefreshing}"
+                                    PullingThreshold="100"
+                                    RefreshContentHeight="30"
+                                    RefreshContentThreshold="30"
+                                    RefreshContentWidth="30"
+                                    RefreshCommand="{Binding RefreshCommand}">
+                <syncfusion:SfPullToRefresh.PullableContent>
+
+                    <StackLayout BackgroundColor="White">
+                        <Grid x:Name="gridMain" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                            <swipeCardView:SwipeCardView
+                                x:Name="SwipeCardView"
+                                ItemsSource="{Binding Data}"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand"
+                                Padding="10"
+                                      Threshold="{Binding Threshold}"
+                                      SwipedCommand="{Binding SwipedCommand}"
+                                   HeightRequest="410"
+                                SupportedSwipeDirections="Left, Right"
+                                SupportedDraggingDirections="Left, Right "
+                                     Dragging="OnDragging">
+
+                                <swipeCardView:SwipeCardView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                            <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent" HasShadow="false">
+                                                <AbsoluteLayout>
+                                                    <!--<Image  Source="{Binding Logo, Converter={StaticResource bic}}" HorizontalOptions="Center"  AbsoluteLayout.LayoutBounds=".5,0.05,300,150" AbsoluteLayout.LayoutFlags="PositionProportional" />-->
+                                                    <!--<Image Source="notfound.jpg" AbsoluteLayout.LayoutBounds=".5,1,.5,.1"
+                                                       HorizontalOptions="Center"  AbsoluteLayout.LayoutFlags="All"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="200"
+                                                   HeightRequest="180"
+                                                        ></Image>-->
+                                                    <ffimageloading:CachedImage VerticalOptions="FillAndExpand" AbsoluteLayout.LayoutBounds=".5,0,230,130"
+			                                                                    HorizontalOptions="FillAndExpand" AbsoluteLayout.LayoutFlags="PositionProportional"
+			                                                                    DownsampleToViewSize="true" CacheDuration="2"
+			                                                                    Source = "{Binding Logo2}">
+                                                    </ffimageloading:CachedImage>
+
+                                                    <!--<Image Source="{Binding Logo, Converter={StaticResource bic}}" AbsoluteLayout.LayoutBounds=".5,0,230,130"
+                                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                       HorizontalOptions="FillAndExpand"
+                                                   VerticalOptions="FillAndExpand"
+                                                        ></Image>-->
+
+                                                    <Frame x:Name="LikeFrame"  BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.1,.1, 150, 50"
+                                         AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="-20" Opacity="0" HasShadow="false">
+                                                        <Label x:Name="LikeText" Text="JobMe" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                                    </Frame>
+                                                    <Frame x:Name="NopeFrame" BorderColor="#FF6A4F" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.9,.1, 150, 50"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="20" Opacity="0" HasShadow="false">
+                                                        <Label Text="NO" TextColor="Red" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                                   VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                                    </Frame>
+
+                                                    <!--Nombre del puesto-->
+                                                    <Label Text="{Binding Name}"  TextColor="{StaticResource JobMeGray}" FontSize="20"
+                                               FontAttributes="Bold"  LineBreakMode="WordWrap"  HorizontalTextAlignment="Center"
+                                                AbsoluteLayout.LayoutBounds=".5,.6,300,50" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                                    </Label>
+                                                    <!--Nombre de la empresa-->
+                                                    <Label Text="{Binding Company}"  FontSize="Large"  TextColor="{StaticResource JobMeOrange}"
+                                               FontAttributes="Bold"  LineBreakMode="WordWrap" HorizontalTextAlignment="Center"
+                                               AbsoluteLayout.LayoutBounds=".5,.49,300,50" AbsoluteLayout.LayoutFlags="PositionProportional"></Label>
+
+                                                    <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               AbsoluteLayout.LayoutBounds="0.5,.99,.9,.33" AbsoluteLayout.LayoutFlags="All">
+                                                        <local:ChatEntry  WidthRequest="200"
+                                                                          Text="{Binding Description}" BackgroundColor="WhiteSmoke"  IsEnabled="False"
+                                                                          ></local:ChatEntry>
+
+                                                        <!--<Editor Text="{Binding Description}" BackgroundColor="WhiteSmoke"
+                                            WidthRequest="200" IsReadOnly="True" IsEnabled="False"
+                                             />-->
+                                                    </Frame>
+                                                </AbsoluteLayout>
+                                            </Frame>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </swipeCardView:SwipeCardView.ItemTemplate>
+                            </swipeCardView:SwipeCardView>
+
+                            <Label Text="{Binding LastItemText}" FontSize="Medium"
+                           VerticalOptions="Center" HorizontalOptions="Center"
+                           IsVisible="{Binding IsLastItem}" TextColor="Red"></Label>
+                        </Grid>
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10, 5, 10, 20" Spacing="30" BackgroundColor="Transparent">
+                            <StackLayout>
+                                <Button x:Name="nopeButton" Text="&#xf00d;" TextColor="{StaticResource JobMeOrange }"
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            WidthRequest="60" HeightRequest="55" CornerRadius="30"
+                             Clicked="OnDislikeClicked"
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                            </StackLayout>
+
+                            <StackLayout>
+                                <Button x:Name="likeButton" Text="&#xf00c;" TextColor="{StaticResource JobMeOrange }"
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                           Clicked="OnLikeClicked"
+                            WidthRequest="60" HeightRequest="55" CornerRadius="30"
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </syncfusion:SfPullToRefresh.PullableContent>
+            </syncfusion:SfPullToRefresh>
+        </sfPopup:SfPopupLayout.Content>
+    </sfPopup:SfPopupLayout>
+
+    <!--<ContentView.Content>
+
+        <syncfusion:SfPullToRefresh x:Name="pullToRefresh"
+                                    IsRefreshing="{Binding IsRefreshing}"
+                                    PullingThreshold="100"
+                                    RefreshContentHeight="30"
+                                    RefreshContentThreshold="30"
+                                    RefreshContentWidth="30"
+                                    RefreshCommand="{Binding RefreshCommand}">
+            <syncfusion:SfPullToRefresh.PullableContent>
+
+                <StackLayout BackgroundColor="White">
+                    <Grid x:Name="gridMain" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                        <swipeCardView:SwipeCardView
+                x:Name="SwipeCardView"
+                ItemsSource="{Binding Data}"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Padding="10"
+                      Threshold="{Binding Threshold}"
+                      SwipedCommand="{Binding SwipedCommand}"
+                   HeightRequest="400"
+                SupportedSwipeDirections="Left, Right"
+                SupportedDraggingDirections="Left, Right "
+                     Dragging="OnDragging">
+                            <swipeCardView:SwipeCardView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                        <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent" HasShadow="false">
+                                            <AbsoluteLayout>
+                                                -->
+    <!--<Image  Source="{Binding Logo, Converter={StaticResource bic}}" HorizontalOptions="Center"  AbsoluteLayout.LayoutBounds=".5,0.05,300,150" AbsoluteLayout.LayoutFlags="PositionProportional" />-->
+    <!--<Image Source="notfound.jpg" AbsoluteLayout.LayoutBounds=".5,1,.5,.1"
+                                                       HorizontalOptions="Center"  AbsoluteLayout.LayoutFlags="All"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="200"
+                                                   HeightRequest="180"
+                                                        ></Image>-->
+    <!--
+
+                                                <Image Source="{Binding Logo, Converter={StaticResource bic}}" AbsoluteLayout.LayoutBounds=".5,0,300,200"
+                                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                       HorizontalOptions="FillAndExpand"
+                                                   VerticalOptions="FillAndExpand"
+                                                        ></Image>
+
+                                                <Frame x:Name="LikeFrame"  BorderColor="#63DD99" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.1,.1, 150, 50"
+                                         AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="-20" Opacity="0">
+                                                    <Label x:Name="LikeText" Text="JobMe" TextColor="#63DD99" BackgroundColor="Transparent" HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                                </Frame>
+                                                <Frame x:Name="NopeFrame" BorderColor="#FF6A4F" BackgroundColor="Transparent" Padding="0" CornerRadius="20" AbsoluteLayout.LayoutBounds="0.9,.1, 150, 50"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"  Rotation="20" Opacity="0">
+                                                    <Label Text="NO" TextColor="Red" BackgroundColor="Transparent" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                                   VerticalOptions="CenterAndExpand" FontSize="40" FontAttributes="Bold"></Label>
+                                                </Frame>
+
+                                                -->
+    <!--Nombre del puesto-->
+    <!--
+                                                <Label Text="{Binding Name}"  TextColor="{StaticResource JobMeGray}" FontSize="20"
+                                               FontAttributes="Bold"  LineBreakMode="WordWrap"  HorizontalTextAlignment="Center"
+                                                AbsoluteLayout.LayoutBounds=".5,.6,300,50" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                                </Label>
+                                                -->
+    <!--Nombre de la empresa-->
+    <!--
+                                                <Label Text="{Binding Company}"  FontSize="Large"  TextColor="{StaticResource JobMeOrange}"
+                                               FontAttributes="Bold"  LineBreakMode="WordWrap" HorizontalTextAlignment="Center"
+                                               AbsoluteLayout.LayoutBounds=".5,.49,300,50" AbsoluteLayout.LayoutFlags="PositionProportional"></Label>
+
+                                                <Frame CornerRadius="10" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               AbsoluteLayout.LayoutBounds="0.5,1,.9,.35" AbsoluteLayout.LayoutFlags="All">
+                                                    <Editor Text="{Binding Description}" BackgroundColor="WhiteSmoke"
+                                            WidthRequest="200" IsReadOnly="True" IsEnabled="False" />
+                                                </Frame>
+                                            </AbsoluteLayout>
+                                        </Frame>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </swipeCardView:SwipeCardView.ItemTemplate>
+                        </swipeCardView:SwipeCardView>
+
+                        <Label Text="No more Jobs available right now" FontSize="Medium"
+                           VerticalOptions="Center" HorizontalOptions="Center"
+                           IsVisible="{Binding IsLastItem}" TextColor="Red"></Label>
+                    </Grid>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10, 10, 10, 20" Spacing="30">
+                        <StackLayout>
+                            <Button x:Name="nopeButton" Text="&#xf00d;" TextColor="{StaticResource JobMeOrange }"
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                             Clicked="OnDislikeClicked"
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                        </StackLayout>
+
+                        <StackLayout>
+                            <Button x:Name="likeButton" Text="&#xf00c;" TextColor="{StaticResource JobMeOrange }"
+                            FontFamily="{StaticResource fontawesome}" FontSize="30" FontAttributes="Bold"
+                           Clicked="OnLikeClicked"
+                            WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                            BackgroundColor="WhiteSmoke" Scale="1"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </syncfusion:SfPullToRefresh.PullableContent>
+        </syncfusion:SfPullToRefresh>
+    </ContentView.Content>-->
+</ContentView>

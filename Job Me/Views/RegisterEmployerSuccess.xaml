@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.RegisterEmployerSuccess">
+  <ContentView.Content>
+        <StackLayout BackgroundColor="White">
+
+            <Label Text="       NEW MEMBER       "
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,40,0,40"
+                HorizontalOptions="CenterAndExpand" />
+
+
+            <Image Source="congratulations.png"
+                   WidthRequest="100"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,40"></Image>
+
+            <Label Text="       CONGRATS!       "
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,0,0,40"
+                HorizontalOptions="CenterAndExpand" />
+
+            <Label Text="Find the best talent and"
+                   HorizontalOptions="Center"></Label>
+
+            <Label Text="Form the best team"
+                   HorizontalOptions="Center"></Label>
+
+
+
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

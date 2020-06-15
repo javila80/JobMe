@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:video="clr-namespace:FormsVideoLibrary"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employee.VideoLayoutView">
+    <ContentView.Content>
+        <AbsoluteLayout>
+             <video:VideoPlayer  x:Name="videoPlayer"  AreTransportControlsEnabled="False"    AutoPlay="False" >
+        <video:VideoPlayer.Source>
+            <video:ResourceVideoSource>
+                <video:ResourceVideoSource.Path>
+                    <OnPlatform x:TypeArguments="x:String">
+                                <On Platform="iOS" Value="Videos/Jobme1.mp4" />
+                                <On Platform="Android" Value="Jobme1.mp4" />
+                       
+                    </OnPlatform>
+                </video:ResourceVideoSource.Path>
+            </video:ResourceVideoSource>
+        </video:VideoPlayer.Source>
+    </video:VideoPlayer>
+        </AbsoluteLayout>
+      
+    </ContentView.Content>
+</ContentView>

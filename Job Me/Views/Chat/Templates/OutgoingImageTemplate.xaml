@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<customcontrols:BindableViewCell
+    xmlns:customcontrols="clr-namespace:JobMe.Views.Chat.Selectors"
+    x:Class="JobMe.Views.Chat.OutgoingImageTemplate"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+    xmlns:helper="clr-namespace:JobMe.Helpers"
+    x:Name="Cell"
+    xmlns:local1="clr-namespace:JobMe.Converter" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+
+    <ViewCell.View>
+
+        <!--  Outgoing image template  -->
+        <cards:SfCardView
+            helper:RTLHelper.CornerRadius="5, 0, 5, 5"
+            helper:RTLHelper.Margin="38, 12, 22, 0"
+            BackgroundColor="{DynamicResource PrimaryLight}"
+            BorderWidth="0"
+            HasShadow="False"
+            HorizontalOptions="End">
+
+            <cards:SfCardView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <local1:Base64ToImageConverter x:Key="ToImage"/>
+                </ResourceDictionary>
+            </cards:SfCardView.Resources>
+
+            <cards:SfCardView.Content>
+
+
+                <Grid Padding="2" VerticalOptions="FillAndExpand">
+
+                    <border:SfBorder BorderWidth="0" CornerRadius="5">
+                        <!--  Image  -->
+                        <ffimageloading:CachedImage 
+                                                    VerticalOptions="Start"
+                                                    HorizontalOptions="Start"                                                    
+			                                        WidthRequest="200" HeightRequest="150"
+                                                    BackgroundColor="{DynamicResource Gray-200}"
+			                                        DownsampleToViewSize="true"
+			                                        Source="{Binding Base64Photo}">
+                            <ffimageloading:CachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=ParentBindingContext.OutgoingImageTappedCommand, Source={x:Reference Cell}}"
+                              CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
+                            </ffimageloading:CachedImage.GestureRecognizers>
+                        </ffimageloading:CachedImage>
+
+                        <!--<Image
+                            Aspect="Fill"
+                            HeightRequest="150"
+                            HorizontalOptions="Start"
+							BackgroundColor="{DynamicResource Gray-200}"
+                            Source="{Binding Base64Photo}"
+                            VerticalOptions="Start"
+                            WidthRequest="200" >
+
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.OutgoingImageTappedCommand, Source={x:Reference Cell}}"
+                              CommandParameter="{Binding .}" />
+                            </Image.GestureRecognizers>
+                        </Image>-->
+                    </border:SfBorder>
+                    <!--Source="{Binding Base64Photo, Converter={StaticResource ToImage}}"-->
+                    <!--  Time  -->
+                    <Label
+                        Margin="5,0"
+                        FontSize="12"
+                        HorizontalOptions="End"
+                        Text="{Binding Time, StringFormat='{0:h:mm tt}'}"
+                        TextColor="{DynamicResource Gray-White}"
+                        VerticalOptions="End" />
+
+                </Grid>
+
+            </cards:SfCardView.Content>
+
+        </cards:SfCardView>
+    </ViewCell.View>
+</customcontrols:BindableViewCell>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:JobMe"
+             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:views1="clr-namespace:JobMe.Views.Employer"
+             xmlns:sync="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:local1="clr-namespace:JobMe.ViewModels"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:local2="clr-namespace:JobMe.Converter" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.EmpresaHomeView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <local2:ByteArrayToImageSourceConverter x:Key="bic" />
+            <local2:NegateBooleanConverter x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <ScrollView>
+            <StackLayout BackgroundColor="White">
+
+                <!--<border:SfBorder
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+               BackgroundColor="White"
+                CornerRadius="20"
+                BorderWidth="0"
+                HasShadow="True"
+                ShadowColor="Gray">-->
+                <StackLayout Margin="10,10,10,10">
+                    <Image Source="premium.png"
+                   Margin="10,10,0,0"
+                   HorizontalOptions="Start" WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_Tapped_2"
+                    NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <ffimageloading:CachedImage HorizontalOptions="Center" VerticalOptions="Center" FadeAnimationEnabled="False"
+			WidthRequest="200" HeightRequest="100"
+            IsVisible="{Binding IsLogoVisible, Converter={StaticResource inverter}}"
+			DownsampleToViewSize="true"
+			Source="{Binding Logo, Converter={StaticResource bic}}">
+                    </ffimageloading:CachedImage>
+
+                    <!--<Image Aspect="AspectFit" Source="{Binding Logo, Converter={StaticResource bic}}" HorizontalOptions="Center"  HeightRequest="100" WidthRequest="200" IsVisible="{Binding IsLogoVisible, Converter={StaticResource inverter}}" />-->
+                    <Image Source="notfound.jpg" HorizontalOptions="Center" Aspect="AspectFit" IsVisible="{Binding IsLogoVisible}" HeightRequest="100"></Image>
+                    <Label Text="{Binding Company}" HorizontalOptions="Center" FontSize="Medium" TextColor="{StaticResource JobMeGray}" ></Label>
+
+                    <local:ChatEntry  WidthRequest="300" HeightRequest="160"
+                                      Text="{Binding Description}" BackgroundColor="WhiteSmoke"  IsEnabled="False"
+                                      TextColor="{StaticResource JobMeGray}"
+                                                ></local:ChatEntry>
+
+                    <!--<Editor  Placeholder="{Binding Description}"
+                                             WidthRequest="300" HeightRequest="160"
+                                             TextColor="{StaticResource JobMeGray}"
+                         BackgroundColor="WhiteSmoke"  IsEnabled="False"    />-->
+                </StackLayout>
+                <!--</border:SfBorder>-->
+
+                <Image Aspect="AspectFit" Source="jobs.png" HorizontalOptions="Center" Margin="0,30,0,0" WidthRequest="40">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="{Binding AddJobslbl}" FontSize="Small" HorizontalOptions="Center"  Margin="0,0,0,10" TextColor="{StaticResource JobMeGray}"
+                       ></Label>
+                <Image Aspect="AspectFit" Source="business.jpg" HorizontalOptions="Center"  WidthRequest="40">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_Tapped_1" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="{Binding EditVacancieslbl}" FontSize="Small" HorizontalOptions="Center" TextColor="{StaticResource JobMeGray}"></Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentView.Content>
+</ContentView>

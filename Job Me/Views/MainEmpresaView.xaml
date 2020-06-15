@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+             xmlns:views="clr-namespace:JobMe.Views"
+             xmlns:views1="clr-namespace:JobMe.Views.Employer"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.MainEmpresaView">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+
+            <Label Text="Job Me"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="White"
+                    Margin="80,0,0,0"
+                  FontAttributes="Bold"
+                   FontSize="20" />
+
+            <Button Text="&#xf013;"
+                   HorizontalOptions="End"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="White"
+                 FontAttributes="Bold"
+                   FontFamily="{StaticResource fontawesome}"
+                   Margin="0,0,0,0"
+                    BackgroundColor="Transparent"
+                    Clicked="TapGestureRecognizer_Tapped"
+                   FontSize="25">
+
+                <!--<Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                    Tapped ="TapGestureRecognizer_Tapped"
+                    NumberOfTapsRequired="1" />
+                </Label.GestureRecognizers>-->
+            </Button>
+        </StackLayout>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="fonts"
+                        iOS="NestedTab"
+                       Android="NestedTab.ttf#NestedTab" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <tabView:SfTabView BackgroundColor="{StaticResource JobMeOrange}"  x:Name="tabview"
+                           TabHeaderPosition="Bottom"
+                           TabHeight="60"
+                           EnableSwiping="False"
+                           VisibleHeaderCount="3"
+                           DisplayMode="Image"
+                           SelectionChanged="tabview_SelectionChanged"
+                           HeightRequest="600">
+            <tabView:SfTabView.SelectionIndicatorSettings>
+                <tabView:SelectionIndicatorSettings Color="White" Position="Fill" />
+            </tabView:SfTabView.SelectionIndicatorSettings>
+
+            <!--HOME-->
+            <tabView:SfTabItem  Title="Home"
+                                       TitleFontSize="20"
+                                       IconFont="M"
+                                       FontIconFontFamily="{StaticResource fonts}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+
+                <tabView:SfTabItem.Content>
+                    <!--Aqui va la vista de la hoja 1-->
+                    <views1:EmpresaHomeView />
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Title="Activity" TitleFontSize="18"
+                                       IconFont="&#xf004;"
+                                       FontIconFontFamily="{StaticResource fontawesome}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+                <tabView:SfTabItem.Content>
+                    <!--Aqui va la vista de la hoja 2-->
+                    <views1:ActivityEmpresaView />
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+            <tabView:SfTabItem Title="ChatMe"  TitleFontSize="18"
+                                       IconFont="t"
+                                       FontIconFontFamily="{StaticResource fonts}"
+                                       SelectionColor="{StaticResource JobMeOrange}"
+                                       FontIconFontColor="White"
+                                       TitleFontColor="#FF00AFF0">
+                <tabView:SfTabItem.Content>
+                    <!--Aqui va la vista de la hoja 3-->
+                    <views:ChatMeEmpresa></views:ChatMeEmpresa>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+    </ContentPage.Content>
+</ContentPage>

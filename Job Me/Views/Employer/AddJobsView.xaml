@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"            
+             xmlns:local1="clr-namespace:JobMe.ViewModels"
+             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employer.AddJobView">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Red" />
+            </Style>
+            <Style x:Key="InactiveIndicator" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="OutlineColor" Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+ 
+    <ContentPage.Content>
+
+        <StackLayout  BackgroundColor="White">
+
+            <!--<controls:CarouselViewControl Position="0" x:Name="carouselView"  IsVisible="True"
+                                        ShowIndicators="True"
+                                          ShowArrows="False"                                                 
+                                            ItemsSource="{Binding CarouselColllection}"
+                                           IndicatorsTintColor="{StaticResource JobMeOrange}"
+                                          ItemTemplate="{Binding TemplateSelector}" 
+                                          BackgroundColor="White"                                                   
+                                    
+                                          VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0"/>-->
+
+            <!--<syncfusion:SfRotator x:Name="rotator"  
+                              ItemsSource="{Binding CarouselColllection}"
+                              ItemTemplate="{Binding TemplateSelector}"
+                              NavigationDirection="Horizontal"
+                              NavigationStripMode="Dots"
+                                  SelectedDotColor="White"
+                                  DotsBorderColor="{StaticResource JobMeOrange}" 
+                                  VerticalOptions="FillAndExpand"
+                                  UnselectedDotColor="{StaticResource JobMeOrange}"
+                                  EnableLooping="False" 
+                              BackgroundColor="White"                         
+                                  DotPlacement="OutSide"
+                              NavigationStripPosition="Bottom"                                       
+                                HorizontalOptions="FillAndExpand"   
+                                  Margin="0,0,0,0"       >
+
+            </syncfusion:SfRotator>-->
+            <CarouselView x:Name="carouselView" ItemsSource="{Binding CarouselColllection}"
+                              BackgroundColor="White"                                             
+                                Position="{Binding Position}"
+                          
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"     
+                              IsScrollAnimated="False"
+                              IsSwipeEnabled="True"
+                           IndicatorView="indicator"
+                              ItemTemplate="{Binding TemplateSelector}"
+                              >
+            </CarouselView>
+            <IndicatorView IndicatorsShape="Circle"   x:Name="indicator"                    
+                       IndicatorColor="{StaticResource JobMeOrange}"
+                       SelectedIndicatorColor="DarkGray"
+                       HorizontalOptions="Center"
+                       Margin="0,5,0,10" />
+
+        </StackLayout>
+      
+    </ContentPage.Content>
+</ContentPage>

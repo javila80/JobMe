@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X5k-f2-b5h">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="gAE-YM-kbH">
+            <objects>
+                <viewController id="X5k-f2-b5h" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Y8P-hJ-Z43"/>
+                        <viewControllerLayoutGuide type="bottom" id="9ZL-r4-8FZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yd7-JS-zBw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="23" translatesAutoresizingMaskIntoConstraints="NO" adjustsImageSizeForAccessibilityContentSizeCategory="YES" image="1024X1024BCO.png">
+                                <rect key="frame" x="126" y="295" width="162" height="160"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="1" height="1"/>
+                                <constraints>
+                                    <constraint id="1364" firstAttribute="height" constant="160"/>
+                                    <constraint id="1365" firstAttribute="width" constant="162"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="1" alpha="1"/>
+                        <constraints>
+                            <constraint id="1361" firstItem="23" firstAttribute="centerX" secondItem="yd7-JS-zBw" secondAttribute="centerX"/>
+                            <constraint id="1362" firstItem="23" firstAttribute="centerY" secondItem="yd7-JS-zBw" secondAttribute="centerY" constant="7"/>
+                            <constraint id="1363" firstItem="23" firstAttribute="centerX" secondItem="yd7-JS-zBw" secondAttribute="centerX"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XAI-xm-WK6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="349" y="339"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="1024X1024BCO.png" width="1024" height="1024"/>
+    </resources>
+</document>

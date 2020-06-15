@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:btn="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:local="clr-namespace:JobMe.ViewModels"
+             mc:Ignorable="d"
+             x:Name="RegisterMyEmployer"
+             x:Class="JobMe.Views.SuccessRegister">
+    <!--<ContentPage.Content>
+        <StackLayout BackgroundColor="White" Padding="80,0,80,0">
+            <Label Text="       CONGRATS!       "
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,20,0,40"
+                HorizontalOptions="CenterAndExpand" />
+
+
+            <Image Source="congratulations.png"
+                   WidthRequest="100"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,60,0,40"></Image>
+
+            <Label Text="Show the world"
+                   HorizontalOptions="Center"></Label>
+
+            <Label Text="who you really are"
+                   HorizontalOptions="Center"></Label>
+
+            <Button Text="Start Here"
+                    Margin="0,20,0,0"
+                          CornerRadius="10"
+                          FontSize="14"
+                          VerticalOptions="Center"
+                          TextColor="White"                        
+                          Clicked="Button_Clicked"
+                          BackgroundColor="{StaticResource JobMeOrange}"></Button>
+        </StackLayout>
+    </ContentPage.Content>-->
+
+    <ContentPage.Resources>
+       
+        <DataTemplate x:Key="CongratsTemplate">
+            <StackLayout BackgroundColor="White" VerticalOptions="CenterAndExpand">
+
+                <Label Text="{Binding Path=BindingContext.NewMemberlbl, Source={x:Reference RegisterMyEmployer}}" 
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,80,0,40"
+                HorizontalOptions="CenterAndExpand" />
+
+
+                <Image Source="congratulations.png"
+                   WidthRequest="100"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,40"></Image>
+
+                <Label Text="{Binding Path=BindingContext.Congratslbl, Source={x:Reference RegisterMyEmployer}}" 
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,0,0,60"
+                HorizontalOptions="CenterAndExpand" />
+
+                <Label  Text="{Binding Path=BindingContext.txt4, Source={x:Reference RegisterMyEmployer}}" 
+                        TextColor="{StaticResource JobMeGray}"
+                   HorizontalOptions="Center"></Label>
+
+                <Label Text="{Binding Path=BindingContext.txt5, Source={x:Reference RegisterMyEmployer}}" 
+                        TextColor="{StaticResource JobMeGray}"
+                   HorizontalOptions="Center"></Label>
+
+
+
+            </StackLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartTemplate">
+            <StackLayout BackgroundColor="White" VerticalOptions="CenterAndExpand">
+
+                <Label Text="{Binding Path=BindingContext.NewMemberlbl, Source={x:Reference RegisterMyEmployer}}" 
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,100,0,40"
+                HorizontalOptions="CenterAndExpand" />
+
+
+                <Label Text="&#xf1d8;"
+                   TextColor="{StaticResource JobMeGray}"
+                   FontFamily="{StaticResource fontawesome}"
+                   FontSize="80"
+                   FontAttributes="{StaticResource FontAttrib}"
+                  
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,40"></Label>
+
+                <!--<Label Text="{Binding Path=BindingContext.Congratslbl, Source={x:Reference RegisterMyEmployer}}" 
+                VerticalOptions="Center" 
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}"
+                   Margin="0,0,0,40"
+                HorizontalOptions="CenterAndExpand" />-->
+
+                <Label Text="{Binding Path=BindingContext.txt1, Source={x:Reference RegisterMyEmployer}}" 
+                   HorizontalOptions="Center" TextColor="{StaticResource JobMeGray}"></Label>
+
+                <Label Text="{Binding Path=BindingContext.txt2, Source={x:Reference RegisterMyEmployer}}" 
+                   HorizontalOptions="Center" TextColor="{StaticResource JobMeGray}"></Label>
+
+                <Label Text="{Binding Path=BindingContext.txt3, Source={x:Reference RegisterMyEmployer}}" 
+                   HorizontalOptions="Center"
+                       Margin="0,0,0,30"
+                       TextColor="{StaticResource JobMeGray}"></Label>
+
+                <btn:SfButton   Text="{Binding Path=BindingContext.StarHerelbl, Source={x:Reference RegisterMyEmployer}}" 
+                              Grid.Column="1"
+                            TextColor="White"
+                            WidthRequest="200"
+                            CornerRadius="30"
+                            HorizontalOptions="Center"
+                                Command="{Binding Path=BindingContext.StartCommand, Source={x:Reference RegisterMyEmployer}}"  
+                            BackgroundColor="{StaticResource JobMeOrange}"></btn:SfButton>
+
+            </StackLayout>
+        </DataTemplate>
+
+        <local:NewEmployerTemplateSelector x:Key="TemplateSelector"                                           
+                                           CongratsTemplate="{StaticResource CongratsTemplate}"
+                                           StartTemplate="{StaticResource StartTemplate}"/>
+    </ContentPage.Resources>
+    <Grid>
+
+
+        <StackLayout>
+            <CarouselView x:Name="carouselView" ItemsSource="{Binding CarouselColllection}"
+                              BackgroundColor="White"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"                  
+                              IsSwipeEnabled="{Binding CanSwipe}"
+                           IndicatorView="indicatorView"
+                              Position="{Binding Position}"
+                              ItemTemplate="{StaticResource  TemplateSelector}">
+
+            </CarouselView>
+            <IndicatorView x:Name="indicatorView"
+                           IndicatorsShape="Circle"                    
+                       BackgroundColor="White"
+                       IndicatorColor="{StaticResource JobMeOrange}"
+                       SelectedIndicatorColor="DarkGray"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,15" />
+            <!--<Label Text="About us" HorizontalOptions="CenterAndExpand" VerticalOptions="End" FontSize="Small"  ></Label>-->
+        </StackLayout>
+        <ActivityIndicator Color="{StaticResource JobMeOrange}" IsRunning="{Binding IsBusy}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+        </ActivityIndicator>
+
+    </Grid>
+
+</ContentPage>

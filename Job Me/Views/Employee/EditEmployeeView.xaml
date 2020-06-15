@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+             xmlns:badge ="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+             xmlns:local2="clr-namespace:JobMe.Converter" xmlns:popuplayout="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms" xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:ffTrans="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="JobMe.Views.Employee.EditEmployeeView">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local2:ByteArrayToImageSourceConverter x:Key="bic" />
+            <local2:StringToUriConverter x:Key="StringToUriConverter" />
+            <local2:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <popuplayout:SfPopupLayout x:Key="RelativeDialog" 
+                                       RelativePosition="AlignBottom" 
+                                       RelativeView="{x:Reference gridimagen}">
+                <popuplayout:SfPopupLayout.PopupView>
+                    <popuplayout:PopupView ShowHeader="False"
+                                         AnimationMode="Zoom"
+                                           WidthRequest="140"
+                                          ShowCloseButton="False"
+                                           ShowFooter="False"
+                                            AutoSizeMode="Height"
+                                           >
+                        <popuplayout:PopupView.ContentTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal" BackgroundColor="White" Padding="0,0,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" >
+                                    <buttons:SfButton FontSize="25"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                                           BackgroundColor="Transparent" 
+                                            FontFamily="{StaticResource fontawesome}"                                   
+                                            FontAttributes="{StaticResource FontAttrib}"
+                                            Text="&#xf030;"
+                                                      Command="{Binding AvatarTapCommand}"  CommandParameter="{StaticResource RelativeDialog}"
+                                           TextColor="{StaticResource JobMeOrange}" 
+                                          />
+                                    <buttons:SfButton FontSize="25"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                                           BackgroundColor="Transparent" 
+                                            FontFamily="{StaticResource fontawesome}"                                   
+                                            FontAttributes="{StaticResource FontAttrib}"
+                                            Text="&#xf07c;" Command="{Binding PickFileTapCommand}"  CommandParameter="{StaticResource RelativeDialog}"
+                                           TextColor="{StaticResource JobMeOrange}" 
+                                          />
+                                </StackLayout>
+                            </DataTemplate>
+                        </popuplayout:PopupView.ContentTemplate>
+                    </popuplayout:PopupView>
+                </popuplayout:SfPopupLayout.PopupView>
+            </popuplayout:SfPopupLayout>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" >
+
+
+            <Label Text="{Binding Editinfolbl}"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                    TextColor="White"
+                  FontAttributes="Bold"
+                   FontSize="20"/>
+
+            <!--boton de engrane-->
+            <buttons:SfButton
+                HorizontalOptions="End"
+                VerticalOptions="CenterAndExpand"
+                Margin="0,0,20,0"
+               
+                FontFamily="{StaticResource fontawesome}"                                   
+                FontAttributes="{StaticResource FontAttrib}"
+                Clicked="TapGestureRecognizer_Tapped"
+                Text="&#xf2ed;"
+                BackgroundColor="Transparent"
+                FontSize="25"
+                TextColor="White"
+                    />
+
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+
+
+        <ScrollView>
+            <StackLayout Padding="70,10,70,20" Spacing="15">
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <!--Badge View-->
+                <Grid x:Name="gridimagen" BackgroundColor="Transparent">
+                    <!--<Grid.GestureRecognizers>
+                        <TapGestureRecognizer  Command="{Binding OpenRelativeDialog}"  NumberOfTapsRequired="1"
+                                CommandParameter="{StaticResource RelativeDialog}">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>-->
+                    <!--<badge:SfBadgeView HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                        <badge:SfBadgeView.BadgeSettings >
+                            <badge:BadgeSetting BadgeType="None"
+                                                                   BadgeIcon="Add"
+                                                                   BadgePosition="BottomRight"
+                                                                   Offset="-8,-5"
+                                                        TextPadding="7"
+                                                        StrokeWidth="4"
+                                                        FontSize="15" >
+                            </badge:BadgeSetting>
+                        </badge:SfBadgeView.BadgeSettings>
+                        -->
+                    <!--ImageSource="{Binding PhotoURL}"-->
+                    <!--
+
+                        <sfavatar:SfAvatarView ContentType="Custom"                           
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"   
+                               BorderColor="{StaticResource JobMeGray}"
+                               BackgroundColor="WhiteSmoke"
+                               HeightRequest="80"
+                               CornerRadius="45"
+                             
+                              IsVisible="{Binding IsUriVisible}"
+                               WidthRequest="80" >
+                            <sfavatar:SfAvatarView.ImageSource>
+                                <StreamImageSource Stream=""></StreamImageSource>
+                                -->
+                    <!--<UriImageSource Uri ="{Binding Mifoto}"  CachingEnabled="False" />-->
+                    <!--
+                            </sfavatar:SfAvatarView.ImageSource>
+                        </sfavatar:SfAvatarView>
+                    </badge:SfBadgeView>-->
+
+                    <ff:CachedImage x:Name= "Logo" Source="{Binding MiFotostr}" CacheDuration="1"  HeightRequest="80" WidthRequest="80"  DownsampleToViewSize = "true" LoadingPlaceholder = "Foto"
+                ErrorPlaceholder     = "Error">
+                        <ff:CachedImage.Transformations>
+                            <ffTrans:CircleTransformation   />
+                        </ff:CachedImage.Transformations>
+                            <ff:CachedImage.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding OpenRelativeDialog}" NumberOfTapsRequired="1"
+                                                       CommandParameter="{StaticResource RelativeDialog}">
+                                </TapGestureRecognizer>
+                            </ff:CachedImage.GestureRecognizers>
+                    </ff:CachedImage>
+                    <!--<badge:SfBadgeView HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                        <badge:SfBadgeView.BadgeSettings >
+                            <badge:BadgeSetting BadgeType="None"
+                                                               BadgeIcon="Add"
+                                                               BadgePosition="BottomRight"
+                                                               Offset="-8,-5"
+                                                    TextPadding="7"
+                                                    StrokeWidth="4"
+                                                    FontSize="15" >
+                            </badge:BadgeSetting>
+                        </badge:SfBadgeView.BadgeSettings>
+
+                        --><!--ImageSource="{Binding Fotico, Converter={StaticResource ByteArrayToImageSourceConverter}}"--><!--
+                        <sfavatar:SfAvatarView ContentType="Custom"                     
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"   
+                           BorderColor="{StaticResource JobMeGray}"
+                           BackgroundColor="WhiteSmoke"
+                           HeightRequest="80"
+                           CornerRadius="45"
+                            ImageSource="{Binding MiFotostr}"
+                           IsVisible="True"
+                           WidthRequest="80" >
+                            <sfavatar:SfAvatarView.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding OpenRelativeDialog}" NumberOfTapsRequired="1"
+                                                       CommandParameter="{StaticResource RelativeDialog}">
+                                </TapGestureRecognizer>
+                            </sfavatar:SfAvatarView.GestureRecognizers>
+    
+
+                        </sfavatar:SfAvatarView>
+                    </badge:SfBadgeView>-->
+
+                </Grid>
+                 
+                    <Button  Text="&#xf055;" Margin="-30,60,0,0" FontSize="Large" BackgroundColor="White" VerticalOptions="Center" Padding="0" IsEnabled="False"
+                   HorizontalOptions="Center"  FontFamily="{StaticResource fontawesome}" WidthRequest="24" HeightRequest="24" CornerRadius="10" FontAttributes="Bold"
+                   TextColor="{StaticResource JobMeOrange}" ></Button>
+                    <!--<Image Source="jobme.png"  Margin="-40,60,0,0" VerticalOptions="Start"
+                                                             HorizontalOptions="Center" WidthRequest="10"
+                                                             HeightRequest="10"/>-->
+                  
+                </StackLayout>
+                <buttons:SfButton Text="Edit Photo" BackgroundColor="Transparent"
+                   HorizontalOptions="Center" Command="{Binding OpenRelativeDialog}"  
+                                CommandParameter="{StaticResource RelativeDialog}"
+                   TextColor="{StaticResource JobMeGray}">
+
+                </buttons:SfButton>
+
+                <!--Icono de CV-->
+                <buttons:SfButton Text="&#xf15c;"
+                   HorizontalOptions="CenterAndExpand"
+                    FontFamily="{StaticResource fontawesome}"
+                   FontSize="60"
+                   VerticalOptions="Center"
+                   BackgroundColor="WhiteSmoke"
+                   Command="{Binding CVTapCommand}"
+                   FontAttributes="{StaticResource FontAttrib}"
+                   TextColor="{StaticResource JobMeGray}"></buttons:SfButton>
+
+                <Label Text="Edit CV"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource JobMeGray}"></Label>
+
+                <!--Botones-->
+                <buttons:SfButton Text="{Binding Essentiallbl}" x:Name="Essential" 
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding BntCommand}"
+                              CommandParameter="Essential"
+                              BackgroundColor="{StaticResource JobMeOrange}" />
+
+                <buttons:SfButton Text="{Binding Interestlbl}" x:Name="Interest"
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding BntCommand}"
+                              CommandParameter="Interest"
+                              BackgroundColor="{StaticResource JobMeOrange}" />
+
+                <buttons:SfButton Text="{Binding Academicslbl}" x:Name="Academics"
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding BntCommand}"
+                              CommandParameter="Academics"
+                              BackgroundColor="{StaticResource JobMeOrange}" />
+
+                <buttons:SfButton Text="{Binding Jobslbl}" x:Name="Jobs"
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding BntCommand}"
+                              CommandParameter="Jobs"
+                              BackgroundColor="{StaticResource JobMeOrange}" />
+
+                <buttons:SfButton Text="{Binding Otherslbl}" x:Name="Others"
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding BntCommand}"
+                              CommandParameter="Others"
+                              BackgroundColor="{StaticResource JobMeOrange}" />
+
+                <!--<Button x:Name="relativePopupButton" 
+                            Text="RELATIVE DIALOG" 
+                            CornerRadius="5"  
+                            BackgroundColor="#0059ff"         
+                            TextColor="White" 
+                            HeightRequest="40"
+                            Command="{Binding OpenRelativeDialog}"
+                            CommandParameter="{StaticResource RelativeDialog}"
+                            />-->
+
+
+
+                <buttons:SfButton Text="{Binding Logoutlbl}"
+                              CornerRadius="5"
+                              HeightRequest="40"
+                              FontFamily="14"
+                              VerticalOptions="Center"
+                              TextColor="White"
+                              Command="{Binding LogOutCommand}"
+                              BackgroundColor="{StaticResource JobMeGray}" />
+
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

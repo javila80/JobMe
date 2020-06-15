@@ -1,0 +1,300 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MyDataTemplateSelector.cs" />
+    <Compile Remove="ViewModels\ActivityViewModel.cs" />
+    <Compile Remove="ViewModels\ChatViewModel.cs" />
+    <Compile Remove="ViewModels\Employer\AddEmployerViewModel.cs" />
+    <Compile Remove="ViewModels\Employer\EditJobDetailViewModel.cs" />
+    <Compile Remove="ViewModels\Employer\NewEmployerTemplateSelector.cs" />
+    <Compile Remove="Views\Chat\ChatNew.xaml.cs" />
+    <Compile Remove="Views\Chat\RecentChatPage.xaml.cs" />
+    <Compile Remove="Views\Employee\VideoLayoutView.xaml.cs" />
+    <Compile Remove="Views\Employer\AddEmployerMain.xaml.cs" />
+    <Compile Remove="Views\Employer\EditJobDetail.xaml.cs" />
+    <Compile Remove="Views\MainPage.xaml.cs" />
+    <Compile Remove="Views\MenuPage.xaml.cs" />
+    <Compile Remove="Views\RegisterEmployerSuccess.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\Chat\ChatNew.xaml" />
+    <EmbeddedResource Remove="Views\Chat\RecentChatPage.xaml" />
+    <EmbeddedResource Remove="Views\Employee\VideoLayoutView.xaml" />
+    <EmbeddedResource Remove="Views\Employer\AddEmployerMain.xaml" />
+    <EmbeddedResource Remove="Views\Employer\EditJobDetail.xaml" />
+    <EmbeddedResource Remove="Views\MainPage.xaml" />
+    <EmbeddedResource Remove="Views\MenuPage.xaml" />
+    <EmbeddedResource Remove="Views\RegisterEmployerSuccess.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Jobme1.mp4" />
+    <None Remove="Assets\page1.html" />
+    <None Remove="Assets\Privacy.pdf" />
+    <None Remove="Assets\Termsandconditions.pdf" />
+    <None Remove="Images\notfound.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Jobme1.mp4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.442" />
+    <PackageReference Include="CardsView" Version="2.6.1" />
+    <PackageReference Include="CarouselView.FormsPlugin" Version="5.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="3.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MLToolkit.Forms.SwipeCardView" Version="2.1.0" />
+    <PackageReference Include="Octane.Xam.VideoPlayer" Version="3.1.0" />
+    <PackageReference Include="Plugin.MediaManager.Forms" Version="0.9.7" />
+    <PackageReference Include="Syncfusion.Licensing" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.Cards" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.Core" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.DocIO" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfBadgeView" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChat" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfMaskedEdit" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPdfViewer" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPicker" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPopupLayout" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="18.1.0.45" />
+    <PackageReference Include="Syncfusion.Xamarin.SfTabView" Version="18.1.0.45" />
+    <PackageReference Include="Xam.Forms.VideoPlayer" Version="1.0.7" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />  
+    <PackageReference Include="Xamarin.Plugin.FilePicker" Version="2.1.34" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Chat\ChatMeEmpresa.xaml.cs">
+      <DependentUpon>ChatMeEmpresa.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Chat\Templates\IncomingVideoTemplate.xaml.cs">
+      <DependentUpon>IncomingVideoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Chat\Templates\OutgoingVideoTemplate.xaml.cs">
+      <DependentUpon>OutgoingVideoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Employee\RegisterEmployeeView.xaml.cs">
+      <DependentUpon>RegisterEmployeeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Employer\AddJobsView.xaml.cs">
+      <DependentUpon>AddJobsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Employer\PositionSelectedView.xaml.cs">
+      <DependentUpon>PositionSelectedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Employer\RegisterEmployerView.xaml.cs">
+      <DependentUpon>RegisterEmployerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\VideoOthers.xaml.cs">
+      <DependentUpon>VideoOthers.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\VideoJobs.xaml.cs">
+      <DependentUpon>VideoJobs.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ViewModels\Employee\View1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Chat\Templates\IncomingFileTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Chat\Templates\OutgoingFileTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\ActivityView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Chat\ChatMe.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CV.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\CardLayoutView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\EditEmployeeDetail.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\EditEmployeeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\Register\RegisterNew.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\Register\Templates\Fake.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\ActivityEmpresaView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\AddMoreContacts.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\Chat1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EditContacts.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EditEmployerView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EditInfo.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EditJobView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\PositionSelectedView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EmpresaHomeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\AddJobsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ForgotPasswordView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LargePhoto.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MainEmpresaView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Payment\Credit.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\RegisterEmployeeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\EmpresaEssentialView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employer\RegisterEmployerView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Employee\HomeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LandingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MainEmployeeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PrivacyHtml.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PrivacyView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SuccessRegister.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TermsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Test.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Video.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Video1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\VideoPublicidad.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\WebView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\CV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\ItemDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\ItemsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\MenuPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\NewItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Video.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Syncfusion.SfTabView.XForms">
+      <HintPath>..\..\..\..\Users\juan.avila\Desktop\SfTabView\netstandard2.0\Syncfusion.SfTabView.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.iOS">
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\Xamarin.iOS\v1.0\Xamarin.iOS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\page1.html" />
+    <EmbeddedResource Include="Assets\Privacy.pdf" />
+    <EmbeddedResource Include="Assets\Termsandconditions.pdf" />
+    <EmbeddedResource Include="Images\notfound.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chat\TheChat.Core\TheChat.Core.csproj" />
+  </ItemGroup>
+</Project>

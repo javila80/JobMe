@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.Views.Employee.EditEmployeeDetail">
+    <ContentPage.Content>
+
+        <StackLayout Padding="10,10,15,0" BackgroundColor="White">
+
+            <CarouselView x:Name="carouselView" ItemsSource="{Binding CarouselColllection}"
+                              BackgroundColor="White"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"       
+                              IndicatorView="indicatorView"
+                              ItemTemplate="{Binding TemplateSelector}">
+            </CarouselView>
+            <IndicatorView x:Name="indicatorView"
+                           IndicatorsShape="Circle"                      
+                       IndicatorColor="{StaticResource JobMeOrange}"
+                       SelectedIndicatorColor="DarkGray"
+                       BackgroundColor="White"
+                       HorizontalOptions="Center"
+                       IsVisible="True"
+                       Margin="0,0,0,40" />
+
+            <!--<syncfusion:SfRotator x:Name="rotator"  
+                              ItemsSource="{Binding CarouselColllection}"
+                              ItemTemplate="{Binding TemplateSelector}"
+                              NavigationDirection="Horizontal"
+                              NavigationStripMode="Dots"
+                                  SelectedDotColor="White"
+                                  DotsBorderColor="{StaticResource JobMeOrange}" 
+                                  VerticalOptions="FillAndExpand"
+                                  UnselectedDotColor="{StaticResource JobMeOrange}"
+                                 
+                                  EnableLooping="False" 
+                              BackgroundColor="White"
+                                  DotPlacement="OutSide"
+                              NavigationStripPosition="Bottom"
+                                
+                                  Margin="0,0,0,10"
+                                   
+                            >
+            </syncfusion:SfRotator>-->
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:syncTheme="clr-namespace:JobMe.Themes"
+             xmlns:syncTheme1="clr-namespace:Syncfusion.XForms.Themes;assembly=Syncfusion.Core.XForms"
+             mc:Ignorable="d"
+             x:Class="JobMe.App">
+
+    <Application.Resources>
+
+        <syncTheme1:SyncfusionThemeDictionary >
+            <syncTheme1:SyncfusionThemeDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <x:String x:Key="SfTextInputLayoutTheme">CustomTheme</x:String>
+                    <Color x:Key="SyncPrimaryColor">OrangeRed</Color>
+                    <Color x:Key="SfTextInputLayoutLineColor">Whitesmoke</Color>
+                    <Color x:Key="SfTextInputLayoutHintColor">#a6a6a6</Color>
+                    <Color x:Key="NavigationPrimary">#ffffff</Color>
+                    <Style TargetType="NavigationPage">
+                        <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
+                        <Setter Property="BarTextColor" Value="White" />
+                    </Style>
+
+
+
+                    <OnPlatform x:TypeArguments="x:String" x:Key="Titulos">
+                        <On Platform="Android" Value="Arial_Rounded_MT.ttf#Arial Rounded MT" />
+                        <On Platform="iOS" Value="Arial Rounded MT" />
+                    </OnPlatform>
+
+                    <OnPlatform x:TypeArguments="x:String" x:Key="Normal">
+                        <On Platform="Android" Value="robotobold.ttf#Roboto Bold" />
+                        <On Platform="iOS" Value="Roboto Bold" />
+                    </OnPlatform>
+
+                    <OnPlatform x:TypeArguments="x:String"  x:Key="fontawesome">
+                        <On Platform="iOS" Value="Font Awesome 5 Free" />
+                        <On Platform="Android" Value="FontSolid-900.otf#Font Awesome 5 Free" />
+                    </OnPlatform>
+
+
+                    <OnPlatform x:Key="FontAttrib"
+                         x:TypeArguments="FontAttributes">
+                        <On Platform="Android">None</On>
+                        <On Platform="iOS">Bold</On>
+
+                    </OnPlatform>
+
+                    <Color x:Key="JobMeOrange">#ff4403</Color>
+                    <Color x:Key="JobMeGray">#a6a6a6</Color>
+           
+                </ResourceDictionary>
+            </syncTheme1:SyncfusionThemeDictionary.MergedDictionaries>
+        </syncTheme1:SyncfusionThemeDictionary>
+
+        <!--<ResourceDictionary>
+
+            <Color x:Key="NavigationPrimary">#ffffff</Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+
+
+
+            <OnPlatform x:TypeArguments="x:String" x:Key="Titulos">
+                <On Platform="Android" Value="Arial_Rounded_MT.ttf#Arial Rounded MT" />
+                <On Platform="iOS" Value="Arial Rounded MT" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String" x:Key="Normal">
+                <On Platform="Android" Value="robotobold.ttf#Roboto Bold" />
+                <On Platform="iOS" Value="Roboto Bold" />
+            </OnPlatform>
+
+            <Color x:Key="JobMeOrange">#ff4403</Color>
+            <Color x:Key="JobMeGray">#a6a6a6</Color>
+        </ResourceDictionary>-->
+
+
+    </Application.Resources>
+
+</Application>
