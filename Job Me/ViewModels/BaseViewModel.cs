@@ -10,6 +10,7 @@ using JobMe.Services;
 
 namespace JobMe.ViewModels
 {
+
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
