@@ -4,6 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             xmlns:panCardView="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
              NavigationPage.HasNavigationBar="true" NavigationPage.HasBackButton="{Binding NavPage}"           
              mc:Ignorable="d"
              x:Class="JobMe.Views.Employee.RegisterEmployeeView">
@@ -35,7 +37,7 @@
 
     <ContentPage.Content >
 
-        <StackLayout VerticalOptions="FillAndExpand" Margin="5,5,5,1" BackgroundColor="White">
+        <StackLayout VerticalOptions="FillAndExpand" Margin="5,5,5,0" BackgroundColor="Transparent">
 
             <!--<Grid Padding="0,0,15,0" VerticalOptions="FillAndExpand" Margin="5,5,0,0">-->
             <!--<StackLayout>-->
@@ -76,7 +78,7 @@
                        HorizontalOptions="Center"
                        Margin="0,0,0,10" />-->
 
-            <syncfusion:SfRotator x:Name="rotator"  
+            <!--<syncfusion:SfRotator x:Name="rotator"  
                               ItemsSource="{Binding CarouselColllection}"
                               ItemTemplate="{Binding TemplateSelector}"
                               NavigationDirection="Horizontal"
@@ -96,32 +98,28 @@
                               
                                   Margin="0,0,0,0"       >
                    
-                </syncfusion:SfRotator>
+                </syncfusion:SfRotator>-->
             <!--</StackLayout>-->
 
 
-            <!--<controls:CarouselViewControl Position="0" x:Name="carouselView"
-                                            ShowIndicators="True"
-                                            ShowArrows="False"        
-                                            AnimateTransition="True" 
-                                            IndicatorsTintColor="{StaticResource JobMeGray}"
-                                            ItemsSource="{Binding CarouselColllection}"
-                                            ItemTemplate="{Binding TemplateSelector}"
-                                            FlowDirection="LeftToRight"
-                                            IndicatorsShape="Circle"
-                                            InterPageSpacing="15"  
-                                            PositionSelectedCommand="{Binding SwipeCommand}"
-                                            CurrentPageIndicatorTintColor ="{StaticResource JobMeOrange}"
-                                            VerticalOptions="FillAndExpand" 
-                                            HorizontalOptions="FillAndExpand"/>-->
+            <panCardView:CarouselView  x:Name="rotator"  VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" IsCyclical="False"  BackgroundColor="Transparent" Margin="0,0,0,0"
+                                       HorizontalOptions="FillAndExpand"
+                                       ItemSwiped="CardsView_OnItemSwiped"
+                                       ItemsSource="{Binding CarouselColllection}"
+                                       ItemTemplate="{Binding TemplateSelector}"
+                                       SelectedIndex="{Binding Rotadorpos}">
 
+
+                <controls:IndicatorsControl SelectedIndicatorStyle="{StaticResource ActiveIndicator}"  Margin="0,0,0,1" BackgroundColor="Transparent"
+                                            UnselectedIndicatorStyle="{StaticResource InactiveIndicator}" />
+            </panCardView:CarouselView>
 
             <!--<ActivityIndicator  x:Name="acitbe"  WidthRequest="50" HeightRequest="50"   
                                 HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
                                 IsRunning="{Binding IsRun}" IsVisible="{Binding IsRun}"  ></ActivityIndicator>-->
             <!--</Grid>-->
 
-                <Label Text="{Binding Privacylbl}" TextColor="Gray" VerticalOptions="End" HorizontalOptions="Center">
+                <Label Text="{Binding Privacylbl}" TextColor="Gray" VerticalOptions="End" HorizontalOptions="Center" BackgroundColor="Transparent">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding PrivacyCommand}"></TapGestureRecognizer>
                     </Label.GestureRecognizers>

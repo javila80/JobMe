@@ -10,8 +10,8 @@ using Acr.UserDialogs;
 using JobMe.Models.Chat;
 using JobMe.Services;
 using JobMe.Views;
+using JobMe.Views.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
-
 using Plugin.FilePicker.Abstractions;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
@@ -85,6 +85,7 @@ namespace JobMe.ViewModels.Chat
 
         private async void OutgoingImageClicked(object obj)
         {
+            MessagingCenter.Send<ChatMessageViewModel>(this, "ShowKeyboard");
             try
             {
                 string url = ((JobMe.Models.Chat.ChatMessage)obj).ImageUrl;
@@ -100,6 +101,7 @@ namespace JobMe.ViewModels.Chat
 
         private async void IncomingImageClicked(object obj)
         {
+            MessagingCenter.Send<ChatMessageViewModel>(this, "ShowKeyboard");
             try
             {
                 string url = ((JobMe.Models.Chat.ChatMessage)obj).ImageUrl;
@@ -115,13 +117,13 @@ namespace JobMe.ViewModels.Chat
 
         private async void OutgoingVideoClicked(object obj)
         {
+            MessagingCenter.Send<ChatMessageViewModel>(this, "ShowKeyboard");
             try
             {
                 string url = ((JobMe.Models.Chat.ChatMessage)obj).VideoUrl;
 
-                // await App.Navigation.PushAsync(new MiWebView(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
-
-                await Navigation.PushAsync(new PlayVideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
+                //await Navigation.PushAsync(new PlayVideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
+                await Navigation.PushAsync(new Chatvideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
             }
             catch (System.Exception)
             {
@@ -131,13 +133,16 @@ namespace JobMe.ViewModels.Chat
 
         private async void IncomingVideoClicked(object obj)
         {
+            MessagingCenter.Send<ChatMessageViewModel>(this, "ShowKeyboard");
+
             try
             {
                 string url = string.IsNullOrEmpty(((JobMe.Models.Chat.ChatMessage)obj).ImagePath)?((JobMe.Models.Chat.ChatMessage)obj).VideoUrl: ((JobMe.Models.Chat.ChatMessage)obj).ImagePath;
                 string name = ((JobMe.Models.Chat.ChatMessage)obj).Sender;
 
-                //await App.Navigation.PushAsync(new MiWebView(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
-                await Navigation.PushAsync(new PlayVideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
+              
+                //await Navigation.PushAsync(new PlayVideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
+                await Navigation.PushAsync(new Chatvideo(url) { Title = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Yo" : "Me", });
             }
             catch (System.Exception)
             {
@@ -162,7 +167,13 @@ namespace JobMe.ViewModels.Chat
 
         public ChatMessageViewModel(ChatDetail selecteditem)
         {
+
+            try
+            {
+
+            
             IsVisible = true;
+            ChatWidth = App.ScreenWidth - 225;
 
             //App.ChatService1.OnReceivedMessage += ChatService_OnReceivedMessage;
 
@@ -195,6 +206,8 @@ namespace JobMe.ViewModels.Chat
             this.SendFile = new Command(this.SendFileClicked);
             this.ShowVideo = new Command(this.VideoClicked);
 
+            this.LoadMoreItemsCommand = new Command(this.LoadMore);
+
             this.GenerateMessageInfo(selecteditem);
 
             this.ImageTappedCommand = new Command(IncomingImageClicked);
@@ -205,12 +218,12 @@ namespace JobMe.ViewModels.Chat
 
             this.FileTappedCommand = new Command(FileClicked);
 
-            ProfileName = selecteditem.SenderName;
-            profileImage = selecteditem.ImagePath;
-            Logo = selecteditem.Logo;
-            ChatDetail = selecteditem;
+                ProfileName = selecteditem.SenderName;
+                profileImage = selecteditem.ImagePath;
+                Logo = selecteditem.Logo;
+                ChatDetail = selecteditem;
 
-            if (Preferences.Get("UserType", 0) == 1) //Employee
+                if (Preferences.Get("UserType", 0) == 1) //Employee
             {
                 IsLogoVisible = true;
                 IsImageVisible = false;
@@ -221,18 +234,33 @@ namespace JobMe.ViewModels.Chat
                 IsImageVisible = true;
             }
 
-            //App.hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-            //{
-            //    ChatMessageInfo.Add(new ChatMessage
-            //    {
-            //        Message = message,
-            //        Time = DateTime.Now,
-            //         IsReceived = true
-            //    });
+                //App.hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+                //{
+                //    ChatMessageInfo.Add(new ChatMessage
+                //    {
+                //        Message = message,
+                //        Time = DateTime.Now,
+                //         IsReceived = true
+                //    });
 
-            //});
+                //});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                App.Current.MainPage.DisplayAlert("Jobme", e.Message, "Ok");
+            }
+
         }
 
+        public async  void LoadMore(object obj)
+        {
+
+            var z = obj;
+
+            await App.Current.MainPage.DisplayAlert("JobMe", "", "ok");
+        }
+        string idmessage = string.Empty;
         public void ChatService_OnReceivedMessage(object sender, TheChat.Core.EventHandlers.MessageEventArgs e)
         {
             string nombre;
@@ -247,11 +275,13 @@ namespace JobMe.ViewModels.Chat
             }
             JobMe.Models.Chat.ChatMessage msg = new JobMe.Models.Chat.ChatMessage();
 
-            Device.BeginInvokeOnMainThread(() =>
-            {
+            //Device.BeginInvokeOnMainThread(() =>
+            //{
                 //si el mensaje es para mi
-                if (nombre == e.Message.Sender)
+                if (nombre == e.Message.Sender && e.Message.Id != idmessage && e.Message.Color == ChatDetail.IDPosition.ToString() && e.Message.Avatar == ChatDetail.ContactID.ToString())
                 {
+
+                    idmessage = e.Message.Id;
                     //Hay actualizar la lista de contactos
 
                     if (e.Message.TypeInfo.Name == nameof(SimpleTextMessage)) // Memsaje de textpo
@@ -259,6 +289,7 @@ namespace JobMe.ViewModels.Chat
                         var z = (SimpleTextMessage)e.Message;
                         msg = new JobMe.Models.Chat.ChatMessage()
                         {
+                            
                             Message = z.Text,
                             Time = z.Timestamp,
                             IsReceived = true,
@@ -318,8 +349,8 @@ namespace JobMe.ViewModels.Chat
 
                         ChatMessageInfo.Add(msg);
                     }
-                }
-            });
+            }
+        //});
         }
 
         #endregion Constructor
@@ -422,10 +453,12 @@ namespace JobMe.ViewModels.Chat
 
                 if (string.IsNullOrEmpty(newMessage))
                 {
+                    ChatWidth = App.ScreenWidth - 225;
                     IsVisible = true;
                 }
                 else
                 {
+                    ChatWidth =  App.ScreenWidth - 110;
                     IsVisible = false;
                 }
 
@@ -433,6 +466,20 @@ namespace JobMe.ViewModels.Chat
             }
         }
 
+        private double _chatWidth;
+        public double ChatWidth
+        {
+            get
+            {
+                return this._chatWidth;
+            }
+
+            set
+            {
+                this._chatWidth = value;
+                this.OnPropertyChanged();
+            }
+        }
         #endregion Public Properties
 
         #region Commands
@@ -484,6 +531,7 @@ namespace JobMe.ViewModels.Chat
         /// </summary>
         public Command BackCommand { get; set; }
 
+        public Command LoadMoreItemsCommand { get; set; }
         public Command ShowVideo { get; set; }
 
         #endregion Commands
@@ -520,6 +568,8 @@ namespace JobMe.ViewModels.Chat
                    Count - 1, Syncfusion.ListView.XForms.ScrollToPosition.End, true);
 
             IsVisible = true;
+
+            
         }
 
         private int _count;
@@ -559,6 +609,8 @@ namespace JobMe.ViewModels.Chat
 
         private async void VideoClicked(object obj)
         {
+
+            int userid = Preferences.Get("UserID", 0);
             try
             {
                 if (!await JobMePermissions.CameraPermission())
@@ -631,15 +683,6 @@ namespace JobMe.ViewModels.Chat
                         }
                           
 
-                            //fname = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() +
-                            //        DateTime.Now.Year.ToString() +
-                            //        DateTime.Now.Millisecond.ToString() + "video.mp4";
-
-                            //Stream stream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
-
-                            //await UserService.UploadVideo(stream, Preferences.Get("UserID", 0).ToString() + "_" + fname);
-                            //fname = Path.GetFileName(photo.AlbumPath);
-
                             break;
 
                         default:
@@ -665,7 +708,26 @@ namespace JobMe.ViewModels.Chat
                         VideoUrl = EndPoint.BACKEND_ENDPOINT + "/uploads/" + myfilename + ".mp4",
                         VideoImage = EndPoint.BLOB_ENDPOINT + myfilename + ".jpg",
                         IsVideo = true,
+                        Avatar = userid.ToString(),
+                        Color = ChatDetail.IDPosition.ToString(),
+
                     };
+
+                    //Verificar que esta conectado al HUb
+
+                    if (!App.ChatService1.IsConnected)
+                    {
+                        App.ChatService1 = new TheChat.Core.Services.ChatService();
+
+                        if (Preferences.Get("UserID", 0) > 0)
+                        {
+                            await App.ChatService1.InitAsync(Preferences.Get("UserID", 0).ToString());
+                        }
+                    }
+
+                    //Este es el mensaje que se envia al hub
+                    await App.ChatService1.SendMessageAsync(message);
+
                     UserDialogs.Instance.HideLoading();
                     //mensaje para mostrar
                     JobMe.Models.Chat.ChatMessage msg = new JobMe.Models.Chat.ChatMessage()
@@ -681,35 +743,21 @@ namespace JobMe.ViewModels.Chat
                         IsVideo = true
                     };
 
-                    //Verificar que esta conectado al HUb
-
-                    if (!App.ChatService1.IsConnected)
-                    {
-                        App.ChatService1 = new TheChat.Core.Services.ChatService();
-
-                        if (Preferences.Get("UserID", 0) > 0)
-                        {
-                            await App.ChatService1.InitAsync(Preferences.Get("UserID", 0).ToString());
-                        }
-                    }
-
-                    //Este mensaje es el que se agrega a la lista
-                    ChatMessageInfo.Add(msg);
-
-                    //Este es el mensaje que se envia al hub
-                    await App.ChatService1.SendMessageAsync(message);
 
                     if (Preferences.Get("UserType", 0) == 1) //Employee
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📹 Video"));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📹 Video", "chat"));
                     }
                     else
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📹 Video"));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📹 Video", "chat"));
                     }
 
                     //Esto es para agregarlo a la base de datos
                     await Services.Chat.ChatService.AddMessageAsync(msg);
+
+                    //Este mensaje es el que se agrega a la lista
+                    ChatMessageInfo.Add(msg);
 
                     //Ocultar el teclado en ios
                     //MessagingCenter.Send<ChatMessageViewModel, string>(this, "FocusKeyboardStatus", "nada");
@@ -744,6 +792,8 @@ namespace JobMe.ViewModels.Chat
         {
             try
             {
+                int userid = Preferences.Get("UserID", 0);
+
                 if (!await JobMePermissions.CameraPermission())
                 {
                     return;
@@ -752,7 +802,7 @@ namespace JobMe.ViewModels.Chat
                 {
                     SaveToAlbum = false,
                     Directory = "Sample",
-                    PhotoSize = PhotoSize.Medium,
+                    PhotoSize = Device.RuntimePlatform==Device.Android?PhotoSize.Full: PhotoSize.Medium,
                     DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Front,
                     RotateImage = false,
                     CompressionQuality = 80,
@@ -784,6 +834,8 @@ namespace JobMe.ViewModels.Chat
                         Base64Photo = base64Photo,
                         FileEnding = fname,
                         Recipient = ChatDetail.ContactID.ToString(),
+                        Avatar = userid.ToString(),
+                        Color = ChatDetail.IDPosition.ToString(),
                     };
                     //mensaje para mostrar
                     JobMe.Models.Chat.ChatMessage msg = new JobMe.Models.Chat.ChatMessage()
@@ -819,11 +871,11 @@ namespace JobMe.ViewModels.Chat
 
                     if (Preferences.Get("UserType", 0) == 1) //Employee
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📷 Imagen"));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📷 Imagen", "chat"));
                     }
                     else
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📷 Imagen"));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📷 Imagen", "chat"));
                     }
 
                     //Esto es para agregarlo a la base de datos
@@ -851,6 +903,8 @@ namespace JobMe.ViewModels.Chat
         /// <param name="obj">The object</param>
         private async void AttachmentClicked(object obj)
         {
+            int userid = Preferences.Get("UserID", 0);
+
             if (!await JobMePermissions.GalleryPermission())
             {
                 return;
@@ -881,9 +935,11 @@ namespace JobMe.ViewModels.Chat
                     Base64Photo = base64Photo,
                     FileEnding = fname,
                     Recipient = ChatDetail.ContactID.ToString(),
+                    Avatar = userid.ToString(),
+                    Color = ChatDetail.IDPosition.ToString(),
                 };
                 //mensaje para mostrar
-                JobMe.Models.Chat.ChatMessage msg = new JobMe.Models.Chat.ChatMessage()
+                Models.Chat.ChatMessage msg = new JobMe.Models.Chat.ChatMessage()
                 {
                     Time = DateTime.Now,
                     ContactID = ChatDetail.ContactID,
@@ -914,11 +970,11 @@ namespace JobMe.ViewModels.Chat
 
                 if (Preferences.Get("UserType", 0) == 1) //Employee
                 {
-                    Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📷 Imagen"));
+                    Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📷 Imagen", "chat"));
                 }
                 else
                 {
-                    Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📷 Imagen"));
+                    Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📷 Imagen", "chat"));
                 }
 
                 //Ocultar el teclado en ios
@@ -984,11 +1040,11 @@ namespace JobMe.ViewModels.Chat
 
                     if (Preferences.Get("UserType", 0) == 1) //Employee
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), msg.Message));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), msg.Message,"chat"));
                     }
                     else
                     {
-                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), msg.Message));
+                        Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), msg.Message,"chat"));
                     }
 
                     //Esto es para agregarlo a la base de datos
@@ -1044,10 +1100,22 @@ namespace JobMe.ViewModels.Chat
         /// <summary>
         /// Invoked when the Profile name is clicked.
         /// </summary>
-        private void ProfileClicked(object obj)
+        private async void ProfileClicked(object obj)
         {
-            // Do something
+            
+            if (Preferences.Get("UserType", 0) == 1) //Empresa
+            {
+                await Navigation.PushAsync(new ChatProfileEmpresa(ChatDetail));
+            }
+            else // Candidato
+            {
+                await Navigation.PushAsync(new ChatProfile(ChatDetail));
+               
+            }
+
+           
         }
+
 
         private async void SendFileClicked(object obj)
         {
@@ -1121,11 +1189,11 @@ namespace JobMe.ViewModels.Chat
 
                         if (Preferences.Get("UserType", 0) == 1) //Employee
                         {
-                            Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📄 Archivo"));
+                            Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Name", string.Empty), "📄 Archivo", "chat"));
                         }
                         else
                         {
-                            Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📄 Archivo"));
+                            Task.Run(() => Services.PushNotifications.PushServices.SendPushAsync(ChatDetail.ContactID, Preferences.Get("Company", string.Empty), "📄 Archivo", "chat"));
                         }
 
                         //Ocultar el teclado en ios
@@ -1145,54 +1213,7 @@ namespace JobMe.ViewModels.Chat
             // App.Current.MainPage.DisplayAlert("JobMe", "Solo disponible para Premium", "OK");
         }
 
-        //public SfListView ListView;
-        //private async void OnLoadingAsync(object obj)
-        //{
-        //    IsBusy = true;
-
-        //    ListView = obj as SfListView;
-        //    var firstItem = ListView.DataSource.DisplayItems[0];
-        //    this.GridIsVisible = false;
-        //    this.IndicatorIsVisible = true;
-        //    await Task.Delay(500);
-        //    var r = new Random();
-        //    ListView.DataSource.BeginInit();
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //    }
-        //    ListView.DataSource.EndInit();
-        //    var firstItemIndex = ListView.DataSource.DisplayItems.IndexOf(firstItem);
-        //    var header = (ListView.HeaderTemplate != null && !ListView.IsStickyHeader) ? 1 : 0;
-        //    var totalItems = firstItemIndex + header;
-        //    //ListView.LayoutManager.ScrollToRowIndex(totalItems, true);
-        //    this.GridIsVisible = true;
-        //    this.IndicatorIsVisible = false;
-
-        //    IsBusy = false;
-        //}
-
-        //public bool indicatorIsVisible;
-        //public bool gridIsVisible;
-        //public bool IndicatorIsVisible
-        //{
-        //    get { return indicatorIsVisible; }
-        //    set
-        //    {
-        //        indicatorIsVisible = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //public bool GridIsVisible
-        //{
-        //    get { return gridIsVisible; }
-        //    set
-        //    {
-        //        gridIsVisible = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
+       
         #endregion Methods
     }
 }

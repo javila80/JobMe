@@ -15,7 +15,7 @@
             <StackLayout BackgroundColor="White">
 
                 <Image Source="jobme.png" HorizontalOptions="CenterAndExpand" 
-                   Margin="0, 90, 0, 10" WidthRequest="350"></Image>
+                   Margin="0, 90, 0, 10" WidthRequest="400"></Image>
 
                 <Label Text="Job Me" TextColor="{StaticResource JobMeOrange}" 
                    HorizontalOptions="Center" 

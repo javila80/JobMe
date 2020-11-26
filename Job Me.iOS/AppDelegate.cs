@@ -22,12 +22,16 @@ using Syncfusion.SfPdfViewer.XForms.iOS;
 using Syncfusion.SfRangeSlider.XForms.iOS;
 using Syncfusion.XForms.iOS.Border;
 using Xamarin.Essentials;
-
 //using Octane.Xamarin.Forms.VideoPlayer.iOS;
 using MediaManager;
 using Syncfusion.SfPullToRefresh.XForms.iOS;
 using Octane.Xamarin.Forms.VideoPlayer.iOS;
 using JobMe.Views;
+using Xamarin.Forms;
+using AudioToolbox;
+using System.Threading.Tasks;
+using JobmeApp.iOS;
+using PanCardView.iOS;
 
 namespace JobMe.iOS
 {
@@ -49,10 +53,64 @@ namespace JobMe.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Xamarin.Forms.Forms.SetFlags(new string[] { "CarouselView_Experimental", "SwipeView_Experimental", "IndicatorView_Experimental" });
+            Xamarin.Forms.Forms.SetFlags(new string[] { "CarouselView_Experimental", "SwipeView_Experimental", "IndicatorView_Experimental", "MediaElement_Experimental" });
             UINavigationBar.Appearance.TintColor = UIColor.Red;
 
             UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes() { TextColor = UIColor.Red });
+
+
+            //Actualizar el token de las notificaciones
+            MessagingCenter.Subscribe<JobMe.ViewModels.MainEmployeeViewModel>(this, "DeleteToken", sender =>
+            {
+                if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+                {
+                    UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
+                        (granted, error) =>
+                        {
+                            if (granted)
+                                InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications);
+                        });
+                }
+                else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+                {
+                    var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
+                        UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
+                        new NSSet());
+
+                    UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
+                    UIApplication.SharedApplication.RegisterForRemoteNotifications();
+                }
+                else
+                {
+                    UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
+                    UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
+                }
+            });
+
+            MessagingCenter.Subscribe<JobMe.ViewModels.LoginViewModel>(this, "DeleteToken", sender =>
+            {
+                if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+                {
+
+                    InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications);
+
+                }
+                else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+                {
+                    var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
+                        UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
+                        new NSSet());
+
+                    UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
+                    UIApplication.SharedApplication.RegisterForRemoteNotifications();
+                }
+                else
+                {
+                    UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
+                    UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
+                }
+            });
+
 
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
@@ -106,46 +164,26 @@ namespace JobMe.iOS
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             FormsVideoPlayer.Init();
-            // CrossMediaManager.Current.Init();
+
+            CardsViewRenderer.Preserve();
 
             App.ScreenWidth = UIScreen.MainScreen.Bounds.Width;
             App.ScreenHeight = UIScreen.MainScreen.Bounds.Height;
 
-            LoadApplication(new App());
+            LoadApplication(new App(false));
+          //  LoadApplication(new App(false));
+
+            // Watch for notifications while the app is active
+            UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
 
             return base.FinishedLaunching(app, options);
         }
 
-        //public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        //{
-        //    Hub = new SBNotificationHub(Constants.ListenConnectionString, Constants.NotificationHubName);
-
-        //    Hub.UnregisterAllAsync(deviceToken);
-
-        //    NSSet tags = null; // create tags if you want
-
-        //    Hub.RegisterNativeAsync(deviceToken, tags);
-
-        //    //Hub.UnregisterAllAsync(deviceToken, (error) =>
-        //    //{
-        //    //    if (error != null)
-        //    //    {
-        //    //        System.Diagnostics.Debug.WriteLine("Error calling Unregister: {0}", error.ToString());
-        //    //        return;
-        //    //    }
-
-        //    //    NSSet tags = null; // create tags if you want
-        //    //    Hub.RegisterNativeAsync(deviceToken, tags, (errorCallback) =>
-        //    //    {
-        //    //        if (errorCallback != null)
-        //    //            System.Diagnostics.Debug.WriteLine("RegisterNativeAsync error: " + errorCallback.ToString());
-        //    //    });
-        //    //});
-        //}
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
             Hub = new SBNotificationHub(Constants.ListenConnectionString, Constants.NotificationHubName);
+
 
             Hub.UnregisterAll(deviceToken, (error) =>
             {
@@ -163,6 +201,15 @@ namespace JobMe.iOS
 
         public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
         {
+            try
+            {
+                SystemSound.Vibrate.PlaySystemSound();
+            }
+            catch (Exception e)
+            {
+
+            }
+
             ProcessNotification(userInfo, false);
         }
 
@@ -175,6 +222,7 @@ namespace JobMe.iOS
                 {
                     //Get the aps dictionary
                     NSDictionary aps = options.ObjectForKey(new NSString("aps")) as NSDictionary;
+                    NSDictionary dic1 = aps.ObjectForKey(new NSString("alert")) as NSDictionary;
 
                     string alert = string.Empty;
 
@@ -195,9 +243,29 @@ namespace JobMe.iOS
                         //Manually show an alert
                         if (!string.IsNullOrEmpty(alert))
                         {
-                            UIAlertView avAlert = new UIAlertView("JobMe", alert, null, "OK", null);
-                            avAlert.Show();
+                            //UIAlertView avAlert = new UIAlertView("JobMe", alert, null, "OK", null);
+                            //avAlert.Show();
                         }
+
+                        if (dic1.ContainsKey(new NSString("subtitle")))
+                        {
+                            if ((dic1[new NSString("subtitle")] as NSString).ToString() == "chat")
+
+                            {
+                                //Es un mensaje de chat
+                                MessagingCenter.Send<object, string>(this, "Push", "01");
+
+                            }
+                        }
+                        //if (!string.IsNullOrEmpty(alert))
+                        //{
+                        //    var myAlert = UIAlertController.Create("Notificacion JobMe", alert, UIAlertControllerStyle.Alert);
+                        //    myAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                        //    UIApplication.SharedApplication.KeyWindow.RootViewController.PresentViewController(myAlert, true, null);
+
+                        //}
+
+
                     }
                 }
             }
@@ -207,6 +275,7 @@ namespace JobMe.iOS
             }
         }
 
+       
         public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations(UIApplication application, UIWindow forWindow)
         {
             var mainPage = Xamarin.Forms.Application.Current.MainPage;
@@ -218,4 +287,6 @@ namespace JobMe.iOS
             return UIInterfaceOrientationMask.AllButUpsideDown;
         }
     }
+
+
 }

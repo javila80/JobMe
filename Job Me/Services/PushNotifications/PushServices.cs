@@ -10,11 +10,11 @@ namespace JobMe.Services.PushNotifications
 {
     class PushServices
     {
-        public static async Task SendPushAsync(int UserID, string titulo, string mensaje)
+        public static async Task SendPushAsync(int UserID, string titulo, string mensaje, string pns = "fcm")
         {
 
             // Esto es para enviar a Android
-            string pns = "fcm";
+            //string pns = "fcm";
 
             // Dim POST_URL As String = BACKEND_ENDPOINT + "/api/notifications?pns=" + pns + "&to_tag=" + idmasterusuario
 

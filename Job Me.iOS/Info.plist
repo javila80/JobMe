@@ -38,7 +38,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.JobMe.App</string>
 	<key>CFBundleVersion</key>
-	<string>1.65</string>
+	<string>1.94</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>UILaunchStoryboardName</key>

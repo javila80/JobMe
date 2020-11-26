@@ -1202,16 +1202,12 @@ namespace JobMe.ViewModels
             //combobox.ShowBorder = false;
 
             listGenders = new ObservableCollection<Generos>();
-            listGenders.Add(new Generos() { IDGender = 0, Gender = "Prefer not to say" });
-            listGenders.Add(new Generos() { IDGender = 1, Gender = "Female" });
-            listGenders.Add(new Generos() { IDGender = 2, Gender = "Male" });
+            listGenders.Add(new Generos() { IDGender = 0, Gender = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Prefiero no decir" : "Prefer not to say" });
+            listGenders.Add(new Generos() { IDGender = 1, Gender = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Femenino" : "Female" });
+            listGenders.Add(new Generos() { IDGender = 2, Gender = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Masculino" : "Male" });
 
 
-            //gridGender.Children.Add(LeadingViewGender, 0, 0);
-            //gridGender.Children.Add(pickerGender, 1, 0);
-
-
-            //Año de nacimiento
+                //Año de nacimiento
 
             var gridGraduation = new Grid();
             gridGraduation.Margin = new Thickness(4, 0, 0, 10);
@@ -2110,19 +2106,25 @@ namespace JobMe.ViewModels
             _isLocked = false;
         }
 
-        private bool Valida()
+        private bool  Valida()
         {
 
 
             if (Name == null || Name == string.Empty)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Position can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El puesto no puede estar vacío" : "Position name can't be empty",
+                    "Ok");
+                
                 return false;
             }
 
             if (Country == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Country can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El país no puede estar vacío" : "Country can't be empty",
+                    "Ok");
+                
                 return false;
             }
 
@@ -2136,7 +2138,10 @@ namespace JobMe.ViewModels
             {
                 if (Country.IDCountry == 117 && City.IDCity == 0)
                 {
-                    Application.Current.MainPage.DisplayAlert("JobMe", "Please choose a city", "Ok");
+                    Application.Current.MainPage.DisplayAlert("JobMe",
+                        App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La ciudad no puede estar vacía" : "Please choose a city",
+                        "Ok");
+
                     return false;
                 }
             }
@@ -2144,49 +2149,68 @@ namespace JobMe.ViewModels
 
             if (Degree == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Degree can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El título no puede estar vacío" : "Degree can't be empty",
+                    "Ok");
                 return false;
             }
 
             if (School == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "School can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La escuela no puede estar vacío" : "School can't be empty",
+                    "Ok");
                 return false;
             }
             if (Gender == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Gender can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El genero no puede estar vacío" : "Gender can't be empty",
+                    "Ok");
                 return false;
             }
             if (Salary == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Salary can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Salario no puede estar vacío" : "Salary can't be empty",
+                    "Ok");
                 return false;
             }
             if (String.IsNullOrEmpty(Description))
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Description can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La descripción no puede estar vacía" : "Description can't be empty",
+                    "Ok");
+
                 return false;
             }
             if (MyBSFields == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Business Fields can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria no puede estar vacío" : "Business Fields can't be empty",
+                    "Ok");
                 return false;
             }
             if (MisAreas == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Areas of interest can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Áreas de interes no puede estar vacío" : "Areas of interests can't be empty",
+                    "Ok");
                 return false;
             }
 
             if (((IList)GraduationYear).Count < 1)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Graduation year can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El año de graduación no puede estar vacío" : "Graduation year can't be empty",
+                    "Ok");
                 return false;
             }
             if (Languajes == null)
             {
-                Application.Current.MainPage.DisplayAlert("JobMe", "Languaje can't be empty", "Ok");
+                Application.Current.MainPage.DisplayAlert("JobMe",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El idioma no puede estar vacío" : "Languaje can't be empty",
+                    "Ok");
                 return false;
             }
             return true;

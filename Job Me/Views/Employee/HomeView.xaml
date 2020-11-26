@@ -10,6 +10,8 @@
              xmlns:local2="clr-namespace:JobMe.Converter"
              xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:ffTrans="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+          
              mc:Ignorable="d"
              x:Class="JobMe.Views.HomeView">
 
@@ -59,7 +61,19 @@
                             <!--Imagen desde URL-->
                             <Grid>
 
-                                <sfavatar:SfAvatarView ContentType="Custom"
+
+                                <ff:CachedImage x:Name= "Logo" Source="{Binding MiFotostr}" CacheType="None"    HorizontalOptions="Center" LoadingPlaceholder="jobme.png" ErrorPlaceholder="jobme.png"
+                                                VerticalOptions="Center" HeightRequest="90" WidthRequest="90"  DownsampleToViewSize = "true" >
+                                    <ff:CachedImage.Transformations>
+                                        <ffTrans:CircleTransformation    />
+                                    </ff:CachedImage.Transformations>
+                                    <ff:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" >
+                                        </TapGestureRecognizer>
+                                    </ff:CachedImage.GestureRecognizers>
+                                </ff:CachedImage>
+
+                                <!--<sfavatar:SfAvatarView ContentType="Custom"
                                                    VerticalOptions="Center"
                                                    HorizontalOptions="Center"
                                                    BorderColor="{StaticResource JobMeGray}"
@@ -75,7 +89,9 @@
                                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2">
                                         </TapGestureRecognizer>
                                     </sfavatar:SfAvatarView.GestureRecognizers>
-                                </sfavatar:SfAvatarView>
+                                </sfavatar:SfAvatarView>-->
+
+
                                 <!--IsVisible="{Binding IsUriVisible}"-->
                                 <!--<sfavatar:SfAvatarView ContentType="Custom"
                                                    VerticalOptions="Center"
@@ -155,7 +171,6 @@
                     TextColor="{StaticResource JobMeGray}"
                      FontSize="50"
                         IsVisible="{Binding PdfVisible}"
-
                         Clicked="TapGestureRecognizer_Tapped_1">
                         <Button.FontFamily>
                             <OnPlatform x:TypeArguments="x:String">

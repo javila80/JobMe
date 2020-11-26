@@ -24,6 +24,16 @@ namespace JobMe.Views
             BindingContext = vm;
         }
 
+        public MainEmployeeView(int tabIndex)
+        {
+            InitializeComponent();
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
+            vm.SelectedIndex = tabIndex;
+
+        }
+
         protected override void OnAppearing()
         {
             var z = tabview.SelectedIndex;

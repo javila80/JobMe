@@ -3,11 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              x:Class="JobMe.Views.LargePhoto">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
-            <Image x:Name="Myfoto" Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>
+            <!--<Image x:Name="Myfoto" Margin="0,20,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
+            <forms:CachedImage x:Name= "Myfoto" CacheType="None"    HorizontalOptions="FillAndExpand"  ErrorPlaceholder="jobme.png"
+                            VerticalOptions="FillAndExpand"    DownsampleToViewSize = "true" >
+                
+            </forms:CachedImage>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

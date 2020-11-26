@@ -20,6 +20,15 @@ namespace JobMe.Views
             BindingContext = vm;
         }
 
+        public MainEmpresaView(int tabIndex)
+        {
+            InitializeComponent();
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
+            tabview.SelectedIndex = tabIndex;
+        }
+
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new EditEmployerView() { Title = "Edit " });

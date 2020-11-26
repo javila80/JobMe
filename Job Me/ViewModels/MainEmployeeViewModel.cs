@@ -31,6 +31,9 @@ using JobMe.FormsVideoLibrary;
 using JobMe.Views.Employee.Register.Templates;
 using Syncfusion.XForms.MaskedEdit;
 using System.Text.RegularExpressions;
+using System.Threading;
+//using CoreNFC;
+using System.Text.Json;
 
 namespace JobMe.ViewModels
 {
@@ -519,6 +522,8 @@ namespace JobMe.ViewModels
 
         #endregion "Propiedades"
 
+        private readonly int Mexico = 117;
+
         private object _CurrentItem;
 
         public object CurrentItem
@@ -564,10 +569,272 @@ namespace JobMe.ViewModels
             set { _Privacylbl = value; OnPropertyChanged(); }
         }
 
+        public async void LoadUser()
+        {
+
+            try
+            {
+
+                var lu = await App.Database.GetUsersAsync();
+
+                //var luid = lu.Where(p=>p.UserID==0).LastOrDefault();
+                var luid = lu.LastOrDefault();
+
+                var u = await App.Database.GetUserAsync(luid != null ? luid.ID : 0);
+
+                if (u != null)
+                {
+                    var ff = await UserDialogs.Instance.ConfirmAsync(App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "¿Quieres continuar con el registro?" : "Continue with registration?", "JobMe", "Si", "No");
+
+                    if (!ff)
+                    {
+                        await App.Database.DeleteUserAsync(u);
+                    }
+                    else
+                    {
+                        this.Name = u.Name;
+
+                        var countryselected = new Paises() { IDCountry = u.IDCountry, Country = u.Country };
+                        this.Country = listCountries.Where(p => p.IDCountry == countryselected.IDCountry).First();
+
+                        var cityselected = new Ciudades() { IDCity = u.IDCity, City = u.City };
+                        this.City = listCities.Where(p => p.IDCity == cityselected.IDCity).First();
+
+                        var genderselected = new Generos() { IDGender = u.IDGender, Gender = u.Gender };
+                        this.Gender = listGenders.Where(p => p.IDGender == genderselected.IDGender).First();
+
+                        this.BirthDate = u.BirthDate;
+                        this.Mail = u.Mail;
+                        this.Phone = u.Phone;
+                        this.UserName = u.UserName;
+                        this.Password = u.Password;
+
+
+                        //BSFields
+                        var bs = new ObservableCollection<object>();
+                        
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<BSFields>>(u.BusinessFields))
+                        {
+                            bs.Add(item);
+                        }
+                        BusinessFields = new ObservableCollection<object>();
+                        BusinessFields = bs;
+
+                        //Areas
+
+                        var aa = new ObservableCollection<object>();
+
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Areas>>(u.Areas))
+                        {
+                            aa.Add(item);
+                        }
+                        MiArea = new ObservableCollection<object>();
+                        MiArea = aa;
+
+                        //Salary
+                        var salselected = new Salarios() { IDSalary = u.IDSalary, Salary = u.Salary };
+                        Salary = listSalaries.Where(p => p.IDSalary == salselected.IDSalary).First();
+
+
+                        TypeofJob = u.TypeofJob;
+                        TravelAvailable = u.TravelAvailable;
+                        ChangeResidence = u.ChangeResidence;
+
+                        //certification
+
+                        var z = new ObservableCollection<object>();
+
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Certificaciones>>(u.Certifications))
+                        {
+                            z.Add(item);
+                        }
+                        Certifications = new ObservableCollection<Certificaciones>();
+                        Certifications = z;
+                        //languajes
+
+                        var zz = new ObservableCollection<object>();
+
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Idiomas>>(u.Languajes))
+                        {
+                            zz.Add(item);
+                        }
+                        Languajes = new ObservableCollection<Idiomas>();
+                        Languajes = zz;
+
+                        var sc1 = new Escuelas() { IDSchool = u.IDSchool, School = u.School };
+                        if (sc1.IDSchool != 0)
+                        {
+                            this.School = listSchools.Where(p => p.IDSchool == sc1.IDSchool).First() ?? null;
+                        }
+
+                        var sc2 = new Escuelas() { IDSchool = u.IDSchool1, School = u.School1 };
+                        if (sc2.IDSchool != 0)
+                        {
+                            this.School1 = listSchools.Where(p => p.IDSchool == sc2.IDSchool).First();
+                        }
+
+                        var sc3 = new Escuelas() { IDSchool = u.IDSchool2, School = u.School2 };
+                        if (sc3.IDSchool != 0)
+                        {
+                            this.School2 = listSchools.Where(p => p.IDSchool == sc3.IDSchool).First();
+                        }
+
+                        var sc4 = new Escuelas() { IDSchool = u.IDSchool3, School = u.School3 };
+                        if (sc4.IDSchool != 0)
+                        {
+                            this.School4 = listSchools.Where(p => p.IDSchool == sc4.IDSchool).First() ?? null;
+                        }
+
+                        var sc5 = new Escuelas() { IDSchool = u.IDSchool4, School = u.School3 };
+                        if (sc5.IDSchool != 0)
+                        {
+                            this.School4 = listSchools.Where(p => p.IDSchool == sc5.IDSchool).First() ?? null;
+                        }
+
+
+                        var dg = new Titulos() { IDDegree = u.IDDegre, Degree = u.Degree };
+                        if (dg.IDDegree != 0)
+                        {
+                            this.Degree = listDegrees.Where(p => p.IDDegree == dg.IDDegree).First() ?? null;
+                        }
+
+
+                        var dg1 = new Titulos() { IDDegree = u.IDDegre1, Degree = u.Degree1 };
+                        if (dg1.IDDegree != 0)
+                        {
+                            this.Degree1 = listDegrees.Where(p => p.IDDegree == dg1.IDDegree).First() ?? null;
+                        }
+
+                        var dg2 = new Titulos() { IDDegree = u.IDDegre2, Degree = u.Degree2 };
+                        if (dg2.IDDegree != 0)
+                        {
+                            this.Degree2 = listDegrees.Where(p => p.IDDegree == dg2.IDDegree).First() ?? null;
+                        }
+
+                        var dg3 = new Titulos() { IDDegree = u.IDDegre3, Degree = u.Degree3 };
+                        if (dg3.IDDegree != 0)
+                        {
+                            this.Degree3 = listDegrees.Where(p => p.IDDegree == dg3.IDDegree).First() ?? null;
+                        }
+
+                        var dg4 = new Titulos() { IDDegree = u.IDDegre4, Degree = u.Degree4 };
+                        if (dg4.IDDegree != 0)
+                        {
+                            this.Degree4 = listDegrees.Where(p => p.IDDegree == dg4.IDDegree).First() ?? null;
+                        }
+
+                        var gy = new AñosGraduacion() { IDGraduationYear = u.IDGY, Year = u.GY };
+                        if (gy.IDGraduationYear != 0)
+                        {
+                            this.GraduationYears = ListAñosGraduacion.Where(p => p.IDGraduationYear == gy.IDGraduationYear).First() ?? null;
+                        }
+
+                        var gy1 = new AñosGraduacion() { IDGraduationYear = u.IDGY1, Year = u.GY1 };
+                        if (gy1.IDGraduationYear != 0)
+                        {
+                            this.GraduationYears1 = ListAñosGraduacion.Where(p => p.IDGraduationYear == gy1.IDGraduationYear).First() ?? null;
+                        }
+
+                        var gy2 = new AñosGraduacion() { IDGraduationYear = u.IDGY2, Year = u.GY2 };
+                        if (gy2.IDGraduationYear != 0)
+                        {
+                            this.GraduationYears2 = ListAñosGraduacion.Where(p => p.IDGraduationYear == gy2.IDGraduationYear).First() ?? null;
+                        }
+
+                        var gy3 = new AñosGraduacion() { IDGraduationYear = u.IDGY3, Year = u.GY3 };
+                        if (gy3.IDGraduationYear != 0)
+                        {
+                            this.GraduationYears3 = ListAñosGraduacion.Where(p => p.IDGraduationYear == gy3.IDGraduationYear).First() ?? null;
+                        }
+
+                        var gy4 = new AñosGraduacion() { IDGraduationYear = u.IDGY4, Year = u.GY4 };
+                        if (gy4.IDGraduationYear != 0)
+                        {
+                            this.GraduationYears4 = ListAñosGraduacion.Where(p => p.IDGraduationYear == gy4.IDGraduationYear).First() ?? null;
+                        }
+
+                        Firm = u.Firm;
+                        Firm1 = u.Firm1;
+                        Firm2 = u.Firm2;
+                        Firm3 = u.Firm3;
+                        Firm4 = u.Firm4;
+
+                        JobTitle = u.JobTitle;
+                        JobTitle1 = u.JobTitle1;
+                        JobTitle2 = u.JobTitle2;
+                        JobTitle3 = u.JobTitle3;
+                        JobTitle4 = u.JobTitle4;
+
+                        Mifecha = u.Mifecha;
+                        Mifecha1 = u.Mifecha1;
+                        Mifecha2 = u.Mifecha2;
+                        Mifecha3 = u.Mifecha3;
+                        Mifecha4 = u.Mifecha4;
+
+                        //experiencias
+
+                        var z1 = new ObservableCollection<object>();
+
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(u.Experience))
+                        {
+                            z1.Add(item);
+                        }
+
+                        Experiences = z1;
+
+                        var z2 = new ObservableCollection<object>();
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(u.Experience1))
+                        {
+                            z2.Add(item);
+                        }
+
+                        Experiences1 = z2;
+
+                        var z3 = new ObservableCollection<object>();
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(u.Experience2))
+                        {
+                            z3.Add(item);
+                        }
+
+                        Experiences2 = z3;
+
+                        var z4 = new ObservableCollection<object>();
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(u.Experience3))
+                        {
+                            z4.Add(item);
+                        }
+
+                        Experiences3 = z4;
+
+                        var z5 = new ObservableCollection<object>();
+                        foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(u.Experience4))
+                        {
+                            z5.Add(item);
+                        }
+
+                        Experiences4 = z5;
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // throw;
+            }
+
+
+        }
         public MainEmployeeViewModel()
         {
             try
             {
+                userlocal = new UserRegistry();
+                LoadUser();
+
                 Preferences.Set("VideoOtros", string.Empty);
                 Privacylbl = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Política de privacidad" : "Privacy policy";
                 NewMember = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "NUEVO USUARIO" : "NEW MEMBER";
@@ -604,9 +871,9 @@ namespace JobMe.ViewModels
 
                 listGenders = new ObservableCollection<Generos>
             {
-                 new Generos() { IDGender = 0, Gender = "Prefer not to say" },
-                new Generos() { IDGender = 1, Gender = "Female" },
-                new Generos() { IDGender = 2, Gender = "Male" }
+                 new Generos() { IDGender = 0, Gender = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Prefiero no decir" : "Prefer not to say" },
+                new Generos() { IDGender = 1, Gender =  App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Femenino" : "Female" },
+                new Generos() { IDGender = 2, Gender = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Masculino" : "Male" }
             };
 
                 LoadCarousel();
@@ -1360,6 +1627,17 @@ namespace JobMe.ViewModels
                 Application.Current.MainPage.DisplayAlert("JobMe", "Country can´t be empty", "Ok");
                 return false;
             }
+            else
+            {
+                if (Country.IDCountry == Mexico && City == null)//Es Mexico
+                {
+
+                    Application.Current.MainPage.DisplayAlert("JobMe",
+                       App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La ciudad no puede estar vacía" : "City can´t be empty",
+                       "Ok");
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -1440,7 +1718,7 @@ namespace JobMe.ViewModels
             {
                 UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("JobMe",
-                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El genero no puede estar vacío" : "Gender can't be empty",
+                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El género no puede estar vacío" : "Gender can't be empty",
                     "Ok");
                 return false;
             }
@@ -1455,7 +1733,7 @@ namespace JobMe.ViewModels
             }
             else
             {
-                if (Phone.Length < 14)
+                if (Phone.Length < 12)
                 {
                     UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("JobMe",
@@ -1473,6 +1751,19 @@ namespace JobMe.ViewModels
                     "Ok");
                 return false;
             }
+            else
+            {
+                if (Country.IDCountry == Mexico && City == null)//Es Mexico
+                {
+                    UserDialogs.Instance.HideLoading();
+                    await Application.Current.MainPage.DisplayAlert("JobMe",
+                        App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La ciudad no puede estar vacía" : "City can´t be empty",
+                        "Ok");
+                    return false;
+                }
+            }
+
+
 
             UserDialogs.Instance.HideLoading();
             return true;
@@ -1552,9 +1843,20 @@ namespace JobMe.ViewModels
             {
                 UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("JobMe",
-                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria puede estar vacío" : "Business Fields can't be empty",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria no puede estar vacío" : "Business Fields can't be empty",
                     "Ok");
                 return false;
+            }
+            else
+            {
+                if (BusinessFields.Count == 0)
+                {
+                    UserDialogs.Instance.HideLoading();
+                    await Application.Current.MainPage.DisplayAlert("JobMe",
+                        App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria no puede estar vacío" : "Business Fields can't be empty",
+                        "Ok");
+                    return false;
+                }
             }
 
             if (MiArea == null)
@@ -1564,6 +1866,17 @@ namespace JobMe.ViewModels
                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Áreas de interes no puede estar vacío" : "Areas of interests can't be empty",
                     "Ok");
                 return false;
+            }
+            else
+            {
+                if (MiArea.Count == 0)
+                {
+                    UserDialogs.Instance.HideLoading();
+                    await Application.Current.MainPage.DisplayAlert("JobMe",
+                        App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Áreas de interes no puede estar vacío" : "Areas of interests can't be empty",
+                        "Ok");
+                    return false;
+                }
             }
 
             if (Salary == null)
@@ -2071,7 +2384,7 @@ namespace JobMe.ViewModels
             entryTelephone.Keyboard = Keyboard.Telephone;
             entryTelephone.SetBinding(Entry.TextProperty, "Phone");
             //Se comentaron por que fallan con el rotador de syncfusion
-            // entryTelephone.Behaviors.Add(new PhoneNumberMaskBehavior());
+            entryTelephone.Behaviors.Add(new PhoneNumberMaskBehavior(){ MaxLength = 12});
             //entryTelephone.Behaviors.Add(new EntryLengthValidator() { MaxLength = 12, MinLength = 12 });
             entryTelephone.BindingContext = this;
 
@@ -2079,14 +2392,14 @@ namespace JobMe.ViewModels
             maskedEdit.Mask = "00-00-00-00-00";
             maskedEdit.TextColor = Color.Black;
             maskedEdit.Keyboard = Keyboard.Telephone;
-            maskedEdit.SetBinding(SfMaskedEdit.ValueProperty, "Phone");
+            maskedEdit.SetBinding(SfMaskedEdit.ValueProperty, "Phone") ;
             maskedEdit.ValidationMode = InputValidationMode.LostFocus;
             maskedEdit.BindingContext = this;
 
             var inputPhone = new SfTextInputLayout
             {
                 Hint = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Teléfono" : "Phone",
-                ErrorText = "Enter a valid 10 digit telephone",
+                ErrorText = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Ingresa un teléfono válido" : "Please enter a valid phone",
                 InputViewPadding = 5,
                 LeadingViewPosition = ViewPosition.Outside,
                 LeadingView = new Label()
@@ -2103,7 +2416,7 @@ namespace JobMe.ViewModels
                 //inputPhone.CharMaxLength = 3;
                 // inputPhone.ShowCharCount = true;
                 HintLabelStyle = new LabelStyle() { FontSize = 16 },
-                InputView = maskedEdit,
+                InputView = entryTelephone,
             };
 
             ///Gender nuevo
@@ -2205,7 +2518,7 @@ namespace JobMe.ViewModels
 
             var lbPalomita = new SfButton()
             {
-                Text = "Update",
+                Text = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Actualizar" :"Update",
                 CornerRadius = 5,
                 HeightRequest = 40,
                 FontSize = 14,
@@ -2518,9 +2831,9 @@ namespace JobMe.ViewModels
                 BorderColor = Color.FromHex(Colores.JobMeOrange),
                 TokenSettings = token,
                 ShowClearButton = false,
-                EnableAutoSize = true,
+           
             };
-
+            
             // Create Border control
             SfBorder borderLanguaje = new SfBorder();
             borderLanguaje.CornerRadius = 10;
@@ -2530,7 +2843,7 @@ namespace JobMe.ViewModels
 
             borderLanguaje.Content = comboLanguaje;
 
-            comboLanguaje.ItemPadding = 5;
+            //comboLanguaje.ItemPadding = 5;
             comboLanguaje.ShowBorder = false;
 
             comboLanguaje.DataSource = listLanguajes;
@@ -3406,15 +3719,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(0, 0, 0, 20)
             };
 
+
+
             var gridArea1 = new Grid();
             //ámbito profesional
             gridArea1.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(.25, GridUnitType.Star) });
             gridArea1.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(.75, GridUnitType.Star) });
 
-            var comboArea1 = new SfComboBox
+            var comboArea1 = new SfComboBox()
             {
                 Watermark = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria" : "Bussines Fields",
-
                 // BackgroundColor = Color.FromHex("#FFFFFF"),
                 MultiSelectMode = MultiSelectMode.Token,
                 TokensWrapMode = TokensWrapMode.Wrap,
@@ -3425,9 +3739,11 @@ namespace JobMe.ViewModels
                 ShowBorder = false,
                 TokenSettings = token,
                 ShowClearButton = false,
+                SuggestionBoxPlacement = SuggestionBoxPlacement.Bottom,
                 Margin = new Thickness(0, 0, 0, 10),
 
-                DropDownButtonSettings = new DropDownButtonSettings { Width = 30, },
+                //DropDownButtonSettings = new DropDownButtonSettings { Width = 30, },
+
             };
 
             //comboArea1.DropDownClosed += ComboArea1_DropDownClosed1;
@@ -3507,16 +3823,12 @@ namespace JobMe.ViewModels
             // Create Border control
             SfBorder borderArea = new SfBorder();
             borderArea.CornerRadius = 10;
-            //borderArea.VerticalOptions = LayoutOptions.FillAndExpand;
-            // borderArea.HorizontalOptions = LayoutOptions.FillAndExpand;
             borderArea.BorderColor = Color.FromHex(Colores.JobMeOrange);
 
             borderArea.Content = comboArea;
 
             gridArea.Children.Add(lbarea, 0, 0);
             gridArea.Children.Add(borderArea, 1, 0);
-
-            //comboArea.SelectionChanged += comboArea_SelectionChanged;
 
             switch (Device.RuntimePlatform)
             {
@@ -3746,14 +4058,9 @@ namespace JobMe.ViewModels
                 HeightRequest = 35,
             };
 
+            gridSalary.Padding = new Thickness(0,0,0,40);
             gridSalary.Children.Add(lbSalary, 0, 0);
             gridSalary.Children.Add(borderSalary, 1, 0);
-
-            //inputSalary.InputView = combobox1;
-
-            //var lbPalomita = new Button() { Text = "next" };
-            //lbPalomita.SetBinding(Button.CommandProperty, "BtnNextCommand");
-            //lbPalomita.BindingContext = this;
 
             var lbPalomita = new SfButton()
             {
@@ -3793,6 +4100,15 @@ namespace JobMe.ViewModels
             return scv;
         }
 
+        private string _contador;
+
+        public string contador
+        {
+            get { return _contador; }
+            set { _contador = value; OnPropertyChanged(); }
+        }
+
+        private bool _lockedacadvideo { get; set; }
         public View AcademicsVideo()
         {
             IsVideoVisible = false;
@@ -3941,7 +4257,7 @@ namespace JobMe.ViewModels
 
             var lbVideo = new Label()
             {
-                Text = "video",
+
                 FontSize = 16,
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 // VerticalOptions = LayoutOptions.Center,
@@ -3949,12 +4265,21 @@ namespace JobMe.ViewModels
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
 
+            lbVideo.SetBinding(Label.TextProperty, "contador");
+            lbVideo.BindingContext = this;
+
+            CancellationTokenSource cancellationT1;
+
             buttoncamera.Clicked += async (sender, args) =>
             {
                 try
                 {
+                    if (_lockedacadvideo) return;
+                    _lockedacadvideo = true;
+
                     if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
                     {
+                        _lockedacadvideo = false;
                         await Application.Current.MainPage.DisplayAlert("No Camera", ":( No camera available.", "OK");
                         return;
                     }
@@ -3992,16 +4317,38 @@ namespace JobMe.ViewModels
                                     break;
 
                                 case Device.Android:
+
                                     UserDialogs.Instance.ShowLoading("Comprimiendo video");
-                                    string compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(AcadVideo.Path);
+                                    string compressedfile = string.Empty;
+
+                                    using (var cancellationTokenSource = new CancellationTokenSource(30000))
+                                    {
+                                        try
+                                        {
+                                            var t1 = Comprime(AcadVideo.Path, cancellationTokenSource.Token);
+                                            compressedfile = await t1;
+
+                                        }
+                                        catch (TaskCanceledException ex)
+                                        {
+                                            await Application.Current.MainPage.DisplayAlert("JobMe", "Error comprimiendo el video, intenta nuevamente", "OK");
+                                            UserDialogs.Instance.HideLoading();
+                                            return;
+
+                                        }
+                                    }
+
                                     AcadStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
                                     Preferences.Set("AcadVideo", AcadVideo.Path);
                                     UserDialogs.Instance.HideLoading();
                                     break;
                             };
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            AcadStream = AcadVideo.GetStream();
+                            Preferences.Set("AcadVideo", AcadVideo.Path);
+                            UserDialogs.Instance.HideLoading();
                             //throw;
                         }
 
@@ -4025,38 +4372,75 @@ namespace JobMe.ViewModels
                 }
                 catch (Exception ex)
                 {
+                    _lockedacadvideo = false;
                     await Application.Current.MainPage.DisplayAlert("JobMe", "Error getting video", "OK");
                     // throw;
                 }
 
-                //}
+                await Task.Delay(600);
+                _lockedacadvideo = false;
 
                 // CanExecute = true;
             };
-
+            
             buttongallery.Clicked += async (sender, args) =>
             {
+                if (_lockedacadvideo) return;
+                _lockedacadvideo = true;
+
                 try
                 {
                     if (!await JobMePermissions.GalleryPermission())
                     {
+                        _lockedacadvideo = false;
                         return;
                     }
 
                     AcadVideo = await CrossMedia.Current.PickVideoAsync();
                     if (AcadVideo != null)
                     {
+                        FileInfo fi;
+                        string compressedfile = string.Empty;
+
                         try
                         {
                             int duracion = DependencyService.Get<IVideoLength>().GetVideoLength(AcadVideo);
 
-                            FileInfo fi = new FileInfo(AcadVideo.Path);
+                            if (Device.RuntimePlatform == Device.Android)
+                            {
+                                UserDialogs.Instance.ShowLoading("Comprimiendo video");
+                                compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(AcadVideo.Path);
+
+                                UserDialogs.Instance.HideLoading();
+                                fi = new FileInfo(compressedfile);
+
+                            }
+                            else
+                            {
+                                fi = new FileInfo(AcadVideo.Path);
+                            }
+
+
                             long megas = fi.Length / 1480576; //megas
 
                             if (duracion <= 30 && megas <= 10)
                             {
                                 Preferences.Set("UserName", UserName);
-                                AcadStream = AcadVideo.GetStream();
+
+                                switch (Device.RuntimePlatform)
+                                {
+                                    case Device.iOS:
+                                        AcadStream = AcadVideo.GetStream();
+                                        Preferences.Set("AcadVideo", AcadVideo.Path);
+                                        break;
+
+                                    case Device.Android:
+                                        AcadStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
+                                        Preferences.Set("AcadVideo", AcadVideo.Path);
+                                        break;
+                                };
+
+
 
                                 if (AcadVideo != null)
                                 {
@@ -4067,7 +4451,10 @@ namespace JobMe.ViewModels
                                         UserDialogs.Instance.ShowLoading("Updating video");
                                         int idusuario = Preferences.Get("UserID", 0);
 
-                                        await UserService.UploadVideo(AcadVideo, idusuario + "_acads.mp4");
+                                        //await UserService.UploadVideo(AcadVideo, idusuario + "_acads.mp4");
+
+                                        await UserService.UploadPhoto(AcadStream, idusuario + "_acads.mp4");
+
                                         await Application.Current.MainPage.DisplayAlert("JobMe",
                                             App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Video actualizado" : "Video Updated",
                                             "OK");
@@ -4102,17 +4489,19 @@ namespace JobMe.ViewModels
                         catch (Exception ex)
                         {
                             await Application.Current.MainPage.DisplayAlert("JobMe", "Can´t retrieve media info, please select different media", "OK");
-
+                            UserDialogs.Instance.HideLoading();
                             // throw;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
+                    _lockedacadvideo = false;
                     await Application.Current.MainPage.DisplayAlert("JobMe", ex.Message, "OK");
                     //throw;
                 }
-
+                await Task.Delay(600);
+                _lockedacadvideo = false;
                 //}
 
                 // CanExecute = true;
@@ -4147,6 +4536,27 @@ namespace JobMe.ViewModels
             return scv;
         }
 
+        public static async Task<string> Comprime(string path, CancellationToken cancellationToken)
+        {
+
+            // We create a TaskCompletionSource of decimal
+            var taskCompletionSource = new TaskCompletionSource<string>();
+
+            // Registering a lambda into the cancellationToken
+            cancellationToken.Register(() =>
+            {
+                // We received a cancellation message, cancel the TaskCompletionSource.Task
+                taskCompletionSource.TrySetCanceled();
+            });
+
+            var task = DependencyService.Get<IVideoCompress>().CompressVideo(path);
+
+            // Wait for the first task to finish among the two
+            var completedTask = await Task.WhenAny(task, taskCompletionSource.Task);
+
+
+            return await completedTask;
+        }
         public View JobsV()
         {
             StackLayout sl1 = new StackLayout() { Margin = new Thickness(10, 0, 10, 0) };
@@ -4235,14 +4645,17 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateinicial = new Entry()
+            var entrydateinicial = new Label()
             {
-                Placeholder = "Start Date",
+
+                //Placeholder = "Start Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
+
             };
 
-            entrydateinicial.SetBinding(Entry.TextProperty, "Mifecha");
+            entrydateinicial.SetBinding(Label.TextProperty, "Mifecha");
             entrydateinicial.BindingContext = this;
 
             var customdate = new CustomDatePicker()
@@ -4266,10 +4679,19 @@ namespace JobMe.ViewModels
             entrydateinicial.Focused += (sender, arg) =>
             {
                 entrydateinicial.Unfocus();
-
                 customdate.IsOpen = !customdate.IsOpen;
             };
 
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += (s, e) =>
+            {
+                entrydateinicial.Unfocus();
+                customdate.IsOpen = !customdate.IsOpen;
+            };
+
+            entrydateinicial.GestureRecognizers.Add(tapGestureRecognizer);
+
+            gridStartDate.Margin = new Thickness(0, 0, 0, 8);
             gridStartDate.Children.Add(LeadingView, 0, 0);
             gridStartDate.Children.Add(entrydateinicial, 1, 0);
 
@@ -4290,15 +4712,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydatefinal = new Entry()
+            var entrydatefinal = new Label()
             {
-                Placeholder = "End Date",
+                // Placeholder = "End Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydatefinal.SetBinding(Entry.TextProperty, "MifechaFin");
-            entrydatefinal.SetBinding(Entry.IsEnabledProperty, "WorkHereEnable1");
+            entrydatefinal.SetBinding(Label.TextProperty, "MifechaFin");
+            entrydatefinal.SetBinding(Label.IsEnabledProperty, "WorkHereEnable1");
             entrydatefinal.BindingContext = this;
 
             var customenddate = new CustomDatePicker()
@@ -4324,6 +4747,15 @@ namespace JobMe.ViewModels
                 entrydatefinal.Unfocus();
                 customenddate.IsOpen = !customenddate.IsOpen;
             };
+
+            var tapGestureRecognizer1 = new TapGestureRecognizer();
+            tapGestureRecognizer1.Tapped += (s, e) =>
+            {
+                entrydatefinal.Unfocus();
+                customenddate.IsOpen = !customenddate.IsOpen;
+            };
+            entrydatefinal.GestureRecognizers.Add(tapGestureRecognizer1);
+
 
             gridEndDate.Children.Add(LeadingViewenddate, 0, 0);
             gridEndDate.Children.Add(entrydatefinal, 1, 0);
@@ -4528,14 +4960,15 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateinicial1 = new Entry()
+            var entrydateinicial1 = new Label()
             {
-                Placeholder = "Start Date",
+                //Placeholder = "Start Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateinicial1.SetBinding(Entry.TextProperty, "Mifecha1");
+            entrydateinicial1.SetBinding(Label.TextProperty, "Mifecha1");
             entrydateinicial1.BindingContext = this;
 
             var customdate1 = new CustomDatePicker()
@@ -4562,6 +4995,15 @@ namespace JobMe.ViewModels
                 customdate1.IsOpen = !customdate1.IsOpen;
             };
 
+            var tapGestureRecognizer2 = new TapGestureRecognizer();
+            tapGestureRecognizer2.Tapped += (s, e) =>
+            {
+                entrydateinicial1.Unfocus();
+                customdate1.IsOpen = !customdate1.IsOpen;
+            };
+            entrydateinicial1.GestureRecognizers.Add(tapGestureRecognizer2);
+
+            gridStartDate1.Margin = new Thickness(0, 0, 0, 8);
             gridStartDate1.Children.Add(LeadingView1, 0, 0);
             gridStartDate1.Children.Add(entrydateinicial1, 1, 0);
 
@@ -4583,15 +5025,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateend1 = new Entry()
+            var entrydateend1 = new Label()
             {
-                Placeholder = "End Date",
+                //Placeholder = "End Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateend1.SetBinding(Entry.TextProperty, "MifechaFin1");
-            entrydateend1.SetBinding(Entry.IsEnabledProperty, "WorkHereEnable2");
+            entrydateend1.SetBinding(Label.TextProperty, "MifechaFin1");
+            entrydateend1.SetBinding(Label.IsEnabledProperty, "WorkHereEnable2");
             entrydateend1.BindingContext = this;
 
             var customenddate1 = new CustomDatePicker()
@@ -4615,8 +5058,16 @@ namespace JobMe.ViewModels
             entrydateend1.Focused += (sender, arg) =>
             {
                 entrydateend1.Unfocus();
-                customenddate1.IsOpen = !customdate1.IsOpen;
+                customenddate1.IsOpen = !customenddate1.IsOpen;
             };
+
+            var tapGestureRecognizer3 = new TapGestureRecognizer();
+            tapGestureRecognizer3.Tapped += (s, e) =>
+            {
+                entrydateend1.Unfocus();
+                customenddate1.IsOpen = !customenddate1.IsOpen;
+            };
+            entrydateend1.GestureRecognizers.Add(tapGestureRecognizer3);
 
             gridEndDate1.Children.Add(LeadingEndView1, 0, 0);
             gridEndDate1.Children.Add(entrydateend1, 1, 0);
@@ -4632,7 +5083,7 @@ namespace JobMe.ViewModels
                 FontSize = 12,
                 Text = App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Trabajo aquí" : "I work here",
                 TextColor = Color.FromHex(Colores.JobMeGray),
-                //   VerticalOptions = LayoutOptions.Center
+                VerticalOptions = LayoutOptions.Center
             };
             gridchk1.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(.12, GridUnitType.Star) });
             gridchk1.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(.88, GridUnitType.Star) });
@@ -4817,14 +5268,15 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateinicial2 = new Entry()
+            var entrydateinicial2 = new Label()
             {
-                Placeholder = "Start Date",
+                //Placeholder = "Start Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateinicial2.SetBinding(Entry.TextProperty, "Mifecha2");
+            entrydateinicial2.SetBinding(Label.TextProperty, "Mifecha2");
             entrydateinicial2.BindingContext = this;
 
             var customdate2 = new CustomDatePicker()
@@ -4851,6 +5303,15 @@ namespace JobMe.ViewModels
                 customdate2.IsOpen = !customdate2.IsOpen;
             };
 
+            var tapGestureRecognizer4 = new TapGestureRecognizer();
+            tapGestureRecognizer4.Tapped += (s, e) =>
+            {
+                entrydateinicial2.Unfocus();
+                customdate2.IsOpen = !customdate2.IsOpen;
+            };
+            entrydateinicial2.GestureRecognizers.Add(tapGestureRecognizer4);
+
+            gridStartDate2.Margin = new Thickness(0, 0, 0, 8);
             gridStartDate2.Children.Add(LeadingView2, 0, 0);
             gridStartDate2.Children.Add(entrydateinicial2, 1, 0);
 
@@ -4872,15 +5333,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateend2 = new Entry()
+            var entrydateend2 = new Label()
             {
-                Placeholder = "End Date",
+                // Placeholder = "End Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateend2.SetBinding(Entry.TextProperty, "MifechaFin2");
-            entrydateend2.SetBinding(Entry.IsEnabledProperty, "WorkHereEnable3");
+            entrydateend2.SetBinding(Label.TextProperty, "MifechaFin2");
+            entrydateend2.SetBinding(Label.IsEnabledProperty, "WorkHereEnable3");
             entrydateend2.BindingContext = this;
 
             var customenddate2 = new CustomDatePicker()
@@ -4906,6 +5368,14 @@ namespace JobMe.ViewModels
                 entrydateend2.Unfocus();
                 customenddate2.IsOpen = !customdate2.IsOpen;
             };
+
+            var tapGestureRecognizer5 = new TapGestureRecognizer();
+            tapGestureRecognizer5.Tapped += (s, e) =>
+            {
+                entrydateend2.Unfocus();
+                customenddate2.IsOpen = !customdate2.IsOpen;
+            };
+            entrydateend2.GestureRecognizers.Add(tapGestureRecognizer5);
 
             gridEndDate2.Children.Add(LeadingEndView2, 0, 0);
             gridEndDate2.Children.Add(entrydateend2, 1, 0);
@@ -5105,14 +5575,15 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateinicial3 = new Entry()
+            var entrydateinicial3 = new Label()
             {
-                Placeholder = "Start Date",
+                // Placeholder = "Start Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateinicial3.SetBinding(Entry.TextProperty, "Mifecha3");
+            entrydateinicial3.SetBinding(Label.TextProperty, "Mifecha3");
             entrydateinicial3.BindingContext = this;
 
             var customdate3 = new CustomDatePicker()
@@ -5139,6 +5610,15 @@ namespace JobMe.ViewModels
                 customdate3.IsOpen = !customdate3.IsOpen;
             };
 
+            var tapGestureRecognizer6 = new TapGestureRecognizer();
+            tapGestureRecognizer6.Tapped += (s, e) =>
+            {
+                entrydateinicial3.Unfocus();
+                customdate3.IsOpen = !customdate3.IsOpen;
+            };
+            entrydateinicial3.GestureRecognizers.Add(tapGestureRecognizer6);
+
+            gridStartDate3.Margin = new Thickness(0, 0, 0, 8);
             gridStartDate3.Children.Add(LeadingView3, 0, 0);
             gridStartDate3.Children.Add(entrydateinicial3, 1, 0);
 
@@ -5160,15 +5640,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateend3 = new Entry()
+            var entrydateend3 = new Label()
             {
-                Placeholder = "End Date",
+                //Placeholder = "End Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateend3.SetBinding(Entry.TextProperty, "MifechaFin3");
-            entrydateend3.SetBinding(Entry.IsEnabledProperty, "WorkHereEnable4");
+            entrydateend3.SetBinding(Label.TextProperty, "MifechaFin3");
+            entrydateend3.SetBinding(Label.IsEnabledProperty, "WorkHereEnable4");
             entrydateend3.BindingContext = this;
 
             var customenddate3 = new CustomDatePicker()
@@ -5195,6 +5676,14 @@ namespace JobMe.ViewModels
                 entrydateend3.Unfocus();
                 customenddate3.IsOpen = !customdate3.IsOpen;
             };
+
+            var tapGestureRecognizer7 = new TapGestureRecognizer();
+            tapGestureRecognizer7.Tapped += (s, e) =>
+            {
+                entrydateend3.Unfocus();
+                customenddate3.IsOpen = !customdate3.IsOpen;
+            };
+            entrydateend3.GestureRecognizers.Add(tapGestureRecognizer7);
 
             gridEndDate3.Children.Add(LeadingEndView3, 0, 0);
             gridEndDate3.Children.Add(entrydateend3, 1, 0);
@@ -5392,14 +5881,15 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateinicial4 = new Entry()
+            var entrydateinicial4 = new Label()
             {
-                Placeholder = "Start Date",
+                //Placeholder = "Start Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateinicial4.SetBinding(Entry.TextProperty, "Mifecha4");
+            entrydateinicial4.SetBinding(Label.TextProperty, "Mifecha4");
             entrydateinicial4.BindingContext = this;
 
             var customdate4 = new CustomDatePicker()
@@ -5426,6 +5916,15 @@ namespace JobMe.ViewModels
                 customdate4.IsOpen = !customdate4.IsOpen;
             };
 
+            var tapGestureRecognizer8 = new TapGestureRecognizer();
+            tapGestureRecognizer8.Tapped += (s, e) =>
+            {
+                entrydateinicial4.Unfocus();
+                customdate4.IsOpen = !customdate4.IsOpen;
+            };
+            entrydateinicial4.GestureRecognizers.Add(tapGestureRecognizer8);
+
+            gridStartDate4.Margin = new Thickness(0, 0, 0, 8);
             gridStartDate4.Children.Add(LeadingView4, 0, 0);
             gridStartDate4.Children.Add(entrydateinicial4, 1, 0);
 
@@ -5447,15 +5946,16 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            var entrydateend4 = new Entry()
+            var entrydateend4 = new Label()
             {
-                Placeholder = "End Date",
+                //Placeholder = "End Date",
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 BackgroundColor = Color.WhiteSmoke,
+                Padding = 8,
             };
 
-            entrydateend4.SetBinding(Entry.TextProperty, "MifechaFin4");
-            entrydateend4.SetBinding(Entry.IsEnabledProperty, "WorkHereEnable5");
+            entrydateend4.SetBinding(Label.TextProperty, "MifechaFin4");
+            entrydateend4.SetBinding(Label.IsEnabledProperty, "WorkHereEnable5");
             entrydateend4.BindingContext = this;
 
             var customenddate4 = new CustomDatePicker()
@@ -5481,6 +5981,14 @@ namespace JobMe.ViewModels
                 entrydateend4.Unfocus();
                 customenddate4.IsOpen = !customdate4.IsOpen;
             };
+
+            var tapGestureRecognizer9 = new TapGestureRecognizer();
+            tapGestureRecognizer9.Tapped += (s, e) =>
+            {
+                entrydateend4.Unfocus();
+                customenddate4.IsOpen = !customdate4.IsOpen;
+            };
+            entrydateend4.GestureRecognizers.Add(tapGestureRecognizer9);
 
             gridEndDate4.Children.Add(LeadingEndView4, 0, 0);
             gridEndDate4.Children.Add(entrydateend4, 1, 0);
@@ -5652,6 +6160,7 @@ namespace JobMe.ViewModels
             return scv;
         }
 
+        private bool _lockedJobsVideo { get; set; }
         public View JobsVideo()
         {
             StackLayout sl1 = new StackLayout();
@@ -5806,8 +6315,12 @@ namespace JobMe.ViewModels
             {
                 try
                 {
+                    if (_lockedJobsVideo) return;
+                    _lockedJobsVideo = true;
+
                     if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
                     {
+                        _lockedJobsVideo = false;
                         await Application.Current.MainPage.DisplayAlert("No Camera", ":( No camera available.", "OK");
                         return;
                     }
@@ -5838,7 +6351,24 @@ namespace JobMe.ViewModels
 
                                     case Device.Android:
                                         UserDialogs.Instance.ShowLoading("Comprimiendo video");
-                                        string compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(JbVideo.Path);
+                                        string compressedfile = string.Empty;
+
+                                        using (var cancellationTokenSource = new CancellationTokenSource(30000))
+                                        {
+                                            try
+                                            {
+                                                var t1 = Comprime(JbVideo.Path, cancellationTokenSource.Token);
+                                                compressedfile = await t1;
+
+                                            }
+                                            catch (TaskCanceledException ex)
+                                            {
+                                                await Application.Current.MainPage.DisplayAlert("JobMe", "Error comprimiendo el video, intenta nuevamente", "OK");
+                                                UserDialogs.Instance.HideLoading();
+                                                return;
+
+                                            }
+                                        }
                                         JobsStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
                                         Preferences.Set("JobsVideo", JbVideo.AlbumPath);
                                         UserDialogs.Instance.HideLoading();
@@ -5847,6 +6377,11 @@ namespace JobMe.ViewModels
                             }
                             catch (Exception)
                             {
+                                JobsStream = JbVideo.GetStream();
+                                UserDialogs.Instance.HideLoading();
+                                //await Application.Current.MainPage.DisplayAlert("JobMe", "Error comprimiendo el video, intenta nuevamente", "OK");
+                                UserDialogs.Instance.HideLoading();
+                                //return;
                                 //throw;
                             }
 
@@ -5880,9 +6415,15 @@ namespace JobMe.ViewModels
                         //On iOS you may want to send your user to the settings screen.
                         //CrossPermissions.Current.OpenAppSettings();
                     }
+
+                    await Task.Delay(600);
+                    _lockedJobsVideo = false;
+
                 }
                 catch (Exception ex)
                 {
+                    _lockedJobsVideo = false;
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Job Me", "Error getting video", "OK");
                     //  throw;
                 }
@@ -5890,23 +6431,62 @@ namespace JobMe.ViewModels
 
             buttongallery.Clicked += async (sender, args) =>
             {
+                if (_lockedJobsVideo) return;
+                _lockedJobsVideo = true;
+
                 try
                 {
                     JbVideo = await CrossMedia.Current.PickVideoAsync();
 
                     if (JbVideo == null)
                     {
+                        _lockedJobsVideo = false;
                         return;
                     }
 
+                    FileInfo fi;
+                    string compressedfile = string.Empty;
+
+
                     int duracion = DependencyService.Get<IVideoLength>().GetVideoLength(JbVideo);
-                    FileInfo fi = new FileInfo(JbVideo.Path);
+
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.ShowLoading("Comprimiendo video");
+                        compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(JbVideo.Path);
+
+                        UserDialogs.Instance.HideLoading();
+                        fi = new FileInfo(compressedfile);
+
+                    }
+                    else
+                    {
+                        fi = new FileInfo(JbVideo.Path);
+                    }
+
+
                     long megas = fi.Length / 1480576; //megas
+
+
 
                     if (duracion <= 30 && megas <= 10)
                     {
                         Preferences.Set("UserName", UserName);
-                        JobsStream = JbVideo.GetStream();
+
+                        switch (Device.RuntimePlatform)
+                        {
+                            case Device.iOS:
+                                JobsStream = JbVideo.GetStream();
+                                Preferences.Set("JobsVideo", JbVideo.Path);
+                                break;
+
+                            case Device.Android:
+                                JobsStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
+                                Preferences.Set("JobsVideo", JbVideo.Path);
+                                break;
+                        };
+
+
 
                         if (JbVideo != null)
                         {
@@ -5917,7 +6497,10 @@ namespace JobMe.ViewModels
                                 UserDialogs.Instance.ShowLoading("Updating video");
                                 int idusuario = Preferences.Get("UserID", 0);
 
-                                await UserService.UploadVideo(JbVideo, idusuario + "_jobs.mp4");
+                                await UserService.UploadPhoto(JobsStream, idusuario + "_jobs.mp4");
+
+                                //  await UserService.UploadVideo(JbVideo, idusuario + "_jobs.mp4");
+
                                 await Application.Current.MainPage.DisplayAlert("JobMe",
                                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Video actualizado" : "Video Updated",
                                      "OK");
@@ -5949,12 +6532,16 @@ namespace JobMe.ViewModels
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _lockedJobsVideo = false;
                     await Application.Current.MainPage.DisplayAlert("JobMe", "Can´t retrieve media info, please select different media", "OK");
-
+                    UserDialogs.Instance.HideLoading();
                     // throw;
                 }
+
+                await Task.Delay(600);
+                _lockedJobsVideo = false;
             };
 
             //imgUpload.GestureRecognizers.Add(tapGestureRecognizer);
@@ -5986,6 +6573,7 @@ namespace JobMe.ViewModels
             return scv;
         }
 
+        private bool _islockedVideoOthers { get; set; }
         public View Others()
         {
             StackLayout sl1 = new StackLayout();
@@ -6143,10 +6731,14 @@ namespace JobMe.ViewModels
                 int idusuario = 0;
                 try
                 {
+                    if (_islockedVideoOthers) return;
+                    _islockedVideoOthers = true;
+
                     Preferences.Set("VideoOtros", string.Empty);
 
                     if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
                     {
+                        _islockedVideoOthers = false;
                         await Application.Current.MainPage.DisplayAlert("No Camera", ":( No camera available.", "OK");
                         return;
                     }
@@ -6176,7 +6768,25 @@ namespace JobMe.ViewModels
 
                                 case Device.Android:
                                     UserDialogs.Instance.ShowLoading("Comprimiendo video");
-                                    string compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(OthersVideo.Path);
+                                    string compressedfile = string.Empty;
+
+                                    using (var cancellationTokenSource = new CancellationTokenSource(30000))
+                                    {
+                                        try
+                                        {
+                                            var t1 = Comprime(OthersVideo.Path, cancellationTokenSource.Token);
+                                            compressedfile = await t1;
+
+                                        }
+                                        catch (TaskCanceledException ex)
+                                        {
+                                            await Application.Current.MainPage.DisplayAlert("JobMe", "Error comprimiendo el video, intenta nuevamente", "OK");
+                                            UserDialogs.Instance.HideLoading();
+                                            return;
+
+                                        }
+                                    }
+
                                     OthersStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
                                     Preferences.Set("VideoOtros", OthersVideo.AlbumPath);
                                     Preferences.Set("OthersVideo", OthersVideo.AlbumPath);
@@ -6207,18 +6817,32 @@ namespace JobMe.ViewModels
                     {
                         await Application.Current.MainPage.DisplayAlert("JobMe", "Permissions Denied Unable to take photos.", "OK");
                     }
+
+                    await Task.Delay(600);
+                    _islockedVideoOthers = false;
+
                 }
                 catch (Exception)
                 {
-                    await Application.Current.MainPage.DisplayAlert("JobMe", "Error getting video.", "OK");
+                    _islockedVideoOthers = false;
+                     await Application.Current.MainPage.DisplayAlert("JobMe", "Error comprimiendo el video, intenta nuevamente.", "OK");
+                    UserDialogs.Instance.HideLoading();
                     // throw;
                 }
             };
-
+            
             buttongallery.Clicked += async (sender, args) =>
             {
+
+                if (_islockedVideoOthers) return;
+                _islockedVideoOthers = true;
+
                 try
                 {
+
+                    FileInfo fi;
+                    string compressedfile = string.Empty;
+
                     Preferences.Set("VideoOtros", string.Empty);
                     //if (await GalleryPermission())
                     //{
@@ -6226,16 +6850,50 @@ namespace JobMe.ViewModels
 
                     if (OthersVideo == null)
                     {
+                        _islockedVideoOthers = false;
                         return;
                     }
+
+
                     int duracion = DependencyService.Get<IVideoLength>().GetVideoLength(OthersVideo);
-                    FileInfo fi = new FileInfo(OthersVideo.Path);
+
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.ShowLoading("Comprimiendo video");
+                        compressedfile = await DependencyService.Get<IVideoCompress>().CompressVideo(OthersVideo.Path);
+
+                        UserDialogs.Instance.HideLoading();
+                        fi = new FileInfo(compressedfile);
+
+                    }
+                    else
+                    {
+                        fi = new FileInfo(OthersVideo.Path);
+                    }
+
+                    //fi = new FileInfo(OthersVideo.Path);
                     long megas = fi.Length / 1480576; //megas
 
                     if (duracion <= 30 && megas <= 10)
                     {
                         Preferences.Set("UserName", UserName);
-                        OthersStream = OthersVideo.GetStream();
+
+                        switch (Device.RuntimePlatform)
+                        {
+                            case Device.iOS:
+                                OthersStream = OthersVideo.GetStream();
+                                Preferences.Set("OthersVideo", OthersVideo.Path);
+                                Preferences.Set("VideoOtros", OthersVideo.Path);
+                                break;
+
+                            case Device.Android:
+                                OthersStream = File.Open(compressedfile, FileMode.Open, System.IO.FileAccess.ReadWrite);
+                                Preferences.Set("OthersVideo", OthersVideo.Path);
+                                Preferences.Set("VideoOtros", OthersVideo.Path);
+                                break;
+                        };
+
+
 
                         if (OthersVideo != null)
                         {
@@ -6246,7 +6904,7 @@ namespace JobMe.ViewModels
                                 UserDialogs.Instance.ShowLoading("Updating video");
                                 int idusuario = Preferences.Get("UserID", 0);
 
-                                await UserService.UploadVideo(OthersVideo, idusuario + "_others.mp4");
+                                await UserService.UploadVideo(OthersStream, idusuario + "_others.mp4");
                                 await Application.Current.MainPage.DisplayAlert("JobMe",
                                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Video actualizado" : "Video Updated",
                                     "OK");
@@ -6282,17 +6940,15 @@ namespace JobMe.ViewModels
                 }
                 catch (Exception)
                 {
+                    _islockedVideoOthers = false;
                     await Application.Current.MainPage.DisplayAlert("JobMe", "Can´t retrieve media info, please select different media", "OK");
 
                     // throw;
                 }
 
-                //}
-                //else
-                //{
-                //    await Application.Current.MainPage.DisplayAlert("JobMe", "Permissions Denied Unable to select videos.", "OK");
+                await Task.Delay(600);
+                _islockedVideoOthers = false;
 
-                //}
             };
 
             sl1.Children.Add(inputes);
@@ -6458,7 +7114,7 @@ namespace JobMe.ViewModels
                 SaveToAlbum = false,
                 Directory = "Sample",
                 Name = UserName + "_photo.jpg",
-                PhotoSize = PhotoSize.Medium,
+                PhotoSize = Device.RuntimePlatform == Device.Android ? PhotoSize.Large : PhotoSize.Medium ,
                 DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Front,
                 RotateImage = false,
                 CompressionQuality = 70,
@@ -6634,16 +7290,29 @@ namespace JobMe.ViewModels
                 Margin = new Thickness(0, 0, 0, 40)
             };
 
-            var lbImagen = new Label()
+
+            //boton de CV Hoja
+            var lbImagen = new SfButton()
             {
                 Text = "\uf15c",
                 FontFamily = this.MiFuente,
                 FontSize = 80,
+                BackgroundColor = Color.Transparent,
                 FontAttributes = this.MiFontAttributes,
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Margin = new Thickness(0, 0, 0, 60)
+                Margin = new Thickness(0, 0, 0, 60),
+              
+            };
+
+            lbImagen.Clicked += async (sender, args) =>
+            {
+                if (CV != null)
+                {
+                    await Navigation.PushAsync(new CV(CV, CVName));
+                }
+
             };
 
             SfBadgeView sfBadgeView = new SfBadgeView();
@@ -6656,6 +7325,8 @@ namespace JobMe.ViewModels
                 BadgeType = BadgeType.Success,
                 Offset = new Point(0, -10)
             };
+
+
 
             badgeSetting.SetBinding(BadgeSetting.BadgeIconProperty, "IconoOKCV");
             badgeSetting.BindingContext = this;
@@ -6690,8 +7361,8 @@ namespace JobMe.ViewModels
                 TextColor = Color.FromHex(Colores.JobMeGray),
             };
 
-            //Imagen de la hoja de documento
-            var imgUpload = new Label()
+            //boton de subir documento
+            var imgUpload = new SfButton()
             {
                 Text = "\uf093",
                 FontFamily = this.MiFuente,
@@ -6700,7 +7371,12 @@ namespace JobMe.ViewModels
                 TextColor = Color.FromHex(Colores.JobMeGray),
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
+                BackgroundColor = Color.Transparent,
+                PressedBackgroundColor = Color.FromHex(Colores.JobMeOrange),
+                WidthRequest = 150
             };
+
+     
 
             var lbUpload = new Label()
             {
@@ -6740,10 +7416,12 @@ namespace JobMe.ViewModels
 
             lbPalomita.Clicked += async (sender, args) => await AddUser();
 
-            var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += async (sender, args) => await PickFile();
 
-            imgUpload.GestureRecognizers.Add(tapGestureRecognizer);
+            imgUpload.Clicked += async (sender, args) => await PickFile();
+            //var tapGestureRecognizer = new TapGestureRecognizer();
+            //tapGestureRecognizer.Tapped += async (sender, args) => await PickFile();
+
+            //imgUpload.GestureRecognizers.Add(tapGestureRecognizer);
 
             sl1.Children.Add(inputes);
 
@@ -6767,6 +7445,11 @@ namespace JobMe.ViewModels
             return scv;
         }
 
+        private void ImgUpload_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool _isLocked;
 
         private async Task AddUser()
@@ -6777,6 +7460,67 @@ namespace JobMe.ViewModels
             IsRun = true;
             try
             {
+
+                //experiencias
+
+                var z1 = new ObservableCollection<object>();
+                if (!string.IsNullOrEmpty(userlocal.Experience) && userlocal.Experience != "null")
+                {
+                    foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(userlocal.Experience))
+                    {
+                        z1.Add(item);
+                    }
+
+                    Experiences = z1;
+                }
+
+                var z2 = new ObservableCollection<object>();
+                if (!string.IsNullOrEmpty(userlocal.Experience1) && userlocal.Experience1 != "null")
+                {
+                    foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(userlocal.Experience1))
+                    {
+                        z2.Add(item);
+                    }
+
+                    Experiences1 = z2;
+                }
+                
+
+                var z3 = new ObservableCollection<object>();
+                if (!string.IsNullOrEmpty(userlocal.Experience2) && userlocal.Experience2!="null")
+                {
+                    foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(userlocal.Experience2))
+                    {
+                        z3.Add(item);
+                    }
+
+                    Experiences2 = z3;
+                }
+
+                var z4 = new ObservableCollection<object>();
+                if (!string.IsNullOrEmpty(userlocal.Experience3) && userlocal.Experience3 != "null")
+                {
+                    foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(userlocal.Experience3))
+                    {
+                        z4.Add(item);
+                    }
+
+                    Experiences3 = z4;
+                }
+                 
+
+                var z5 = new ObservableCollection<object>();
+                if (!string.IsNullOrEmpty(userlocal.Experience4) && userlocal.Experience4 != "null")
+                {
+                    foreach (var item in JsonSerializer.Deserialize<ObservableCollection<Experiencias>>(userlocal.Experience4))
+                    {
+                        z5.Add(item);
+                    }
+
+                    Experiences4 = z5;
+                }
+                
+
                 UserModel u = new UserModel()
                 {
                     UserType = 1,
@@ -6869,6 +7613,7 @@ namespace JobMe.ViewModels
 
                     if (idusuario > 0)
                     {
+                        SaveLocal(idusuario);
                         //Validar la respuesta
                         PhotoSrc = EndPoint.BACKEND_ENDPOINT + "/api/uploads/" + idusuario + ".jpg";
                         Preferences.Set("Name", Name);
@@ -6902,6 +7647,24 @@ namespace JobMe.ViewModels
                         //    OthersStream = System.IO.File.OpenRead(Preferences.Get("VideoOtros", string.Empty));
                         //}
 
+                        if (AcadStream == null)
+                        {
+                            try
+                            {
+                                AcadStream = File.Open(Preferences.Get("AcadVideo",string.Empty), FileMode.Open, System.IO.FileAccess.ReadWrite);
+                            }
+                            catch (Exception e)
+                            {
+                                
+                            }
+
+                            if (AcadStream == null)
+                            {
+                                await Application.Current.MainPage.DisplayAlert("JobMe", "Ocurrio un error al guardar el video de academics, por favor subelo de nuevo", "Ok");
+                                return;
+                            }
+                        }
+
                         var dTask = Task.Run(async () => await UserService.UploadPhoto(PhotoStream, idusuario + ".jpg"));
                         var aTask = Task.Run(async () => await UserService.UploadPhoto(AcadStream, idusuario + "_acads.mp4"));
                         var bTask = Task.Run(async () => await UserService.UploadPhoto(JobsStream, idusuario + "_jobs.mp4"));
@@ -6911,6 +7674,22 @@ namespace JobMe.ViewModels
                         await bTask;
                         await cTask;
                         await dTask;
+
+                        if (dTask.Result == "Error" ) //Imagen
+                        {
+                            UserDialogs.Instance.HideLoading();
+                            _isLocked = false;
+                            await Application.Current.MainPage.DisplayAlert("JobMe", "Ocurrio un error inesperado al guardar los datos", "Ok");
+                            return;
+                        }
+
+                        if (aTask.Result == "Error")//Video Academics
+                        {
+                            UserDialogs.Instance.HideLoading();
+                            _isLocked = false;
+                            await Application.Current.MainPage.DisplayAlert("JobMe", "Ocurrio un error inesperado al guardar el video académico", "Ok");
+                            return;
+                        }
 
                         //Vaciamos la variable de los videos
                         Preferences.Set("VideoOtros", string.Empty);
@@ -6958,6 +7737,28 @@ namespace JobMe.ViewModels
 
             await Task.Delay(600);
             _isLocked = false;
+        }
+
+        public UserRegistry userlocal { get; set; }
+        public async void SaveLocal(int userid)
+        {
+            try
+            {
+                userlocal.UserID = userid;
+                var zz = await App.Database.UpdateUserAsync(userlocal);
+
+                var n = await App.Database.GetUsersAsync();
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //throw;
+            }
+           
+
+
         }
 
         private void GetActualDegree(UserModel u)
@@ -7039,7 +7840,7 @@ namespace JobMe.ViewModels
             if (u.Gender == null)
             {
                 Application.Current.MainPage.DisplayAlert("JobMe",
-                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El genero no puede estar vacío" : "Gender can't be empty",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El género no puede estar vacío" : "Gender can't be empty",
                     "Ok");
                 return false;
             }
@@ -7055,7 +7856,7 @@ namespace JobMe.ViewModels
             if (u.BusinessFields == null)
             {
                 Application.Current.MainPage.DisplayAlert("JobMe",
-                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria puede estar vacío" : "Business Fields can't be empty",
+                     App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "Industria no puede estar vacío" : "Business Fields can't be empty",
                     "Ok");
                 return false;
             }
@@ -7088,7 +7889,7 @@ namespace JobMe.ViewModels
             if (u.Degree == null)
             {
                 Application.Current.MainPage.DisplayAlert("JobMe",
-                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "La escuela no puede estar vacío" : "School can't be empty",
+                    App.Idioma.TwoLetterISOLanguageName == MyIdioma.Español ? "El título no puede estar vacío" : "Degree can't be empty",
                     "Ok");
                 return false;
             }
@@ -7152,19 +7953,56 @@ namespace JobMe.ViewModels
 
                 if (status == PermissionStatus.Granted)
                 {
-                    string[] fileTypes = null;
 
-                    FileData file = await CrossFilePicker.Current.PickFile();
+                    FileData file = null;
+
+                    switch (Device.RuntimePlatform)
+                    {
+                        case Device.Android:
+                            string[] fileTypes = new String[2]; ;
+                            fileTypes[0] = "image/jpeg";
+                            fileTypes[1] = "application/pdf";
+                            file = await CrossFilePicker.Current.PickFile(fileTypes);
+                            break;
+
+                        case Device.iOS:
+                            file = await CrossFilePicker.Current.PickFile();
+                            break;
+                    }
+
 
                     if (file != null)
                     {
-                        CVName = file.FileName;
 
-                        if (file.FileName.Substring(file.FileName.Length - 3).ToUpper() != "PDF" && file.FileName.Substring(file.FileName.Length - 3).ToUpper() != "JPG")
+                        switch (Device.RuntimePlatform)
                         {
-                            await Application.Current.MainPage.DisplayAlert("JobMe", "Tipo de archivo no admitido, solo pdf o jpg", "Ok");
-                            return;
+                            case Device.Android:
+
+                                try
+                                {
+                                    CVName = file.FileName;
+                                }
+                                catch (Exception e)
+                                {
+                                    CVName = "CV.pdf";
+                                    //throw;
+                                }
+                              
+
+                                break;
+
+                            case Device.iOS:
+                               
+
+                                if (file.FileName.Substring(file.FileName.Length - 3).ToUpper() != "PDF" && file.FileName.Substring(file.FileName.Length - 3).ToUpper() != "JPG")
+                                {
+                                    await Application.Current.MainPage.DisplayAlert("JobMe", "Tipo de archivo no admitido, solo pdf o jpg", "Ok");
+                                    return;
+                                }
+                                break;
                         }
+
+                       
 
                         using (var memoryStream = new MemoryStream())
                         {

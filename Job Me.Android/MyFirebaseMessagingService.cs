@@ -13,6 +13,7 @@ using Android.Widget;
 using Firebase.Messaging;
 using WindowsAzure.Messaging;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace JobMe.Droid
 {
@@ -31,19 +32,41 @@ namespace JobMe.Droid
             {
                 //These is how most messages will be received
                 Log.Debug(TAG, "Notification Message Body: " + message.GetNotification().Body);
-                SendNotification(message.GetNotification().Body, "nada");
+                var z = message.GetNotification().Tag;
+                SendNotification(message.GetNotification().Body, message.GetNotification().Title);
+
             }
             else
             {
+
+                var zzz = message.Data.FirstOrDefault(x => x.Key == "chat").Value;
+
+                //if (!string.IsNullOrEmpty(zzz))
+                //{
+                //    App.chat = true;
+
+                //}
+                string title = message.Data.FirstOrDefault(x => x.Key == "titulo").Value;
+                string mensaje = message.Data.FirstOrDefault(x => x.Key == "message").Value;
+
                 //Only used for debugging payloads sent from the Azure portal
-                SendNotification(message.Data.Values.First(), message.Data.Values.Last());
+                SendNotification(mensaje, title, string.IsNullOrEmpty(zzz)||zzz=="fcm" ?false:true);
+
+
             }
         }
 
-        private void SendNotification(string messageBody, string titulo)
+        private void SendNotification(string messageBody, string titulo, bool chat = false)
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
+            intent.PutExtra(titulo, messageBody);
+
+            if (chat)
+            {
+                intent.PutExtra("chat", "mensaje del chat");
+            }
+
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
             var notificationBuilder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID);

@@ -60,7 +60,7 @@
                                                    InputViewPadding="5"
                                                    LeadingViewPosition="Outside" 
                                                       IsVisible="{Binding IsMainContact}"
-                                                   ErrorText="Enter company name"
+                                                   ErrorText="{Binding CompanyError}"
                                                    HasError="{Binding IsCompanyNameEmpty}"
                                                    ContainerType="Filled" CharMaxLength="50" >
                             <Entry Text="{Binding CompanyName}" TextColor="{StaticResource JobMeGray}">
@@ -82,7 +82,7 @@
 
                         <!--Description-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Descriptionlbl}" 
-                                                   ErrorText="Enter company description"
+                                                       ErrorText="{Binding DescriptionHint}"
                                                    HasError="{Binding IsDescriptionEmpty}"
                                                            IsVisible="{Binding IsMainContact}"
                                                    InputViewPadding="5" LeadingViewPosition="Outside" ContainerType="Filled">
@@ -99,7 +99,7 @@
 
                         <!--Name-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Namelbl}" InputViewPadding="5" 
-                                                   ErrorText="Enter your name"
+                                                   ErrorText="{Binding NameError}"
                                                    HasError="{Binding IsNameEmpty}"
                                                    LeadingViewPosition="Outside" ContainerType="Filled">
                             <Entry Text="{Binding Name}"  >
@@ -120,7 +120,7 @@
 
                         <!--Mail-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Maillbl}" InputViewPadding="5"
-                                                   ErrorText="Please enter a valida email"
+                                                       ErrorText="{Binding MailError}"
                                                    HasError="{Binding IsMailEmpty}"
                                                    LeadingViewPosition="Outside" ContainerType="Filled">
                             <Entry Text="{Binding Mail}" Keyboard="Email">
@@ -142,12 +142,11 @@
                         <!--Phone-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Phonelbl}" InputViewPadding="5" 
                                                      HasError="{Binding IsPhoneNumberEmpty}"
-                                                     ErrorText="Please enter a 10 digit valid phone"
+                                                     ErrorText="{Binding PhoneError}"
                                                    LeadingViewPosition="Outside" ContainerType="Filled">
                             <Entry Text="{Binding Telephone}" Keyboard="Telephone" >
                                 <Entry.Behaviors>
-                                    <Behavior:PhoneNumberMaskBehavior x:Name="PhoneMask" />
-                                    <Behavior:EntryLengthValidator MaxLength="12" MinLength="12"/>
+                                    <Behavior:PhoneNumberMaskBehavior MaxLength="12"  />
                                 </Entry.Behaviors>
 
                             </Entry>
@@ -165,7 +164,7 @@
                         <!--UserName-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Usernamelbl}" InputViewPadding="5" 
                                                      HasError="{Binding IsUserNameEmpty}"
-                                                   ErrorText="Minimun 6 characters"
+                                                     ErrorText="{Binding UserNameError}"
                                                    LeadingViewPosition="Outside" ContainerType="Filled">
                             <Entry Text="{Binding UserName}" >
                                 <Entry.Behaviors>
@@ -185,7 +184,7 @@
 
                         <!--Password-->
                         <inputLayout:SfTextInputLayout Hint="{Binding Passwordlbl}" InputViewPadding="5"
-                                                    ErrorText="Minimun 6 characters"
+                                                    ErrorText="{Binding PasswordError}"
                                                      HasError="{Binding IsPasswordEmpty}"
                                                        EnablePasswordVisibilityToggle="True"
                                                    LeadingViewPosition="Outside" ContainerType="Filled">

@@ -184,9 +184,14 @@ namespace JobMe.Views
 
                     if (!string.IsNullOrEmpty(z.CVName))
                     {
-                        switch (z.CVName.Substring(z.CVName.Length - 3).ToUpper())
+                        FileInfo fi = new FileInfo(z.CVName);
+
+                        var ext = fi.Extension;
+
+                        //switch (z.CVName.Substring(z.CVName.Length - 3).ToUpper())
+                        switch (ext.ToUpper())
                         {
-                            case "PDF":
+                            case ".PDF":
                                 var pdfv = new SfPdfViewer()
                                 {
                                     PreserveSignaturePadOrientation = true,
@@ -197,7 +202,7 @@ namespace JobMe.Views
 
                                 mainGrid.Children.Add(pdfv);
                                 return;
-                            case "JPG":
+                            case ".JPG":
 
                                 SfImage img = new SfImage()
                                 {
@@ -205,6 +210,16 @@ namespace JobMe.Views
                                     VerticalOptions = LayoutOptions.FillAndExpand
                                 };
                                 mainGrid.Children.Add(img, 0, 0);
+
+                                return;
+                            case ".JPEG":
+
+                                SfImage img1 = new SfImage()
+                                {
+                                    Source = ImageSource.FromStream(() => new MemoryStream(z.CV)),
+                                    VerticalOptions = LayoutOptions.FillAndExpand
+                                };
+                                mainGrid.Children.Add(img1, 0, 0);
 
                                 return;
                             default:

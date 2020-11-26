@@ -31,11 +31,33 @@ namespace JobMe.Views
             //Myfoto.Source = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
         }
 
+        public LargePhoto(FFImageLoading.Forms.CachedImage img)
+        {
+            InitializeComponent();
+            //int userid = Preferences.Get("UserID", 0);
+
+            //string url = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
+            ////Prueba(url);
+
+            //var webClient = new WebClient();
+            //byte[] imageBytes = webClient.DownloadData(url);
+
+            Myfoto.Source = img.Source;
+
+            //Myfoto.Source = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
+        }
+
         public LargePhoto(int userid)
         {
             InitializeComponent();
-           
-            Myfoto.Source = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
+
+            string url = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
+            var webClient = new WebClient();
+            byte[] imageBytes = webClient.DownloadData(url);
+
+            Myfoto.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+
+            //Myfoto.Source = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + ".jpg";
         }
 
         private async void Prueba(string url)

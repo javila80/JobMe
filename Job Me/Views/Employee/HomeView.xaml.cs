@@ -23,196 +23,13 @@ namespace JobMe.Views
         //Logo de premium
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            //await App.Current.MainPage.DisplayAlert("Job Me", "Premiun Soon", "OK");
+            await App.Current.MainPage.DisplayAlert("Job Me", "Próximamente", "OK");
 
-            await Navigation.PushAsync(new Credit() { Title = "Premium" });
+            //await Navigation.PushAsync(new Credit() { Title = "Premium" });
         }
+      
 
-        //private async void TapGestureRecognizer_VideoAcademics(object sender, EventArgs e)
-        //{
-        //    int userid = Preferences.Get("UserID", 0);
-        //    string documentsPath = string.Empty;
-        //    string fname = string.Empty;
-
-        //    switch (Device.RuntimePlatform)
-        //    {
-        //        case Device.iOS:
-
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-        //            fname = Path.Combine(documentsPath, (Preferences.Get("UserID", 0)).ToString() + "_acads.mp4");
-
-        //            break;
-
-        //        case Device.Android:
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-        //            fname = Path.Combine(documentsPath, (Preferences.Get("UserID", 0)).ToString() + "_acads.mp4");
-
-        //            break;
-        //    };
-
-        //    string url = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + "_acads.mp4";
-
-        //    // await Navigation.PushAsync(new Video(fname, 1) { Title = "Academics Video" });
-
-        //    if (File.Exists(fname))
-        //    {
-        //        await Navigation.PushAsync(new PlayVideo(fname, 1) { Title = "Academics Video" });
-
-        //    }
-        //    else
-        //    {
-        //        if (Preferences.Get("AcademicsVideo", string.Empty) != string.Empty && Preferences.Get("AcademicsVideo", null) != null)
-        //        {
-        //            switch (Device.RuntimePlatform)
-        //            {
-        //                case Device.iOS:
-
-        //                    await Navigation.PushAsync(new PlayVideo(url) { Title = "Academics Video" });
-        //                    break;
-        //                case Device.Android:
-        //                    await Navigation.PushAsync(new PlayVideo(Preferences.Get("AcademicsVideo", string.Empty), 1) { Title = "Academics Video" });
-        //                    break;
-        //            };
-
-        //            //Desde el archivo
-        //            // await Navigation.PushAsync(new Video(Preferences.Get("AcademicsVideo", string.Empty), 1) { Title = "Academics Video" });
-
-        //        }
-        //        else
-        //        {
-        //            await Navigation.PushAsync(new PlayVideo(url) { Title = "Academics Video" });
-
-        //        }
-
-        //    }
-        //}
-
-        //private async void TapGestureRecognizer_VideoJobs(object sender, EventArgs e)
-        //{
-        //    int userid = Preferences.Get("UserID", 0);
-        //    string url = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + "_jobs.mp4";
-        //    string documentsPath = string.Empty;
-
-        //    switch (Device.RuntimePlatform)
-        //    {
-        //        case Device.iOS:
-
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-        //            break;
-
-        //        case Device.Android:
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-        //            break;
-        //    };
-        //    string fname = Path.Combine(documentsPath, (Preferences.Get("UserID", 0)).ToString() + "_jobs.mp4");
-
-        //    if (File.Exists(fname))
-        //    {
-        //        await Navigation.PushAsync(new PlayVideo(fname, 1) { Title = "Jobs Video" });
-
-        //    }
-        //    else
-        //    {
-        //        if (Preferences.Get("JobsVideo", string.Empty) != string.Empty && Preferences.Get("JobsVideo", null) != null)
-        //        {
-        //            //Desde el archivo
-
-        //            switch (Device.RuntimePlatform)
-        //            {
-        //                case Device.iOS:
-
-        //                    await Navigation.PushAsync(new PlayVideo(url) { Title = "Jobs Video" });
-        //                    break;
-        //                case Device.Android:
-        //                    await Navigation.PushAsync(new PlayVideo(Preferences.Get("JobsVideo", string.Empty), 1) { Title = "Jobs Video" });
-        //                    break;
-        //            };
-
-        //        }
-        //        else
-        //        {
-        //            await Navigation.PushAsync(new PlayVideo(url) { Title = "Jobs Video" });
-
-        //        }
-        //    }
-        //    //if (Preferences.Get("JobsVideo", string.Empty) != string.Empty && Preferences.Get("JobsVideo", null) != null)
-        //    //{
-        //    //    //Desde el archivo
-
-        //    //    switch (Device.RuntimePlatform)
-        //    //    {
-        //    //        case Device.iOS:
-
-        //    //            await Navigation.PushAsync(new Video(url) { Title = "Jobs Video" });
-        //    //            break;
-        //    //        case Device.Android:
-        //    //            await Navigation.PushAsync(new Video(Preferences.Get("JobsVideo", string.Empty), 1) { Title = "Jobs Video" });
-        //    //            break;
-        //    //    };
-
-        //    //}
-        //    //else
-        //    //{
-        //    //    await Navigation.PushAsync(new Video(url) { Title = "Jobs Video" });
-
-        //    //}
-
-        //}
-
-        //private async void TapGestureRecognizer_VideoOthers(object sender, EventArgs e)
-        //{
-        //    int userid = Preferences.Get("UserID", 0);
-        //    string url = EndPoint.BACKEND_ENDPOINT + "uploads/" + userid.ToString() + "_others.mp4";
-        //    string documentsPath = string.Empty;
-
-        //    switch (Device.RuntimePlatform)
-        //    {
-        //        case Device.iOS:
-
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-        //            break;
-
-        //        case Device.Android:
-        //            documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-        //            break;
-        //    };
-        //    string fname = Path.Combine(documentsPath, (Preferences.Get("UserID", 0)).ToString() + "_others.mp4");
-
-        //    if (File.Exists(fname))
-        //    {
-        //        await Navigation.PushAsync(new PlayVideo(fname, 1) { Title = "Others Video" });
-
-        //    }
-        //    else
-        //    {
-        //        if (Preferences.Get("OthersVideo", string.Empty) != string.Empty && Preferences.Get("OthersVideo", null) != null)
-        //        {
-        //            //Desde el archivo
-
-        //            switch (Device.RuntimePlatform)
-        //            {
-        //                case Device.iOS:
-
-        //                    await Navigation.PushAsync(new PlayVideo(url) { Title = "Others Video" });
-        //                    Preferences.Set("OthersVideo", url);
-        //                    break;
-        //                case Device.Android:
-
-        //                    await Navigation.PushAsync(new PlayVideo(Preferences.Get("OthersVideo", string.Empty), 1) { Title = "Others Video" });
-        //                    break;
-        //            };
-
-        //        }
-        //        else
-        //        {
-        //            await Navigation.PushAsync(new PlayVideo(url) { Title = "Others Video" });
-
-        //        }
-        //    }
-
-        //}
-
-        //CV
+        //Click en el CV
         private async void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
             int userid = Preferences.Get("UserID", 0);
@@ -227,11 +44,12 @@ namespace JobMe.Views
             }
         }
 
-        //click en la imagen
-        private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new LargePhoto() { Title = Preferences.Get("Name", string.Empty) });
-        }
+       
+        //private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
+        //{
+        //    var z = ()
+        //    await Navigation.PushAsync(new LargePhoto() { Title = Preferences.Get("Name", string.Empty) });
+        //}
 
         private async void btnAcademics_Clicked(object sender, EventArgs e)
         {
@@ -434,6 +252,15 @@ namespace JobMe.Views
                     response.Close();
                 }
             }
+        }
+        //click en la imagen
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            var image = (FFImageLoading.Forms.CachedImage)sender;
+
+            
+
+            await Navigation.PushAsync(new LargePhoto(image) { Title = Preferences.Get("Name", string.Empty) });
         }
     }
 }

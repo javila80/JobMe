@@ -111,8 +111,8 @@
                                                    LeadingViewPosition="Outside" ContainerType="Filled">
                             <Entry Text="{Binding Telephone}" Keyboard="Telephone" >
                                 <Entry.Behaviors>
-                                    <Behavior:PhoneNumberMaskBehavior x:Name="PhoneMask" />
-                                    <Behavior:EntryLengthValidator MaxLength="12" MinLength="12"/>
+                                    <Behavior:PhoneNumberMaskBehavior x:Name="PhoneMask" MaxLength="12" />
+                           
                                 </Entry.Behaviors>
 
                             </Entry>

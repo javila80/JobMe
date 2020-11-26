@@ -37,6 +37,27 @@ namespace JobMe.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
+            //abrir la pagina de chats en push notification click
+            var flag = false;
+          
+            if (Intent.Extras != null)
+            {
+                foreach (var key in Intent.Extras.KeySet())
+                {
+                    if (key != null)
+                    {
+                        if (key == "chat")
+                        {
+                            flag = true;
+                        }
+
+                        var value = Intent.Extras.GetString(key);
+                        Log.Debug(TAG, "Key: {0} Value: {1}", key, value);
+                    }
+                }
+            }
+
             MessagingCenter.Subscribe<VideoPublicidad>(this, "PreventLandscape", sender =>
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
@@ -48,7 +69,7 @@ namespace JobMe.Droid
             });
             //Register Syncfusion license
             // Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
-            Xamarin.Forms.Forms.SetFlags(new string[] { "CarouselView_Experimental", "SwipeView_Experimental", "IndicatorView_Experimental" });
+            Xamarin.Forms.Forms.SetFlags(new string[] { "CarouselView_Experimental", "SwipeView_Experimental", "IndicatorView_Experimental","MediaElement_Experimental" });
             //global::Xamarin.Forms.Forms.SetFlags(new[] { "CollectionView_Experimental", "Shell_Experimental" });
             IsPlayServicesAvailable();
 
@@ -84,19 +105,7 @@ namespace JobMe.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
-            if (Intent.Extras != null)
-            {
-                foreach (var key in Intent.Extras.KeySet())
-                {
-                    if (key != null)
-                    {
-                        var value = Intent.Extras.GetString(key);
-                        Log.Debug(TAG, "Key: {0} Value: {1}", key, value);
-                    }
-                }
-            }
-
+            
             UserDialogs.Init(this);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -114,18 +123,22 @@ namespace JobMe.Droid
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
 
-            LoadApplication(new App());
+            LoadApplication(new App(flag));
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             FormsVideoPlayer.Init();
+
+            CardsViewRenderer.Preserve();
             //CrossMediaManager.Current.Init(this);
             // CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             //Esto es para que no se oculte el teclado
             //App.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+
         }
 
+        
         public static MainActivity Current { private set; get; }
 
         public static readonly int PickImageId = 1000;

@@ -352,7 +352,9 @@ namespace JobMe.Views.Employer
 
             u = (UserModel)main.TopItem;
 
-            await Navigation.PushAsync(new LargePhoto(u.UserID) { Title = u.Name });
+            var image = (FFImageLoading.Forms.CachedImage)sender;
+
+            await Navigation.PushAsync(new LargePhoto(image) { Title = u.Name });
         }
 
         private bool CheckLink(string url)
